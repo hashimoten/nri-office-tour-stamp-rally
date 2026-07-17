@@ -6,68 +6,36 @@ import { checkpoints } from "../config/checkpoints";
 import { eventContent } from "../config/content";
 import { saveStamps, STORAGE_KEY } from "../core/storageService";
 
-const qrScannerMock = vi.hoisted(() => ({
+const cameraScannerMock = vi.hoisted(() => ({
   decodedValue: null as string | null,
   decodeError: null as string | null,
-  forceWorker: false,
-  inversionMode: vi.fn(),
-  options: null as {
-    onDecodeError: (error: string) => void;
-    calculateScanRegion: (video: HTMLVideoElement) => {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-      downScaledWidth: number;
-      downScaledHeight: number;
-    };
-  } | null,
   destroy: vi.fn(),
   start: vi.fn(),
 }));
 
-vi.mock("qr-scanner", () => ({
-  default: class MockQrScanner {
-    static set _disableBarcodeDetector(value: boolean) {
-      qrScannerMock.forceWorker = value;
-    }
-
-    private readonly onDecode: (result: {
-      data: string;
-      cornerPoints: never[];
-    }) => void;
-
-    constructor(
-      _video: HTMLVideoElement,
-      onDecode: (result: { data: string; cornerPoints: never[] }) => void,
-      options: NonNullable<typeof qrScannerMock.options>,
-    ) {
-      this.onDecode = onDecode;
-      qrScannerMock.options = options;
-    }
-
-    async start() {
-      qrScannerMock.start();
-      if (qrScannerMock.decodeError) {
-        window.setTimeout(() => {
-          if (qrScannerMock.decodeError) {
-            qrScannerMock.options?.onDecodeError(qrScannerMock.decodeError);
-          }
-        }, 0);
+vi.mock("../core/qrScannerService", () => ({
+  isCameraAccessSupported: () => Boolean(navigator.mediaDevices?.getUserMedia),
+  requestRearCamera: () => navigator.mediaDevices.getUserMedia({ video: true }),
+  parseScannedQrValue: (value: string) =>
+    value.includes("point=entrance")
+      ? { kind: "valid", checkpointId: "entrance" }
+      : { kind: "invalid" },
+  createCameraQrScanner: (
+    _video: HTMLVideoElement,
+    onDecode: (value: string) => void,
+    onError: () => void,
+  ) => ({
+    start: async () => {
+      cameraScannerMock.start();
+      if (cameraScannerMock.decodeError) {
+        window.setTimeout(() => onError(), 0);
       }
-      if (qrScannerMock.decodedValue) {
-        this.onDecode({ data: qrScannerMock.decodedValue, cornerPoints: [] });
+      if (cameraScannerMock.decodedValue) {
+        onDecode(cameraScannerMock.decodedValue);
       }
-    }
-
-    destroy() {
-      qrScannerMock.destroy();
-    }
-
-    setInversionMode(mode: string) {
-      qrScannerMock.inversionMode(mode);
-    }
-  },
+    },
+    destroy: () => cameraScannerMock.destroy(),
+  }),
 }));
 
 const setLocation = (search = "") => {
@@ -77,13 +45,10 @@ const setLocation = (search = "") => {
 describe("App", () => {
   beforeEach(() => {
     localStorage.clear();
-    qrScannerMock.decodedValue = null;
-    qrScannerMock.decodeError = null;
-    qrScannerMock.forceWorker = false;
-    qrScannerMock.inversionMode.mockClear();
-    qrScannerMock.options = null;
-    qrScannerMock.destroy.mockClear();
-    qrScannerMock.start.mockClear();
+    cameraScannerMock.decodedValue = null;
+    cameraScannerMock.decodeError = null;
+    cameraScannerMock.destroy.mockClear();
+    cameraScannerMock.start.mockClear();
     setLocation();
   });
 
@@ -122,8 +87,7 @@ describe("App", () => {
     );
     const stopTrack = vi.fn();
 
-    vi.stubGlobal("BarcodeDetector", undefined);
-    qrScannerMock.decodedValue = "?point=entrance";
+    cameraScannerMock.decodedValue = "?point=entrance";
     Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
       value: {
@@ -148,23 +112,8 @@ describe("App", () => {
         screen.getByText("1 / 5個のスタンプを集めました"),
       ).toBeInTheDocument();
       expect(stopTrack).toHaveBeenCalled();
-      expect(qrScannerMock.start).toHaveBeenCalledOnce();
-      expect(qrScannerMock.destroy).toHaveBeenCalled();
-      expect(qrScannerMock.forceWorker).toBe(true);
-      expect(qrScannerMock.inversionMode).toHaveBeenCalledWith("both");
-      expect(
-        qrScannerMock.options?.calculateScanRegion({
-          videoWidth: 1920,
-          videoHeight: 1080,
-        } as HTMLVideoElement),
-      ).toEqual({
-        x: 474,
-        y: 54,
-        width: 972,
-        height: 972,
-        downScaledWidth: 800,
-        downScaledHeight: 800,
-      });
+      expect(cameraScannerMock.start).toHaveBeenCalledOnce();
+      expect(cameraScannerMock.destroy).toHaveBeenCalled();
     } finally {
       vi.unstubAllGlobals();
       if (originalMediaDevices) {
@@ -186,7 +135,7 @@ describe("App", () => {
     );
     const stopTrack = vi.fn();
 
-    qrScannerMock.decodeError = "Scanner error: worker failed";
+    cameraScannerMock.decodeError = "Scanner error: worker failed";
     Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
       value: {
