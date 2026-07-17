@@ -608,6 +608,56 @@ button {
   box-shadow: 0 28px 80px rgba(4, 20, 45, 0.38);
 }
 
+.stamp-impact {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 150px;
+  height: 150px;
+  place-content: center;
+  border: 7px double var(--color-accent);
+  border-radius: 50%;
+  background: rgba(255, 248, 248, 0.94);
+  box-shadow: 0 14px 0 rgba(124, 26, 39, 0.22);
+  color: var(--color-accent);
+  text-align: center;
+  transform: translate(-50%, -50%) rotate(-9deg);
+}
+
+.stamp-impact::before {
+  position: absolute;
+  inset: 9px;
+  border: 1px dashed currentColor;
+  border-radius: inherit;
+  content: "";
+}
+
+.stamp-impact span {
+  position: relative;
+  z-index: 1;
+  font-size: 0.57rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+}
+
+.stamp-impact strong {
+  position: relative;
+  z-index: 1;
+  margin: 5px 0;
+  font-size: 1.75rem;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.stamp-impact--complete {
+  border-color: var(--color-primary);
+  background: rgba(245, 250, 255, 0.95);
+  box-shadow: 0 14px 0 rgba(23, 59, 108, 0.22);
+  color: var(--color-primary);
+}
+
 .celebration-modal .stamp-celebration,
 .celebration-modal .completion-panel {
   width: 100%;
@@ -1340,6 +1390,16 @@ button {
 
   .celebration-modal__dialog {
     padding: 7px;
+  }
+
+  .stamp-impact {
+    width: 124px;
+    height: 124px;
+    border-width: 6px;
+  }
+
+  .stamp-impact strong {
+    font-size: 1.45rem;
   }
 
   .celebration-modal .completion-panel {

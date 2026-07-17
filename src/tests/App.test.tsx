@@ -112,6 +112,7 @@ describe("App", () => {
       expect(
         screen.getByRole("dialog", { name: eventContent.stampCelebrationTitle }),
       ).toBeInTheDocument();
+      expect(screen.getByText(eventContent.stampImpactGet)).toBeInTheDocument();
       expect(
         screen.getByText("あと4か所。気になる場所を探検してみよう！"),
       ).toBeInTheDocument();
@@ -244,6 +245,9 @@ describe("App", () => {
       name: eventContent.completeTitle,
     });
     expect(within(dialog).getByText(eventContent.completeCheer)).toBeInTheDocument();
+    expect(
+      within(dialog).getByText(eventContent.stampImpactComplete),
+    ).toBeInTheDocument();
 
     await user.click(
       within(dialog).getByRole("button", { name: eventContent.completeModalClose }),
