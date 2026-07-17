@@ -95,12 +95,13 @@ public/brand/nri-logo.svg
 
 ```text
 src/
+├── content.ts         # 子どもが編集する画面内の文章
+├── design.css         # 子どもが編集する色・レイアウト・アニメーション
 ├── components/        # 表示専用コンポーネント
 ├── config/
-│   ├── checkpoints.ts # 地点名・アイコン・説明（IDは固定）
-│   └── content.ts     # 画面内の文章
+│   └── checkpoints.ts # 地点名・アイコン・説明（IDは固定）
 ├── core/              # URL解析・保存・重複判定・完了判定
-├── theme/             # 仮テーマ色・CSS・アニメーション
+├── theme/             # アプリ内部用の補助設定
 ├── types/             # 共通の型
 └── tests/             # Vitest / React Testing Library
 ```

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { eventContent } from "../config/content";
+import { eventContent } from "../content";
 
 export const BrandMark = () => {
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -21,4 +21,3 @@ export const BrandMark = () => {
     </div>
   );
 };
-

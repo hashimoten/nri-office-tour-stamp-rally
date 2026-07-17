@@ -1,4 +1,4 @@
-import { eventContent } from "../config/content";
+import { eventContent } from "../content";
 
 interface StampSheetProps {
   variant: "stamp" | "complete";

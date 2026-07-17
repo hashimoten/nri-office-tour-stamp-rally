@@ -2,10 +2,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { registerSW } from "virtual:pwa-register";
 import { App } from "./App";
-import "./theme/theme.css";
-import { applyEventTheme } from "./theme/eventTheme";
+import "./design.css";
 
-applyEventTheme();
 registerSW({ immediate: true });
 
 createRoot(document.getElementById("root")!).render(

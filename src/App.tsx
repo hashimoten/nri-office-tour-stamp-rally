@@ -8,7 +8,7 @@ import { ProgressPanel } from "./components/ProgressPanel";
 import { QrScanner } from "./components/QrScanner";
 import { ResetPanel } from "./components/ResetPanel";
 import { checkpoints } from "./config/checkpoints";
-import { eventContent } from "./config/content";
+import { eventContent } from "./content";
 import { isStampRallyComplete } from "./core/completionService";
 import { useStampRally } from "./core/useStampRally";
 import type { StampNotice } from "./types";
