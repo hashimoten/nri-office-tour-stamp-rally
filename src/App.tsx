@@ -106,10 +106,14 @@ export const App = () => {
         <section className="checkpoint-section" aria-labelledby="checkpoint-title">
           <div className="section-heading">
             <div>
-              <p className="section-heading__eyebrow">CHECKPOINTS</p>
-              <h2 id="checkpoint-title">探検する場所</h2>
+              <p className="section-heading__eyebrow">
+                {eventContent.checkpointLabel}
+              </p>
+              <h2 id="checkpoint-title">{eventContent.checkpointTitle}</h2>
             </div>
-            <span>{checkpoints.length} SPOTS</span>
+            <span>
+              {checkpoints.length} {eventContent.checkpointCountSuffix}
+            </span>
           </div>
           <CheckpointGrid stamps={stamps} />
         </section>

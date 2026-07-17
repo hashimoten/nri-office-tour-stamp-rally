@@ -1,3 +1,5 @@
+/* アニメーションは theme.css に統合しました。子ども向け編集ではこのファイルを変更しません。 */
+/*
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -147,3 +149,4 @@
     transition-duration: 0.01ms !important;
   }
 }
+*/
