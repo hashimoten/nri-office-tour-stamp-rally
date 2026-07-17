@@ -23,6 +23,98 @@ describe("App", () => {
       expect(screen.getByText(checkpoint.name)).toBeInTheDocument();
     }
     expect(screen.getByText("0 / 5個のスタンプを集めました")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: eventContent.scannerButton }),
+    ).toBeInTheDocument();
+  });
+
+  it("アプリ内読取に非対応でも標準カメラの案内を表示する", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(
+      screen.getByRole("button", { name: eventContent.scannerButton }),
+    );
+
+    expect(
+      await screen.findByText(eventContent.scannerUnsupported),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("dialog", { name: eventContent.scannerTitle }),
+    ).toBeInTheDocument();
+  });
+
+  it("アプリ内で読み取ったQRからスタンプを取得する", async () => {
+    const originalMediaDevices = Object.getOwnPropertyDescriptor(
+      navigator,
+      "mediaDevices",
+    );
+    const originalReadyState = Object.getOwnPropertyDescriptor(
+      HTMLMediaElement.prototype,
+      "readyState",
+    );
+    const stopTrack = vi.fn();
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, "play")
+      .mockResolvedValue();
+
+    class FakeBarcodeDetector {
+      static getSupportedFormats = async () => ["qr_code"];
+
+      async detect() {
+        return [{ rawValue: "?point=entrance" }];
+      }
+    }
+
+    vi.stubGlobal("BarcodeDetector", FakeBarcodeDetector);
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue({
+          getTracks: () => [{ stop: stopTrack }],
+        }),
+      },
+    });
+    Object.defineProperty(HTMLMediaElement.prototype, "readyState", {
+      configurable: true,
+      get: () => HTMLMediaElement.HAVE_CURRENT_DATA,
+    });
+
+    try {
+      const user = userEvent.setup();
+      render(<App />);
+
+      await user.click(
+        screen.getByRole("button", { name: eventContent.scannerButton }),
+      );
+
+      expect(
+        await screen.findByText("エントランスのスタンプをゲットしました！"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("1 / 5個のスタンプを集めました"),
+      ).toBeInTheDocument();
+      expect(stopTrack).toHaveBeenCalled();
+    } finally {
+      vi.unstubAllGlobals();
+      play.mockRestore();
+      if (originalMediaDevices) {
+        Object.defineProperty(
+          navigator,
+          "mediaDevices",
+          originalMediaDevices,
+        );
+      } else {
+        delete (navigator as { mediaDevices?: MediaDevices }).mediaDevices;
+      }
+      if (originalReadyState) {
+        Object.defineProperty(
+          HTMLMediaElement.prototype,
+          "readyState",
+          originalReadyState,
+        );
+      }
+    }
   });
 
   it("正しいQRのpointでスタンプを取得し進捗を更新する", async () => {
@@ -109,4 +201,3 @@ describe("App", () => {
     expect(screen.getByText(eventContent.appTitle)).toBeInTheDocument();
   });
 });
-

@@ -239,6 +239,70 @@ button {
   letter-spacing: 0.02em;
 }
 
+.qr-scan-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 50px;
+  margin-top: 28px;
+  padding: 12px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 9px 24px rgba(5, 22, 45, 0.2);
+  color: var(--color-primary-deep);
+  cursor: pointer;
+  font-size: 0.94rem;
+  font-weight: 800;
+  gap: 11px;
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.qr-scan-button:hover {
+  background: #f5faff;
+  box-shadow: 0 12px 30px rgba(5, 22, 45, 0.26);
+  transform: translateY(-1px);
+}
+
+.qr-scan-button:focus-visible,
+.scanner-dialog button:focus-visible {
+  outline: 3px solid rgba(121, 202, 255, 0.6);
+  outline-offset: 3px;
+}
+
+.qr-scan-button__icon {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.qr-scan-button__icon::before {
+  position: absolute;
+  top: -6px;
+  left: 3px;
+  width: 8px;
+  height: 4px;
+  border: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+  content: "";
+}
+
+.qr-scan-button__icon span {
+  position: absolute;
+  top: 3px;
+  left: 7px;
+  width: 6px;
+  height: 6px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
 .hero__route {
   position: absolute;
   right: 46px;
@@ -282,6 +346,184 @@ button {
   top: 8px;
   right: 9px;
   background: var(--color-accent);
+}
+
+.scanner-modal {
+  position: fixed;
+  z-index: 100;
+  display: grid;
+  padding: 24px;
+  background: rgba(8, 25, 47, 0.76);
+  inset: 0;
+  place-items: center;
+  backdrop-filter: blur(8px);
+}
+
+.scanner-dialog {
+  width: min(100%, 500px);
+  max-height: calc(100vh - 48px);
+  padding: 26px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: var(--radius-large);
+  background: var(--color-surface);
+  box-shadow: 0 28px 80px rgba(3, 16, 34, 0.36);
+  color: var(--color-text);
+}
+
+.scanner-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.scanner-dialog__header p {
+  margin: 0 0 6px;
+  color: var(--color-secondary);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.scanner-dialog__header h2 {
+  margin: 0;
+  color: var(--color-primary-deep);
+  font-size: clamp(1.35rem, 4vw, 1.7rem);
+}
+
+.scanner-dialog__close {
+  display: grid;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 1.55rem;
+  line-height: 1;
+  place-items: center;
+}
+
+.scanner-view {
+  position: relative;
+  display: grid;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at center, rgba(40, 120, 181, 0.18), transparent 55%),
+    var(--color-primary-deep);
+  aspect-ratio: 4 / 3;
+  place-items: center;
+}
+
+.scanner-view video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scanner-view__frame {
+  position: absolute;
+  width: min(62%, 240px);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 12px;
+  box-shadow: 0 0 0 999px rgba(5, 20, 39, 0.27);
+  aspect-ratio: 1;
+}
+
+.scanner-view__frame span {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-color: #fff;
+  border-style: solid;
+}
+
+.scanner-view__frame span:nth-child(1) {
+  top: -2px;
+  left: -2px;
+  border-width: 4px 0 0 4px;
+  border-radius: 10px 0 0;
+}
+
+.scanner-view__frame span:nth-child(2) {
+  top: -2px;
+  right: -2px;
+  border-width: 4px 4px 0 0;
+  border-radius: 0 10px 0 0;
+}
+
+.scanner-view__frame span:nth-child(3) {
+  right: -2px;
+  bottom: -2px;
+  border-width: 0 4px 4px 0;
+  border-radius: 0 0 10px;
+}
+
+.scanner-view__frame span:nth-child(4) {
+  bottom: -2px;
+  left: -2px;
+  border-width: 0 0 4px 4px;
+  border-radius: 0 0 0 10px;
+}
+
+.scanner-view__fallback {
+  display: grid;
+  width: 96px;
+  height: 96px;
+  place-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.74);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+}
+
+.scanner-view__loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.24);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: scanner-spin 800ms linear infinite;
+}
+
+.scanner-dialog__status {
+  min-height: 48px;
+  margin: 18px 2px;
+  color: var(--color-muted-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.scanner-dialog__cancel {
+  display: block;
+  min-width: 120px;
+  min-height: 44px;
+  margin: 0 auto;
+  padding: 9px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@keyframes scanner-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .notice-banner {
@@ -830,6 +1072,11 @@ button {
     line-height: 1.7;
   }
 
+  .qr-scan-button {
+    width: 100%;
+    justify-content: center;
+  }
+
   .hero__route {
     right: 14px;
     bottom: 10px;
@@ -911,5 +1158,21 @@ button {
   .reset-panel {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .scanner-modal {
+    padding: 12px;
+  }
+
+  .scanner-dialog {
+    max-height: calc(100vh - 24px);
+    padding: 21px 18px;
+    border-radius: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanner-view__loader {
+    animation-duration: 1600ms;
   }
 }
