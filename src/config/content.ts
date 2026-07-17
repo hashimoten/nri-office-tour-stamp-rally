@@ -13,6 +13,7 @@ export const eventContent = {
   scannerTitle: "QRコードを読み取る",
   scannerStarting: "カメラを準備しています…",
   scannerActive: "枠の中にQRコードを映してください",
+  scannerHint: "QRコード全体と、まわりの白い余白まで枠内に入れてください。",
   scannerUnsupported:
     "この端末ではアプリ内読取に必要なカメラ機能を利用できません。端末の標準カメラでQRコードを読み取ってください。",
   scannerPermissionDenied:
