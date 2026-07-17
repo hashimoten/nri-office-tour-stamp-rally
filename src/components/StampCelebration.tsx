@@ -1,4 +1,5 @@
 import { eventContent } from "../config/content";
+import { StampSheet } from "./StampSheet";
 
 interface StampCelebrationProps {
   checkpointName: string;
@@ -22,9 +23,7 @@ export const StampCelebration = ({
         <span />
         <span />
       </div>
-      <div className="stamp-celebration__seal" aria-hidden="true">
-        <span>★</span>
-      </div>
+      <StampSheet variant="stamp" />
       <div className="stamp-celebration__content">
         <p className="stamp-celebration__eyebrow">
           {eventContent.stampCelebrationLabel}

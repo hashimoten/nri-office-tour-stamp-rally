@@ -608,56 +608,6 @@ button {
   box-shadow: 0 28px 80px rgba(4, 20, 45, 0.38);
 }
 
-.stamp-impact {
-  position: absolute;
-  z-index: 4;
-  top: 50%;
-  left: 50%;
-  display: grid;
-  width: 150px;
-  height: 150px;
-  place-content: center;
-  border: 7px double var(--color-accent);
-  border-radius: 50%;
-  background: rgba(255, 248, 248, 0.94);
-  box-shadow: 0 14px 0 rgba(124, 26, 39, 0.22);
-  color: var(--color-accent);
-  text-align: center;
-  transform: translate(-50%, -50%) rotate(-9deg);
-}
-
-.stamp-impact::before {
-  position: absolute;
-  inset: 9px;
-  border: 1px dashed currentColor;
-  border-radius: inherit;
-  content: "";
-}
-
-.stamp-impact span {
-  position: relative;
-  z-index: 1;
-  font-size: 0.57rem;
-  font-weight: 900;
-  letter-spacing: 0.13em;
-}
-
-.stamp-impact strong {
-  position: relative;
-  z-index: 1;
-  margin: 5px 0;
-  font-size: 1.75rem;
-  letter-spacing: -0.06em;
-  line-height: 1;
-}
-
-.stamp-impact--complete {
-  border-color: var(--color-primary);
-  background: rgba(245, 250, 255, 0.95);
-  box-shadow: 0 14px 0 rgba(23, 59, 108, 0.22);
-  color: var(--color-primary);
-}
-
 .celebration-modal .stamp-celebration,
 .celebration-modal .completion-panel {
   width: 100%;
@@ -730,20 +680,94 @@ button {
   gap: 20px;
 }
 
-.stamp-celebration__seal {
+.stamp-sheet {
   position: relative;
   z-index: 1;
+  flex: 0 0 96px;
+  width: 96px;
+  padding: 4px;
+  border: 1px solid rgba(23, 59, 108, 0.16);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 7px 14px rgba(23, 59, 108, 0.08);
+}
+
+.stamp-sheet__caption {
+  margin: 0 0 3px;
+  color: var(--color-muted-text);
+  font-size: 0.38rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.stamp-sheet__mount {
+  position: relative;
   display: grid;
-  flex: 0 0 82px;
-  width: 82px;
-  height: 82px;
+  width: 86px;
+  height: 86px;
+  overflow: hidden;
   place-items: center;
-  border: 7px solid #fff;
+  border: 2px dashed rgba(23, 59, 108, 0.25);
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
-  box-shadow: 0 0 0 4px rgba(40, 120, 181, 0.17);
-  color: #fff;
-  font-size: 2rem;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), transparent 28px),
+    #f4f7fa;
+}
+
+.stamp-sheet__guide {
+  color: rgba(23, 59, 108, 0.28);
+  font-size: 0.43rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.stamp-sheet__imprint {
+  position: absolute;
+  inset: 5px;
+  display: grid;
+  place-content: center;
+  border: 5px double var(--color-accent);
+  border-radius: 50%;
+  background: rgba(255, 248, 248, 0.94);
+  box-shadow: inset 0 0 0 1px rgba(196, 61, 75, 0.2);
+  color: var(--color-accent);
+  text-align: center;
+  transform: rotate(-9deg);
+}
+
+.stamp-sheet__imprint::before {
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed currentColor;
+  border-radius: inherit;
+  content: "";
+}
+
+.stamp-sheet__imprint span,
+.stamp-sheet__imprint strong {
+  position: relative;
+  z-index: 1;
+}
+
+.stamp-sheet__imprint span {
+  font-size: 0.34rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.stamp-sheet__imprint strong {
+  margin: 2px 0;
+  font-size: 0.96rem;
+  letter-spacing: -0.07em;
+  line-height: 1;
+}
+
+.stamp-sheet--complete .stamp-sheet__imprint {
+  border-color: var(--color-primary);
+  background: rgba(245, 250, 255, 0.96);
+  box-shadow: inset 0 0 0 1px rgba(23, 59, 108, 0.2);
+  color: var(--color-primary);
 }
 
 .stamp-celebration__content {
@@ -1106,18 +1130,15 @@ button {
   gap: 28px;
 }
 
-.completion-panel__badge {
-  display: grid;
-  flex: 0 0 96px;
-  width: 96px;
-  height: 96px;
-  place-items: center;
-  border: 8px solid var(--color-secondary-light);
-  border-radius: 50%;
-  background: var(--color-primary);
-  box-shadow: 0 0 0 1px rgba(23, 59, 108, 0.15);
-  color: #fff;
-  font-size: 2.6rem;
+.completion-panel > .stamp-sheet {
+  flex-basis: 106px;
+  width: 106px;
+  padding: 5px;
+}
+
+.completion-panel > .stamp-sheet .stamp-sheet__mount {
+  width: 94px;
+  height: 94px;
 }
 
 .completion-panel__content {
@@ -1392,16 +1413,6 @@ button {
     padding: 7px;
   }
 
-  .stamp-impact {
-    width: 124px;
-    height: 124px;
-    border-width: 6px;
-  }
-
-  .stamp-impact strong {
-    font-size: 1.45rem;
-  }
-
   .celebration-modal .completion-panel {
     min-height: 0;
   }
@@ -1416,12 +1427,32 @@ button {
     margin: 0 16px 16px;
   }
 
-  .stamp-celebration__seal {
-    flex-basis: 58px;
-    width: 58px;
-    height: 58px;
-    border-width: 5px;
-    font-size: 1.4rem;
+  .stamp-sheet {
+    flex-basis: 68px;
+    width: 68px;
+    padding: 3px;
+  }
+
+  .stamp-sheet__caption {
+    font-size: 0.3rem;
+  }
+
+  .stamp-sheet__mount {
+    width: 60px;
+    height: 60px;
+  }
+
+  .stamp-sheet__imprint {
+    inset: 3px;
+    border-width: 4px;
+  }
+
+  .stamp-sheet__imprint span {
+    font-size: 0.24rem;
+  }
+
+  .stamp-sheet__imprint strong {
+    font-size: 0.68rem;
   }
 
   .stamp-celebration h2 {
@@ -1492,12 +1523,14 @@ button {
     gap: 18px;
   }
 
-  .completion-panel__badge {
-    width: 70px;
-    height: 70px;
-    flex-basis: 70px;
-    border-width: 6px;
-    font-size: 1.8rem;
+  .completion-panel > .stamp-sheet {
+    flex-basis: 82px;
+    width: 82px;
+  }
+
+  .completion-panel > .stamp-sheet .stamp-sheet__mount {
+    width: 72px;
+    height: 72px;
   }
 
   .completion-panel__content > p:last-child {

@@ -47,18 +47,6 @@ export const CelebrationModal = ({
         aria-modal="true"
         aria-label={dialogLabel}
       >
-        <div
-          className={`stamp-impact${isComplete ? " stamp-impact--complete" : ""}`}
-          aria-hidden="true"
-        >
-          <span>NRI OFFICE TOUR</span>
-          <strong>
-            {isComplete
-              ? eventContent.stampImpactComplete
-              : eventContent.stampImpactGet}
-          </strong>
-          <span>{isComplete ? "ALL STAMPS" : "STAMP ACQUIRED"}</span>
-        </div>
         <button
           ref={closeButtonRef}
           className="celebration-modal__close"
