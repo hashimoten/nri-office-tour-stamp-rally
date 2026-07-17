@@ -62,6 +62,24 @@ describe("App", () => {
     expect(
       screen.getByRole("button", { name: eventContent.scannerButton }),
     ).toBeInTheDocument();
+    expect(screen.getAllByTestId("stamp-sheet-empty")).toHaveLength(5);
+  });
+
+  it("ホーム画面では取得済みの場所だけ押印済みの台紙を表示する", () => {
+    saveStamps([
+      {
+        checkpointId: "entrance",
+        acquiredAt: "2026-07-17T03:04:05.000Z",
+      },
+    ]);
+    render(<App />);
+
+    expect(
+      within(
+        screen.getByRole("article", { name: "エントランス 取得済み" }),
+      ).getByTestId("stamp-sheet-stamped"),
+    ).toBeInTheDocument();
+    expect(screen.getAllByTestId("stamp-sheet-empty")).toHaveLength(4);
   });
 
   it("アプリ内読取に非対応でも標準カメラの案内を表示する", async () => {
@@ -109,10 +127,13 @@ describe("App", () => {
         await screen.findByText("エントランスのスタンプをゲットしました！"),
       ).toBeInTheDocument();
       expect(screen.getByText(eventContent.stampCelebrationTitle)).toBeInTheDocument();
+      const celebrationDialog = screen.getByRole("dialog", {
+        name: eventContent.stampCelebrationTitle,
+      });
+      expect(celebrationDialog).toBeInTheDocument();
       expect(
-        screen.getByRole("dialog", { name: eventContent.stampCelebrationTitle }),
+        within(celebrationDialog).getByText(eventContent.stampImpactGet),
       ).toBeInTheDocument();
-      expect(screen.getByText(eventContent.stampImpactGet)).toBeInTheDocument();
       expect(
         screen.getByText("あと4か所。気になる場所を探検してみよう！"),
       ).toBeInTheDocument();
