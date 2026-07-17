@@ -7,7 +7,7 @@ import { eventContent } from "../config/content";
 import { saveStamps, STORAGE_KEY } from "../core/storageService";
 
 const setLocation = (search = "") => {
-  window.history.replaceState({}, "", `/${search}`);
+  window.history.replaceState({}, "", `${import.meta.env.BASE_URL}${search}`);
 };
 
 describe("App", () => {
