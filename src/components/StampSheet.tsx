@@ -19,9 +19,9 @@ export const StampSheet = ({
       data-testid={isStamped ? "stamp-sheet-stamped" : "stamp-sheet-empty"}
       aria-hidden="true"
     >
-      <p className="stamp-sheet__caption">STAMP CARD</p>
+      <p className="stamp-sheet__caption">{eventContent.stampCardLabel}</p>
       <div className="stamp-sheet__mount">
-        <span className="stamp-sheet__guide">STAMP SPACE</span>
+        <span className="stamp-sheet__guide">{eventContent.stampSpaceLabel}</span>
         {isStamped && (
           <div className="stamp-sheet__imprint">
             <span>NRI OFFICE TOUR</span>

@@ -170,7 +170,7 @@ export const QrScanner = ({ onDetected, onInvalid }: QrScannerProps) => {
             >
               <div className="scanner-dialog__header">
                 <div>
-                  <p>QR SCANNER</p>
+                  <p>{eventContent.scannerLabel}</p>
                   <h2 id="scanner-title">{eventContent.scannerTitle}</h2>
                 </div>
                 <button

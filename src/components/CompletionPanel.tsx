@@ -24,7 +24,7 @@ export const CompletionPanel = ({
     </div>
     <StampSheet variant="complete" />
     <div className="completion-panel__content">
-      <p className="completion-panel__eyebrow">MISSION COMPLETE</p>
+      <p className="completion-panel__eyebrow">{eventContent.completeLabel}</p>
       <h2 id={headingId}>{eventContent.completeTitle}</h2>
       <p className="completion-panel__cheer">{eventContent.completeCheer}</p>
       <p>{eventContent.completeMessage}</p>
