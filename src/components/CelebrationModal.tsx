@@ -4,7 +4,7 @@ import { CompletionPanel } from "./CompletionPanel";
 import { StampCelebration } from "./StampCelebration";
 
 interface CelebrationModalProps {
-  kind: "stamp" | "complete";
+  kind: "stamp" | "complete" | "duplicate";
   checkpointName: string;
   collected: number;
   total: number;
@@ -20,9 +20,12 @@ export const CelebrationModal = ({
 }: CelebrationModalProps) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const isComplete = kind === "complete";
+  const isDuplicate = kind === "duplicate";
   const dialogLabel = isComplete
     ? eventContent.completeTitle
-    : eventContent.stampCelebrationTitle;
+    : isDuplicate
+      ? eventContent.duplicateCelebrationTitle
+      : eventContent.stampCelebrationTitle;
   const actionLabel = isComplete
     ? eventContent.completeModalClose
     : eventContent.stampModalClose;
@@ -63,6 +66,7 @@ export const CelebrationModal = ({
             checkpointName={checkpointName}
             collected={collected}
             total={total}
+            mode={isDuplicate ? "duplicate" : "acquired"}
           />
         )}
         <button className="celebration-modal__action" type="button" onClick={onClose}>

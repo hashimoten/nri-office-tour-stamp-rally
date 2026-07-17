@@ -218,7 +218,7 @@ describe("App", () => {
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 
-  it("取得済みスタンプには重複メッセージを表示する", async () => {
+  it("取得済みスタンプは重複取得のポップアップを表示する", async () => {
     saveStamps([
       {
         checkpointId: "office",
@@ -228,8 +228,14 @@ describe("App", () => {
     setLocation("?point=office");
     render(<App />);
 
+    const dialog = await screen.findByRole("dialog", {
+      name: eventContent.duplicateCelebrationTitle,
+    });
     expect(
-      await screen.findByText(eventContent.duplicateMessage),
+      within(dialog).getByText(eventContent.duplicateCelebrationTitle),
+    ).toBeInTheDocument();
+    expect(
+      within(dialog).getByText("執務エリアのスタンプは、もうスタンプカードに押されているよ！"),
     ).toBeInTheDocument();
     expect(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]")).toHaveLength(1);
   });

@@ -40,19 +40,22 @@ const getNoticePresentation = (notice: StampNotice) => {
 export const App = () => {
   const { stamps, notice, collectStamp, reportInvalidQr, resetAll } =
     useStampRally();
-  const [celebration, setCelebration] = useState<"stamp" | "complete" | null>(
-    null,
-  );
+  const [celebration, setCelebration] = useState<
+    "stamp" | "complete" | "duplicate" | null
+  >(null);
   const completed = isStampRallyComplete(stamps);
   const noticePresentation = getNoticePresentation(notice);
-  const acquiredCheckpoint =
-    notice?.kind === "acquired"
+  const notifiedCheckpoint =
+    notice?.kind === "acquired" || notice?.kind === "duplicate"
       ? checkpoints.find((checkpoint) => checkpoint.id === notice.checkpointId)
       : undefined;
 
   useEffect(() => {
     if (notice?.kind === "acquired") {
       setCelebration(completed ? "complete" : "stamp");
+    }
+    if (notice?.kind === "duplicate") {
+      setCelebration("duplicate");
     }
   }, [completed, notice]);
 
@@ -85,7 +88,7 @@ export const App = () => {
           </div>
         </section>
 
-        {noticePresentation && !acquiredCheckpoint ? (
+        {noticePresentation && !notifiedCheckpoint ? (
           <NoticeBanner
             message={noticePresentation.message}
             tone={noticePresentation.tone}
@@ -95,7 +98,7 @@ export const App = () => {
         <ProgressPanel
           collected={stamps.length}
           total={checkpoints.length}
-          isCelebrating={Boolean(acquiredCheckpoint)}
+          isCelebrating={notice?.kind === "acquired"}
         />
 
         {completed && <CompletionPanel />}
@@ -122,10 +125,10 @@ export const App = () => {
         </div>
       </footer>
 
-      {celebration && acquiredCheckpoint && (
+      {celebration && notifiedCheckpoint && (
         <CelebrationModal
           kind={celebration}
-          checkpointName={acquiredCheckpoint.name}
+          checkpointName={notifiedCheckpoint.name}
           collected={stamps.length}
           total={checkpoints.length}
           onClose={() => setCelebration(null)}
