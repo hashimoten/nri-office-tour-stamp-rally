@@ -10,6 +10,8 @@ export const eventContent = {
   stampCelebrationTitle: "やったね！スタンプゲット！",
   stampCelebrationNext: "気になる場所を探検してみよう！",
   stampModalClose: "探検を続ける",
+  stampImpactGet: "GET!",
+  stampImpactComplete: "COMPLETE",
   uncollectedLabel: "まだだよ",
   collectedLabel: "ゲット！",
   acquiredAtLabel: "取得日時",
