@@ -1,11 +1,12 @@
+import { useEffect, useState } from "react";
 import { AppHeader } from "./components/AppHeader";
+import { CelebrationModal } from "./components/CelebrationModal";
 import { CheckpointGrid } from "./components/CheckpointGrid";
 import { CompletionPanel } from "./components/CompletionPanel";
 import { NoticeBanner } from "./components/NoticeBanner";
 import { ProgressPanel } from "./components/ProgressPanel";
 import { QrScanner } from "./components/QrScanner";
 import { ResetPanel } from "./components/ResetPanel";
-import { StampCelebration } from "./components/StampCelebration";
 import { checkpoints } from "./config/checkpoints";
 import { eventContent } from "./config/content";
 import { isStampRallyComplete } from "./core/completionService";
@@ -39,12 +40,21 @@ const getNoticePresentation = (notice: StampNotice) => {
 export const App = () => {
   const { stamps, notice, collectStamp, reportInvalidQr, resetAll } =
     useStampRally();
+  const [celebration, setCelebration] = useState<"stamp" | "complete" | null>(
+    null,
+  );
   const completed = isStampRallyComplete(stamps);
   const noticePresentation = getNoticePresentation(notice);
   const acquiredCheckpoint =
     notice?.kind === "acquired"
       ? checkpoints.find((checkpoint) => checkpoint.id === notice.checkpointId)
       : undefined;
+
+  useEffect(() => {
+    if (notice?.kind === "acquired") {
+      setCelebration(completed ? "complete" : "stamp");
+    }
+  }, [completed, notice]);
 
   const handleReset = () => {
     if (window.confirm(eventContent.resetConfirm)) resetAll();
@@ -75,13 +85,7 @@ export const App = () => {
           </div>
         </section>
 
-        {acquiredCheckpoint ? (
-          <StampCelebration
-            checkpointName={acquiredCheckpoint.name}
-            collected={stamps.length}
-            total={checkpoints.length}
-          />
-        ) : noticePresentation ? (
+        {noticePresentation && !acquiredCheckpoint ? (
           <NoticeBanner
             message={noticePresentation.message}
             tone={noticePresentation.tone}
@@ -117,6 +121,16 @@ export const App = () => {
           <ResetPanel onReset={handleReset} />
         </div>
       </footer>
+
+      {celebration && acquiredCheckpoint && (
+        <CelebrationModal
+          kind={celebration}
+          checkpointName={acquiredCheckpoint.name}
+          collected={stamps.length}
+          total={checkpoints.length}
+          onClose={() => setCelebration(null)}
+        />
+      )}
     </div>
   );
 };

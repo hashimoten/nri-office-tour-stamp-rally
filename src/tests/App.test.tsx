@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "../App";
@@ -109,6 +109,9 @@ describe("App", () => {
         await screen.findByText("エントランスのスタンプをゲットしました！"),
       ).toBeInTheDocument();
       expect(screen.getByText(eventContent.stampCelebrationTitle)).toBeInTheDocument();
+      expect(
+        screen.getByRole("dialog", { name: eventContent.stampCelebrationTitle }),
+      ).toBeInTheDocument();
       expect(
         screen.getByText("あと4か所。気になる場所を探検してみよう！"),
       ).toBeInTheDocument();
@@ -222,6 +225,32 @@ describe("App", () => {
     expect(screen.getByText(eventContent.completeCheer)).toBeInTheDocument();
     expect(screen.getByText(eventContent.completeMessage)).toBeInTheDocument();
     expect(screen.getByText("5 / 5個のスタンプを集めました")).toBeInTheDocument();
+  });
+
+  it("最後のスタンプ取得時はクリアのポップアップを表示して閉じられる", async () => {
+    saveStamps(
+      checkpoints
+        .filter((checkpoint) => checkpoint.id !== "training-room")
+        .map((checkpoint) => ({
+          checkpointId: checkpoint.id,
+          acquiredAt: "2026-07-17T03:04:05.000Z",
+        })),
+    );
+    setLocation("?point=training-room");
+    const user = userEvent.setup();
+    render(<App />);
+
+    const dialog = await screen.findByRole("dialog", {
+      name: eventContent.completeTitle,
+    });
+    expect(within(dialog).getByText(eventContent.completeCheer)).toBeInTheDocument();
+
+    await user.click(
+      within(dialog).getByRole("button", { name: eventContent.completeModalClose }),
+    );
+    expect(
+      screen.queryByRole("dialog", { name: eventContent.completeTitle }),
+    ).not.toBeInTheDocument();
   });
 
   it("確認後のリセットですべてのスタンプを削除する", async () => {

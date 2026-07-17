@@ -1,6 +1,12 @@
 import { eventContent } from "../config/content";
 
-export const CompletionPanel = () => (
+interface CompletionPanelProps {
+  headingId?: string;
+}
+
+export const CompletionPanel = ({
+  headingId = "completion-title",
+}: CompletionPanelProps) => (
   <section className="completion-panel" aria-labelledby="completion-title">
     <div className="completion-panel__orbit" aria-hidden="true">
       <span />
@@ -20,7 +26,7 @@ export const CompletionPanel = () => (
     </div>
     <div className="completion-panel__content">
       <p className="completion-panel__eyebrow">MISSION COMPLETE</p>
-      <h2 id="completion-title">{eventContent.completeTitle}</h2>
+      <h2 id={headingId}>{eventContent.completeTitle}</h2>
       <p className="completion-panel__cheer">{eventContent.completeCheer}</p>
       <p>{eventContent.completeMessage}</p>
     </div>
