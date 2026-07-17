@@ -581,6 +581,132 @@ button {
   color: #fff;
 }
 
+.stamp-celebration {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 158px;
+  margin-top: 24px;
+  padding: 24px 30px 24px 24px;
+  overflow: hidden;
+  border: 1px solid rgba(40, 120, 181, 0.3);
+  border-radius: var(--radius-large);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(196, 61, 75, 0.16), transparent 95px),
+    radial-gradient(circle at 92% 100%, rgba(40, 120, 181, 0.18), transparent 155px),
+    linear-gradient(135deg, #ffffff, #edf8ff);
+  box-shadow: 0 15px 34px rgba(23, 59, 108, 0.13);
+  gap: 20px;
+}
+
+.stamp-celebration__seal {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: 0 0 82px;
+  width: 82px;
+  height: 82px;
+  place-items: center;
+  border: 7px solid #fff;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  box-shadow: 0 0 0 4px rgba(40, 120, 181, 0.17);
+  color: #fff;
+  font-size: 2rem;
+}
+
+.stamp-celebration__content {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.stamp-celebration__eyebrow {
+  margin: 0 0 5px;
+  color: var(--color-accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.stamp-celebration h2 {
+  margin: 0;
+  color: var(--color-primary-deep);
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+}
+
+.stamp-celebration__message {
+  margin: 8px 0 0;
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.stamp-celebration__next {
+  margin: 6px 0 0;
+  color: var(--color-muted-text);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.stamp-celebration__count {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0 auto;
+  color: var(--color-secondary);
+  font-size: 0.9rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.stamp-celebration__count strong {
+  font-size: 2rem;
+  letter-spacing: -0.06em;
+}
+
+.stamp-celebration__sparkles span {
+  position: absolute;
+  z-index: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  transform: rotate(45deg);
+}
+
+.stamp-celebration__sparkles span:nth-child(1) {
+  top: 23px;
+  left: 12%;
+  background: var(--color-secondary);
+}
+
+.stamp-celebration__sparkles span:nth-child(2) {
+  top: 17px;
+  right: 15%;
+  width: 11px;
+  height: 11px;
+}
+
+.stamp-celebration__sparkles span:nth-child(3) {
+  bottom: 16px;
+  right: 9%;
+  background: var(--color-secondary);
+}
+
+.stamp-celebration__sparkles span:nth-child(4) {
+  right: 35%;
+  bottom: 19px;
+  width: 5px;
+  height: 5px;
+}
+
+.stamp-celebration__sparkles span:nth-child(5) {
+  top: 53px;
+  right: 4%;
+  width: 5px;
+  height: 5px;
+  background: var(--color-primary);
+}
+
 .progress-panel {
   margin-top: 24px;
   padding: 28px 30px;
@@ -643,6 +769,25 @@ button {
   border-radius: 999px;
   background: var(--color-accent);
   content: "";
+}
+
+.progress-panel__next-mission {
+  display: inline-flex;
+  align-items: center;
+  margin: 18px 0 0;
+  padding: 8px 11px;
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 800;
+  gap: 9px;
+}
+
+.progress-panel__next-mission span {
+  color: var(--color-accent);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
 }
 
 .checkpoint-section {
@@ -886,6 +1031,12 @@ button {
   font-weight: 600;
 }
 
+.completion-panel__cheer {
+  margin: 12px 0 0;
+  color: var(--color-secondary);
+  font-weight: 900;
+}
+
 .completion-panel__orbit {
   position: absolute;
   top: -96px;
@@ -921,6 +1072,23 @@ button {
   width: 6px;
   height: 6px;
 }
+
+.completion-panel__confetti span {
+  position: absolute;
+  z-index: 1;
+  width: 8px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--color-secondary);
+  transform: rotate(26deg);
+}
+
+.completion-panel__confetti span:nth-child(1) { top: 20px; right: 25%; background: var(--color-accent); }
+.completion-panel__confetti span:nth-child(2) { top: 72px; right: 13%; transform: rotate(-36deg); }
+.completion-panel__confetti span:nth-child(3) { top: 33px; right: 7%; height: 8px; background: var(--color-accent); }
+.completion-panel__confetti span:nth-child(4) { bottom: 32px; right: 24%; height: 8px; transform: rotate(-22deg); }
+.completion-panel__confetti span:nth-child(5) { bottom: 20px; right: 8%; background: var(--color-primary); }
+.completion-panel__confetti span:nth-child(6) { top: 108px; right: 34%; width: 6px; height: 6px; background: var(--color-accent); }
 
 .app-footer {
   border-top: 1px solid rgba(23, 59, 108, 0.11);
@@ -1097,6 +1265,41 @@ button {
     line-height: 1.6;
   }
 
+  .stamp-celebration {
+    align-items: flex-start;
+    min-height: 0;
+    padding: 22px 18px;
+    gap: 15px;
+  }
+
+  .stamp-celebration__seal {
+    flex-basis: 58px;
+    width: 58px;
+    height: 58px;
+    border-width: 5px;
+    font-size: 1.4rem;
+  }
+
+  .stamp-celebration h2 {
+    line-height: 1.35;
+  }
+
+  .stamp-celebration__message,
+  .stamp-celebration__next {
+    line-height: 1.55;
+  }
+
+  .stamp-celebration__count {
+    position: absolute;
+    right: 18px;
+    bottom: 15px;
+    font-size: 0.72rem;
+  }
+
+  .stamp-celebration__count strong {
+    font-size: 1.35rem;
+  }
+
   .progress-panel {
     padding: 22px 20px;
   }
@@ -1107,6 +1310,12 @@ button {
 
   .progress-panel__count {
     line-height: 1.65;
+  }
+
+  .progress-panel__next-mission {
+    margin-top: 15px;
+    font-size: 0.78rem;
+    line-height: 1.45;
   }
 
   .checkpoint-section {

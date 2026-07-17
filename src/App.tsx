@@ -5,6 +5,7 @@ import { NoticeBanner } from "./components/NoticeBanner";
 import { ProgressPanel } from "./components/ProgressPanel";
 import { QrScanner } from "./components/QrScanner";
 import { ResetPanel } from "./components/ResetPanel";
+import { StampCelebration } from "./components/StampCelebration";
 import { checkpoints } from "./config/checkpoints";
 import { eventContent } from "./config/content";
 import { isStampRallyComplete } from "./core/completionService";
@@ -40,6 +41,16 @@ export const App = () => {
     useStampRally();
   const completed = isStampRallyComplete(stamps);
   const noticePresentation = getNoticePresentation(notice);
+  const acquiredCheckpoint =
+    notice?.kind === "acquired"
+      ? checkpoints.find((checkpoint) => checkpoint.id === notice.checkpointId)
+      : undefined;
+  const collectedCheckpointIds = new Set(
+    stamps.map((stamp) => stamp.checkpointId),
+  );
+  const nextCheckpoint = checkpoints.find(
+    (checkpoint) => !collectedCheckpointIds.has(checkpoint.id),
+  );
 
   const handleReset = () => {
     if (window.confirm(eventContent.resetConfirm)) resetAll();
@@ -70,14 +81,25 @@ export const App = () => {
           </div>
         </section>
 
-        {noticePresentation && (
+        {acquiredCheckpoint ? (
+          <StampCelebration
+            checkpointName={acquiredCheckpoint.name}
+            collected={stamps.length}
+            total={checkpoints.length}
+          />
+        ) : noticePresentation ? (
           <NoticeBanner
             message={noticePresentation.message}
             tone={noticePresentation.tone}
           />
-        )}
+        ) : null}
 
-        <ProgressPanel collected={stamps.length} total={checkpoints.length} />
+        <ProgressPanel
+          collected={stamps.length}
+          total={checkpoints.length}
+          nextCheckpointName={nextCheckpoint?.name}
+          isCelebrating={Boolean(acquiredCheckpoint)}
+        />
 
         {completed && <CompletionPanel />}
 

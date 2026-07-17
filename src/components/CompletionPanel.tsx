@@ -7,14 +7,22 @@ export const CompletionPanel = () => (
       <span />
       <span />
     </div>
+    <div className="completion-panel__confetti" aria-hidden="true">
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+    </div>
     <div className="completion-panel__badge" aria-hidden="true">
       ★
     </div>
     <div className="completion-panel__content">
       <p className="completion-panel__eyebrow">MISSION COMPLETE</p>
       <h2 id="completion-title">{eventContent.completeTitle}</h2>
+      <p className="completion-panel__cheer">{eventContent.completeCheer}</p>
       <p>{eventContent.completeMessage}</p>
     </div>
   </section>
 );
-

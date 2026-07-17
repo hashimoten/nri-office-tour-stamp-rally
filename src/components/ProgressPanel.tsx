@@ -1,13 +1,25 @@
+import { eventContent } from "../config/content";
+
 interface ProgressPanelProps {
   collected: number;
   total: number;
+  nextCheckpointName?: string;
+  isCelebrating?: boolean;
 }
 
-export const ProgressPanel = ({ collected, total }: ProgressPanelProps) => {
+export const ProgressPanel = ({
+  collected,
+  total,
+  nextCheckpointName,
+  isCelebrating = false,
+}: ProgressPanelProps) => {
   const percentage = total === 0 ? 0 : Math.round((collected / total) * 100);
 
   return (
-    <section className="progress-panel" aria-labelledby="progress-title">
+    <section
+      className={`progress-panel${isCelebrating ? " progress-panel--celebrating" : ""}`}
+      aria-labelledby="progress-title"
+    >
       <div className="progress-panel__topline">
         <div>
           <p className="progress-panel__eyebrow" id="progress-title">
@@ -34,6 +46,12 @@ export const ProgressPanel = ({ collected, total }: ProgressPanelProps) => {
           style={{ width: `${percentage}%` }}
         />
       </div>
+      <p className="progress-panel__next-mission" aria-live="polite">
+        <span>{eventContent.nextMissionLabel}</span>
+        {nextCheckpointName
+          ? `次は「${nextCheckpointName}」を見つけよう！`
+          : eventContent.nextMissionComplete}
+      </p>
     </section>
   );
 };

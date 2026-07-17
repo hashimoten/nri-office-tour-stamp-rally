@@ -108,6 +108,8 @@ describe("App", () => {
       expect(
         await screen.findByText("エントランスのスタンプをゲットしました！"),
       ).toBeInTheDocument();
+      expect(screen.getByText(eventContent.stampCelebrationTitle)).toBeInTheDocument();
+      expect(screen.getByText("あと4か所。次の場所も探してみよう！")).toBeInTheDocument();
       expect(
         screen.getByText("1 / 5個のスタンプを集めました"),
       ).toBeInTheDocument();
@@ -172,6 +174,7 @@ describe("App", () => {
     expect(
       await screen.findByText("会議室のスタンプをゲットしました！"),
     ).toBeInTheDocument();
+    expect(screen.getByText("次は「エントランス」を見つけよう！")).toBeInTheDocument();
     expect(screen.getByText("1 / 5個のスタンプを集めました")).toBeInTheDocument();
 
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
@@ -215,6 +218,7 @@ describe("App", () => {
     render(<App />);
 
     expect(screen.getByText(eventContent.completeTitle)).toBeInTheDocument();
+    expect(screen.getByText(eventContent.completeCheer)).toBeInTheDocument();
     expect(screen.getByText(eventContent.completeMessage)).toBeInTheDocument();
     expect(screen.getByText("5 / 5個のスタンプを集めました")).toBeInTheDocument();
   });
