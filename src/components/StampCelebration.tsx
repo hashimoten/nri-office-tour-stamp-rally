@@ -5,17 +5,24 @@ interface StampCelebrationProps {
   checkpointName: string;
   collected: number;
   total: number;
+  mode?: "acquired" | "duplicate";
 }
 
 export const StampCelebration = ({
   checkpointName,
   collected,
   total,
+  mode = "acquired",
 }: StampCelebrationProps) => {
   const remaining = Math.max(total - collected, 0);
+  const isDuplicate = mode === "duplicate";
 
   return (
-    <section className="stamp-celebration" aria-live="polite" aria-atomic="true">
+    <section
+      className={`stamp-celebration${isDuplicate ? " stamp-celebration--duplicate" : ""}`}
+      aria-live="polite"
+      aria-atomic="true"
+    >
       <div className="stamp-celebration__sparkles" aria-hidden="true">
         <span />
         <span />
@@ -26,14 +33,24 @@ export const StampCelebration = ({
       <StampSheet variant="stamp" />
       <div className="stamp-celebration__content">
         <p className="stamp-celebration__eyebrow">
-          {eventContent.stampCelebrationLabel}
+          {isDuplicate
+            ? eventContent.duplicateCelebrationLabel
+            : eventContent.stampCelebrationLabel}
         </p>
-        <h2>{eventContent.stampCelebrationTitle}</h2>
+        <h2>
+          {isDuplicate
+            ? eventContent.duplicateCelebrationTitle
+            : eventContent.stampCelebrationTitle}
+        </h2>
         <p className="stamp-celebration__message">
-          {checkpointName}のスタンプをゲットしました！
+          {isDuplicate
+            ? `${checkpointName}のスタンプは、もうスタンプカードに押されているよ！`
+            : `${checkpointName}のスタンプをゲットしました！`}
         </p>
         <p className="stamp-celebration__next">
-          {remaining > 0
+          {isDuplicate
+            ? eventContent.duplicateCelebrationNext
+            : remaining > 0
             ? `あと${remaining}か所。${eventContent.stampCelebrationNext}`
             : eventContent.allStampsCollected}
         </p>

@@ -803,6 +803,17 @@ button {
   font-weight: 700;
 }
 
+.stamp-celebration--duplicate {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(40, 120, 181, 0.13), transparent 95px),
+    radial-gradient(circle at 92% 100%, rgba(23, 59, 108, 0.1), transparent 155px),
+    linear-gradient(135deg, #ffffff, #f2f7fb);
+}
+
+.stamp-celebration--duplicate .stamp-celebration__eyebrow {
+  color: var(--color-secondary);
+}
+
 .stamp-celebration__count {
   position: relative;
   z-index: 1;
