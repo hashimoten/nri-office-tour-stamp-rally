@@ -1,0 +1,69 @@
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes stamp-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.7) rotate(-20deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-7deg);
+  }
+  100% {
+    opacity: 0.9;
+    transform: scale(1) rotate(-9deg);
+  }
+}
+
+@keyframes gentle-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.hero,
+.progress-panel,
+.checkpoint-section,
+.completion-panel {
+  animation: fade-up 500ms ease both;
+}
+
+.progress-panel {
+  animation-delay: 80ms;
+}
+
+.checkpoint-section {
+  animation-delay: 140ms;
+}
+
+.checkpoint-card__stamp {
+  animation: stamp-in 420ms cubic-bezier(0.2, 0.9, 0.25, 1.25) both;
+}
+
+.completion-panel__badge {
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
