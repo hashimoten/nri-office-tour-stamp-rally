@@ -1,24 +1,10 @@
+import QrScanner from "qr-scanner";
 import { parsePointFromSearch, type PointParseResult } from "./pointParser";
 
-interface DetectedBarcode {
-  rawValue: string;
+export interface CameraQrScanner {
+  start(): Promise<void>;
+  destroy(): void;
 }
-
-export interface QrDetector {
-  detect(source: HTMLVideoElement): Promise<DetectedBarcode[]>;
-}
-
-interface BarcodeDetectorConstructor {
-  new (options?: { formats?: string[] }): QrDetector;
-  getSupportedFormats?: () => Promise<string[]>;
-}
-
-const getBarcodeDetectorConstructor = () =>
-  (
-    globalThis as typeof globalThis & {
-      BarcodeDetector?: BarcodeDetectorConstructor;
-    }
-  ).BarcodeDetector;
 
 const normalizePath = (path: string) => {
   const withLeadingSlash = path.startsWith("/") ? path : `/${path}`;
@@ -27,25 +13,8 @@ const normalizePath = (path: string) => {
     : `${withLeadingSlash}/`;
 };
 
-export const isQrScannerSupported = async () => {
-  const Detector = getBarcodeDetectorConstructor();
-  if (!Detector || !navigator.mediaDevices?.getUserMedia) return false;
-
-  if (!Detector.getSupportedFormats) return true;
-
-  try {
-    const formats = await Detector.getSupportedFormats();
-    return formats.includes("qr_code");
-  } catch {
-    return false;
-  }
-};
-
-export const createQrDetector = (): QrDetector => {
-  const Detector = getBarcodeDetectorConstructor();
-  if (!Detector) throw new Error("QR detector is unavailable");
-  return new Detector({ formats: ["qr_code"] });
-};
+export const isCameraAccessSupported = () =>
+  Boolean(navigator.mediaDevices?.getUserMedia);
 
 export const requestRearCamera = () =>
   navigator.mediaDevices.getUserMedia({
@@ -57,14 +26,16 @@ export const requestRearCamera = () =>
     },
   });
 
-export const detectQrValue = async (
-  detector: QrDetector,
+export const createCameraQrScanner = (
   video: HTMLVideoElement,
-) => {
-  if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return null;
-  const barcodes = await detector.detect(video);
-  return barcodes.find((barcode) => barcode.rawValue.trim())?.rawValue ?? null;
-};
+  onDecode: (rawValue: string) => void,
+): CameraQrScanner =>
+  new QrScanner(video, (result) => onDecode(result.data), {
+    preferredCamera: "environment",
+    maxScansPerSecond: 12,
+    returnDetailedScanResult: true,
+    onDecodeError: () => undefined,
+  });
 
 export const parseScannedQrValue = (
   rawValue: string,

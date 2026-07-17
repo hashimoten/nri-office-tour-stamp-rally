@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { eventContent } from "../config/content";
 import {
-  createQrDetector,
-  detectQrValue,
-  isQrScannerSupported,
+  createCameraQrScanner,
+  isCameraAccessSupported,
   parseScannedQrValue,
   requestRearCamera,
+  type CameraQrScanner,
 } from "../core/qrScannerService";
 import type { CheckpointId } from "../types";
 
@@ -45,13 +45,11 @@ export const QrScanner = ({ onDetected, onInvalid }: QrScannerProps) => {
   const [status, setStatus] = useState<ScannerStatus>("starting");
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const scanTimerRef = useRef<number | null>(null);
+  const scannerRef = useRef<CameraQrScanner | null>(null);
 
   const stopCamera = useCallback(() => {
-    if (scanTimerRef.current !== null) {
-      window.clearTimeout(scanTimerRef.current);
-      scanTimerRef.current = null;
-    }
+    scannerRef.current?.destroy();
+    scannerRef.current = null;
     streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
     if (videoRef.current) videoRef.current.srcObject = null;
@@ -71,7 +69,7 @@ export const QrScanner = ({ onDetected, onInvalid }: QrScannerProps) => {
     const startScanner = async () => {
       setStatus("starting");
 
-      if (!(await isQrScannerSupported())) {
+      if (!isCameraAccessSupported()) {
         if (!cancelled) setStatus("unsupported");
         return;
       }
@@ -89,39 +87,26 @@ export const QrScanner = ({ onDetected, onInvalid }: QrScannerProps) => {
           return;
         }
 
-        streamRef.current = stream;
-        video.srcObject = stream;
-        await video.play();
-        if (cancelled) return;
-
-        const detector = createQrDetector();
-        setStatus("active");
-
-        const scan = async () => {
+        const scanner = createCameraQrScanner(video, (rawValue) => {
           if (cancelled || handled) return;
+          handled = true;
+          const parsed = parseScannedQrValue(rawValue);
+          closeScanner();
 
-          try {
-            const rawValue = await detectQrValue(detector, video);
-            if (rawValue) {
-              handled = true;
-              const parsed = parseScannedQrValue(rawValue);
-              closeScanner();
-
-              if (parsed.kind === "valid") {
-                onDetected(parsed.checkpointId);
-              } else {
-                onInvalid();
-              }
-              return;
-            }
-          } catch {
-            // A frame can fail while the camera is adjusting. Keep scanning.
+          if (parsed.kind === "valid") {
+            onDetected(parsed.checkpointId);
+          } else {
+            onInvalid();
           }
+        });
 
-          scanTimerRef.current = window.setTimeout(scan, 220);
-        };
+        streamRef.current = stream;
+        scannerRef.current = scanner;
+        video.srcObject = stream;
+        await scanner.start();
 
-        await scan();
+        if (cancelled || handled) return;
+        setStatus("active");
       } catch (error) {
         if (cancelled) return;
 

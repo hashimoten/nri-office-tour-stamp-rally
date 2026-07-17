@@ -6,6 +6,39 @@ import { checkpoints } from "../config/checkpoints";
 import { eventContent } from "../config/content";
 import { saveStamps, STORAGE_KEY } from "../core/storageService";
 
+const qrScannerMock = vi.hoisted(() => ({
+  decodedValue: null as string | null,
+  destroy: vi.fn(),
+  start: vi.fn(),
+}));
+
+vi.mock("qr-scanner", () => ({
+  default: class MockQrScanner {
+    private readonly onDecode: (result: {
+      data: string;
+      cornerPoints: never[];
+    }) => void;
+
+    constructor(
+      _video: HTMLVideoElement,
+      onDecode: (result: { data: string; cornerPoints: never[] }) => void,
+    ) {
+      this.onDecode = onDecode;
+    }
+
+    async start() {
+      qrScannerMock.start();
+      if (qrScannerMock.decodedValue) {
+        this.onDecode({ data: qrScannerMock.decodedValue, cornerPoints: [] });
+      }
+    }
+
+    destroy() {
+      qrScannerMock.destroy();
+    }
+  },
+}));
+
 const setLocation = (search = "") => {
   window.history.replaceState({}, "", `${import.meta.env.BASE_URL}${search}`);
 };
@@ -13,6 +46,9 @@ const setLocation = (search = "") => {
 describe("App", () => {
   beforeEach(() => {
     localStorage.clear();
+    qrScannerMock.decodedValue = null;
+    qrScannerMock.destroy.mockClear();
+    qrScannerMock.start.mockClear();
     setLocation();
   });
 
@@ -44,29 +80,15 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
-  it("アプリ内で読み取ったQRからスタンプを取得する", async () => {
+  it("BarcodeDetectorがないiPhone相当でもQRからスタンプを取得する", async () => {
     const originalMediaDevices = Object.getOwnPropertyDescriptor(
       navigator,
       "mediaDevices",
     );
-    const originalReadyState = Object.getOwnPropertyDescriptor(
-      HTMLMediaElement.prototype,
-      "readyState",
-    );
     const stopTrack = vi.fn();
-    const play = vi
-      .spyOn(HTMLMediaElement.prototype, "play")
-      .mockResolvedValue();
 
-    class FakeBarcodeDetector {
-      static getSupportedFormats = async () => ["qr_code"];
-
-      async detect() {
-        return [{ rawValue: "?point=entrance" }];
-      }
-    }
-
-    vi.stubGlobal("BarcodeDetector", FakeBarcodeDetector);
+    vi.stubGlobal("BarcodeDetector", undefined);
+    qrScannerMock.decodedValue = "?point=entrance";
     Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
       value: {
@@ -74,10 +96,6 @@ describe("App", () => {
           getTracks: () => [{ stop: stopTrack }],
         }),
       },
-    });
-    Object.defineProperty(HTMLMediaElement.prototype, "readyState", {
-      configurable: true,
-      get: () => HTMLMediaElement.HAVE_CURRENT_DATA,
     });
 
     try {
@@ -95,9 +113,10 @@ describe("App", () => {
         screen.getByText("1 / 5個のスタンプを集めました"),
       ).toBeInTheDocument();
       expect(stopTrack).toHaveBeenCalled();
+      expect(qrScannerMock.start).toHaveBeenCalledOnce();
+      expect(qrScannerMock.destroy).toHaveBeenCalled();
     } finally {
       vi.unstubAllGlobals();
-      play.mockRestore();
       if (originalMediaDevices) {
         Object.defineProperty(
           navigator,
@@ -106,13 +125,6 @@ describe("App", () => {
         );
       } else {
         delete (navigator as { mediaDevices?: MediaDevices }).mediaDevices;
-      }
-      if (originalReadyState) {
-        Object.defineProperty(
-          HTMLMediaElement.prototype,
-          "readyState",
-          originalReadyState,
-        );
       }
     }
   });

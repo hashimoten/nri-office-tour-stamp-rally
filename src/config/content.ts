@@ -14,7 +14,7 @@ export const eventContent = {
   scannerStarting: "カメラを準備しています…",
   scannerActive: "枠の中にQRコードを映してください",
   scannerUnsupported:
-    "お使いのブラウザーではアプリ内読取に対応していません。端末の標準カメラでQRコードを読み取ってください。",
+    "この端末ではアプリ内読取に必要なカメラ機能を利用できません。端末の標準カメラでQRコードを読み取ってください。",
   scannerPermissionDenied:
     "カメラの使用が許可されていません。ブラウザーの設定でカメラを許可するか、端末の標準カメラでQRコードを読み取ってください。",
   scannerCameraUnavailable:
