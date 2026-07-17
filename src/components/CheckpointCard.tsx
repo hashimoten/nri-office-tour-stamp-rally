@@ -1,5 +1,6 @@
 import { eventContent } from "../config/content";
 import type { Checkpoint, StampRecord } from "../types";
+import { StampSheet } from "./StampSheet";
 
 interface CheckpointCardProps {
   checkpoint: Checkpoint;
@@ -60,12 +61,11 @@ export const CheckpointCard = ({
           )}
         </div>
       </div>
-      {isCollected && (
-        <div className="checkpoint-card__stamp" aria-hidden="true">
-          <span>✓</span>
-        </div>
-      )}
+      <StampSheet
+        variant="stamp"
+        isStamped={isCollected}
+        className="checkpoint-card__stamp-sheet"
+      />
     </article>
   );
 };
-
