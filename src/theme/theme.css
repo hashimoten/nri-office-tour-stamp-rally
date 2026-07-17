@@ -506,6 +506,14 @@ button {
   text-align: center;
 }
 
+.scanner-dialog__hint {
+  margin: -8px 0 18px;
+  color: var(--color-muted-text);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
 .scanner-dialog__cancel {
   display: block;
   min-width: 120px;

@@ -87,18 +87,24 @@ export const QrScanner = ({ onDetected, onInvalid }: QrScannerProps) => {
           return;
         }
 
-        const scanner = createCameraQrScanner(video, (rawValue) => {
-          if (cancelled || handled) return;
-          handled = true;
-          const parsed = parseScannedQrValue(rawValue);
-          closeScanner();
+        const scanner = createCameraQrScanner(
+          video,
+          (rawValue) => {
+            if (cancelled || handled) return;
+            handled = true;
+            const parsed = parseScannedQrValue(rawValue);
+            closeScanner();
 
-          if (parsed.kind === "valid") {
-            onDetected(parsed.checkpointId);
-          } else {
-            onInvalid();
-          }
-        });
+            if (parsed.kind === "valid") {
+              onDetected(parsed.checkpointId);
+            } else {
+              onInvalid();
+            }
+          },
+          () => {
+            if (!cancelled && !handled) setStatus("error");
+          },
+        );
 
         streamRef.current = stream;
         scannerRef.current = scanner;
@@ -200,6 +206,11 @@ export const QrScanner = ({ onDetected, onInvalid }: QrScannerProps) => {
               <p id="scanner-status" className="scanner-dialog__status">
                 {getStatusMessage(status)}
               </p>
+              {status === "active" && (
+                <p className="scanner-dialog__hint">
+                  {eventContent.scannerHint}
+                </p>
+              )}
               <button
                 className="scanner-dialog__cancel"
                 type="button"

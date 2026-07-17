@@ -8,12 +8,30 @@ import { saveStamps, STORAGE_KEY } from "../core/storageService";
 
 const qrScannerMock = vi.hoisted(() => ({
   decodedValue: null as string | null,
+  decodeError: null as string | null,
+  forceWorker: false,
+  inversionMode: vi.fn(),
+  options: null as {
+    onDecodeError: (error: string) => void;
+    calculateScanRegion: (video: HTMLVideoElement) => {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      downScaledWidth: number;
+      downScaledHeight: number;
+    };
+  } | null,
   destroy: vi.fn(),
   start: vi.fn(),
 }));
 
 vi.mock("qr-scanner", () => ({
   default: class MockQrScanner {
+    static set _disableBarcodeDetector(value: boolean) {
+      qrScannerMock.forceWorker = value;
+    }
+
     private readonly onDecode: (result: {
       data: string;
       cornerPoints: never[];
@@ -22,12 +40,21 @@ vi.mock("qr-scanner", () => ({
     constructor(
       _video: HTMLVideoElement,
       onDecode: (result: { data: string; cornerPoints: never[] }) => void,
+      options: NonNullable<typeof qrScannerMock.options>,
     ) {
       this.onDecode = onDecode;
+      qrScannerMock.options = options;
     }
 
     async start() {
       qrScannerMock.start();
+      if (qrScannerMock.decodeError) {
+        window.setTimeout(() => {
+          if (qrScannerMock.decodeError) {
+            qrScannerMock.options?.onDecodeError(qrScannerMock.decodeError);
+          }
+        }, 0);
+      }
       if (qrScannerMock.decodedValue) {
         this.onDecode({ data: qrScannerMock.decodedValue, cornerPoints: [] });
       }
@@ -35,6 +62,10 @@ vi.mock("qr-scanner", () => ({
 
     destroy() {
       qrScannerMock.destroy();
+    }
+
+    setInversionMode(mode: string) {
+      qrScannerMock.inversionMode(mode);
     }
   },
 }));
@@ -47,6 +78,10 @@ describe("App", () => {
   beforeEach(() => {
     localStorage.clear();
     qrScannerMock.decodedValue = null;
+    qrScannerMock.decodeError = null;
+    qrScannerMock.forceWorker = false;
+    qrScannerMock.inversionMode.mockClear();
+    qrScannerMock.options = null;
     qrScannerMock.destroy.mockClear();
     qrScannerMock.start.mockClear();
     setLocation();
@@ -115,6 +150,21 @@ describe("App", () => {
       expect(stopTrack).toHaveBeenCalled();
       expect(qrScannerMock.start).toHaveBeenCalledOnce();
       expect(qrScannerMock.destroy).toHaveBeenCalled();
+      expect(qrScannerMock.forceWorker).toBe(true);
+      expect(qrScannerMock.inversionMode).toHaveBeenCalledWith("both");
+      expect(
+        qrScannerMock.options?.calculateScanRegion({
+          videoWidth: 1920,
+          videoHeight: 1080,
+        } as HTMLVideoElement),
+      ).toEqual({
+        x: 474,
+        y: 54,
+        width: 972,
+        height: 972,
+        downScaledWidth: 800,
+        downScaledHeight: 800,
+      });
     } finally {
       vi.unstubAllGlobals();
       if (originalMediaDevices) {
@@ -123,6 +173,43 @@ describe("App", () => {
           "mediaDevices",
           originalMediaDevices,
         );
+      } else {
+        delete (navigator as { mediaDevices?: MediaDevices }).mediaDevices;
+      }
+    }
+  });
+
+  it("QR解析Workerの異常を利用者に案内する", async () => {
+    const originalMediaDevices = Object.getOwnPropertyDescriptor(
+      navigator,
+      "mediaDevices",
+    );
+    const stopTrack = vi.fn();
+
+    qrScannerMock.decodeError = "Scanner error: worker failed";
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue({
+          getTracks: () => [{ stop: stopTrack }],
+        }),
+      },
+    });
+
+    try {
+      const user = userEvent.setup();
+      render(<App />);
+
+      await user.click(
+        screen.getByRole("button", { name: eventContent.scannerButton }),
+      );
+
+      expect(
+        await screen.findByText(eventContent.scannerError),
+      ).toBeInTheDocument();
+    } finally {
+      if (originalMediaDevices) {
+        Object.defineProperty(navigator, "mediaDevices", originalMediaDevices);
       } else {
         delete (navigator as { mediaDevices?: MediaDevices }).mediaDevices;
       }

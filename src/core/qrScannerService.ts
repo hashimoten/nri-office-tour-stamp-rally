@@ -6,6 +6,10 @@ export interface CameraQrScanner {
   destroy(): void;
 }
 
+interface QrScannerRuntime {
+  _disableBarcodeDetector: boolean;
+}
+
 const normalizePath = (path: string) => {
   const withLeadingSlash = path.startsWith("/") ? path : `/${path}`;
   return withLeadingSlash.endsWith("/")
@@ -29,13 +33,39 @@ export const requestRearCamera = () =>
 export const createCameraQrScanner = (
   video: HTMLVideoElement,
   onDecode: (rawValue: string) => void,
-): CameraQrScanner =>
-  new QrScanner(video, (result) => onDecode(result.data), {
+  onError: () => void,
+): CameraQrScanner => {
+  // Safari may expose an incomplete BarcodeDetector implementation. Always use
+  // qr-scanner's local Worker so that iPhone Safari and installed PWAs behave
+  // consistently. The pinned qr-scanner version provides this runtime flag.
+  (QrScanner as unknown as QrScannerRuntime)._disableBarcodeDetector = true;
+
+  const scanner = new QrScanner(video, (result) => onDecode(result.data), {
     preferredCamera: "environment",
-    maxScansPerSecond: 12,
+    maxScansPerSecond: 10,
     returnDetailedScanResult: true,
-    onDecodeError: () => undefined,
+    calculateScanRegion: (source) => {
+      const side = Math.floor(
+        Math.min(source.videoWidth, source.videoHeight) * 0.9,
+      );
+
+      return {
+        x: Math.floor((source.videoWidth - side) / 2),
+        y: Math.floor((source.videoHeight - side) / 2),
+        width: side,
+        height: side,
+        downScaledWidth: 800,
+        downScaledHeight: 800,
+      };
+    },
+    onDecodeError: (error) => {
+      if (error !== QrScanner.NO_QR_CODE_FOUND) onError();
+    },
   });
+
+  scanner.setInversionMode("both");
+  return scanner;
+};
 
 export const parseScannedQrValue = (
   rawValue: string,
