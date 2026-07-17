@@ -1,4 +1,5 @@
 import { eventContent } from "../config/content";
+import { StampSheet } from "./StampSheet";
 
 interface CompletionPanelProps {
   headingId?: string;
@@ -7,7 +8,7 @@ interface CompletionPanelProps {
 export const CompletionPanel = ({
   headingId = "completion-title",
 }: CompletionPanelProps) => (
-  <section className="completion-panel" aria-labelledby="completion-title">
+  <section className="completion-panel" aria-labelledby={headingId}>
     <div className="completion-panel__orbit" aria-hidden="true">
       <span />
       <span />
@@ -21,9 +22,7 @@ export const CompletionPanel = ({
       <span />
       <span />
     </div>
-    <div className="completion-panel__badge" aria-hidden="true">
-      ★
-    </div>
+    <StampSheet variant="complete" />
     <div className="completion-panel__content">
       <p className="completion-panel__eyebrow">MISSION COMPLETE</p>
       <h2 id={headingId}>{eventContent.completeTitle}</h2>
