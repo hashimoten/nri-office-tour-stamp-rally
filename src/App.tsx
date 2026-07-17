@@ -45,12 +45,6 @@ export const App = () => {
     notice?.kind === "acquired"
       ? checkpoints.find((checkpoint) => checkpoint.id === notice.checkpointId)
       : undefined;
-  const collectedCheckpointIds = new Set(
-    stamps.map((stamp) => stamp.checkpointId),
-  );
-  const nextCheckpoint = checkpoints.find(
-    (checkpoint) => !collectedCheckpointIds.has(checkpoint.id),
-  );
 
   const handleReset = () => {
     if (window.confirm(eventContent.resetConfirm)) resetAll();
@@ -97,7 +91,6 @@ export const App = () => {
         <ProgressPanel
           collected={stamps.length}
           total={checkpoints.length}
-          nextCheckpointName={nextCheckpoint?.name}
           isCelebrating={Boolean(acquiredCheckpoint)}
         />
 

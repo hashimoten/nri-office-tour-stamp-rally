@@ -771,25 +771,6 @@ button {
   content: "";
 }
 
-.progress-panel__next-mission {
-  display: inline-flex;
-  align-items: center;
-  margin: 18px 0 0;
-  padding: 8px 11px;
-  border-radius: 10px;
-  background: var(--color-surface-muted);
-  color: var(--color-primary);
-  font-size: 0.85rem;
-  font-weight: 800;
-  gap: 9px;
-}
-
-.progress-panel__next-mission span {
-  color: var(--color-accent);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
-}
-
 .checkpoint-section {
   margin-top: 52px;
 }
@@ -1310,12 +1291,6 @@ button {
 
   .progress-panel__count {
     line-height: 1.65;
-  }
-
-  .progress-panel__next-mission {
-    margin-top: 15px;
-    font-size: 0.78rem;
-    line-height: 1.45;
   }
 
   .checkpoint-section {

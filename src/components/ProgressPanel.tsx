@@ -1,16 +1,12 @@
-import { eventContent } from "../config/content";
-
 interface ProgressPanelProps {
   collected: number;
   total: number;
-  nextCheckpointName?: string;
   isCelebrating?: boolean;
 }
 
 export const ProgressPanel = ({
   collected,
   total,
-  nextCheckpointName,
   isCelebrating = false,
 }: ProgressPanelProps) => {
   const percentage = total === 0 ? 0 : Math.round((collected / total) * 100);
@@ -46,12 +42,6 @@ export const ProgressPanel = ({
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <p className="progress-panel__next-mission" aria-live="polite">
-        <span>{eventContent.nextMissionLabel}</span>
-        {nextCheckpointName
-          ? `次は「${nextCheckpointName}」を見つけよう！`
-          : eventContent.nextMissionComplete}
-      </p>
     </section>
   );
 };

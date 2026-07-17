@@ -36,7 +36,7 @@ export const StampCelebration = ({
         <p className="stamp-celebration__next">
           {remaining > 0
             ? `あと${remaining}か所。${eventContent.stampCelebrationNext}`
-            : eventContent.nextMissionComplete}
+            : eventContent.allStampsCollected}
         </p>
       </div>
       <p className="stamp-celebration__count" aria-hidden="true">
