@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import type { StampNotice, StampRecord } from "../types";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { CheckpointId, StampNotice, StampRecord } from "../types";
 import { parsePointFromSearch } from "./pointParser";
 import { acquireStamp } from "./stampService";
 import { clearStamps, loadStamps, saveStamps } from "./storageService";
@@ -9,6 +9,19 @@ export const useStampRally = (search: string = window.location.search) => {
   const [notice, setNotice] = useState<StampNotice>(null);
   const processedSearch = useRef<string | null>(null);
 
+  const collectStamp = useCallback((checkpointId: CheckpointId) => {
+    const currentStamps = loadStamps();
+    const result = acquireStamp(currentStamps, checkpointId);
+    if (result.status === "acquired") saveStamps(result.stamps);
+
+    setStamps(result.stamps);
+    setNotice({ kind: result.status, checkpointId });
+  }, []);
+
+  const reportInvalidQr = useCallback(() => {
+    setNotice({ kind: "invalid" });
+  }, []);
+
   useEffect(() => {
     if (processedSearch.current === search) return;
     processedSearch.current = search;
@@ -17,26 +30,18 @@ export const useStampRally = (search: string = window.location.search) => {
     if (parsedPoint.kind === "none") return;
 
     if (parsedPoint.kind === "invalid") {
-      setNotice({ kind: "invalid" });
+      reportInvalidQr();
       return;
     }
 
-    const currentStamps = loadStamps();
-    const result = acquireStamp(currentStamps, parsedPoint.checkpointId);
-    if (result.status === "acquired") saveStamps(result.stamps);
+    collectStamp(parsedPoint.checkpointId);
+  }, [collectStamp, reportInvalidQr, search]);
 
-    setStamps(result.stamps);
-    setNotice({
-      kind: result.status,
-      checkpointId: parsedPoint.checkpointId,
-    });
-  }, [search]);
-
-  const resetAll = () => {
+  const resetAll = useCallback(() => {
     clearStamps();
     setStamps([]);
     setNotice({ kind: "reset" });
-  };
+  }, []);
 
-  return { stamps, notice, resetAll };
+  return { stamps, notice, collectStamp, reportInvalidQr, resetAll };
 };

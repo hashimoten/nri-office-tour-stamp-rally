@@ -3,6 +3,7 @@ import { CheckpointGrid } from "./components/CheckpointGrid";
 import { CompletionPanel } from "./components/CompletionPanel";
 import { NoticeBanner } from "./components/NoticeBanner";
 import { ProgressPanel } from "./components/ProgressPanel";
+import { QrScanner } from "./components/QrScanner";
 import { ResetPanel } from "./components/ResetPanel";
 import { checkpoints } from "./config/checkpoints";
 import { eventContent } from "./config/content";
@@ -35,7 +36,8 @@ const getNoticePresentation = (notice: StampNotice) => {
 };
 
 export const App = () => {
-  const { stamps, notice, resetAll } = useStampRally();
+  const { stamps, notice, collectStamp, reportInvalidQr, resetAll } =
+    useStampRally();
   const completed = isStampRallyComplete(stamps);
   const noticePresentation = getNoticePresentation(notice);
 
@@ -55,6 +57,10 @@ export const App = () => {
             </p>
             <h2 id="hero-title">{eventContent.introduction}</h2>
             <p className="hero__subtitle">{eventContent.subtitle}</p>
+            <QrScanner
+              onDetected={collectStamp}
+              onInvalid={reportInvalidQr}
+            />
           </div>
           <div className="hero__route" aria-hidden="true">
             <span className="hero__route-line" />
@@ -99,4 +105,3 @@ export const App = () => {
     </div>
   );
 };
-

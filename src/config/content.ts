@@ -9,6 +9,19 @@ export const eventContent = {
   collectedLabel: "ゲット！",
   acquiredAtLabel: "取得日時",
   waitingForScan: "QRコードを見つけて読み取ろう",
+  scannerButton: "QRコードを読み取る",
+  scannerTitle: "QRコードを読み取る",
+  scannerStarting: "カメラを準備しています…",
+  scannerActive: "枠の中にQRコードを映してください",
+  scannerUnsupported:
+    "お使いのブラウザーではアプリ内読取に対応していません。端末の標準カメラでQRコードを読み取ってください。",
+  scannerPermissionDenied:
+    "カメラの使用が許可されていません。ブラウザーの設定でカメラを許可するか、端末の標準カメラでQRコードを読み取ってください。",
+  scannerCameraUnavailable:
+    "利用できるカメラが見つかりませんでした。端末の標準カメラでQRコードを読み取ってください。",
+  scannerError:
+    "カメラを開始できませんでした。端末の標準カメラでQRコードを読み取ってください。",
+  scannerClose: "閉じる",
   completeTitle: "スタンプラリークリア！",
   completeMessage: "NRIのオフィス探検、おつかれさまでした！",
   duplicateMessage: "このスタンプはすでに取得しています",
@@ -21,4 +34,3 @@ export const eventContent = {
   privacyNote: "この端末にはチェックポイントIDと取得日時だけを保存します。",
   footerLabel: "NRI COMPANY TOUR · OFFICE STAMP RALLY",
 } as const;
-
