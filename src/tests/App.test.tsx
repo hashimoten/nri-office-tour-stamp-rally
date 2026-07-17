@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "../App";
 import { checkpoints } from "../config/checkpoints";
-import { eventContent } from "../config/content";
+import { eventContent } from "../content";
 import { saveStamps, STORAGE_KEY } from "../core/storageService";
 
 const cameraScannerMock = vi.hoisted(() => ({

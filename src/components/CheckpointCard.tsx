@@ -1,4 +1,4 @@
-import { eventContent } from "../config/content";
+import { eventContent } from "../content";
 import type { Checkpoint, StampRecord } from "../types";
 import { StampSheet } from "./StampSheet";
 

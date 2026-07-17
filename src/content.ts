@@ -1,3 +1,4 @@
+// 子ども向けの文章編集は、このファイルだけを変更します。
 export const eventContent = {
   appTitle: "NRIオフィス探検スタンプラリー",
   brandLabel: "NRI COMPANY TOUR",

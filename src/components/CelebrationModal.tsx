@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { eventContent } from "../config/content";
+import { eventContent } from "../content";
 import { CompletionPanel } from "./CompletionPanel";
 import { StampCelebration } from "./StampCelebration";
 

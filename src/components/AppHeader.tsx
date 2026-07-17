@@ -1,4 +1,4 @@
-import { eventContent } from "../config/content";
+import { eventContent } from "../content";
 import { BrandMark } from "./BrandMark";
 
 export const AppHeader = () => (
@@ -10,4 +10,3 @@ export const AppHeader = () => (
     </div>
   </header>
 );
-

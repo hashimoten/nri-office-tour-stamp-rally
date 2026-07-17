@@ -1,4 +1,4 @@
-import { eventContent } from "../config/content";
+import { eventContent } from "../content";
 
 interface ResetPanelProps {
   onReset: () => void;
@@ -12,4 +12,3 @@ export const ResetPanel = ({ onReset }: ResetPanelProps) => (
     </button>
   </div>
 );
-
