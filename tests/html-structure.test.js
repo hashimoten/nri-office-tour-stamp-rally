@@ -29,3 +29,16 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
     expect(page.querySelectorAll(".stamp-card .stamp-imprint[hidden]")).toHaveLength(5);
   });
 });
+
+describe.each(groups)("%s の開発ルール", (groupId) => {
+  it("チーム専用のCLAUDE.mdで編集対象を2ファイルに限定する", () => {
+    const instructions = fs.readFileSync(
+      path.join("groups", groupId, "CLAUDE.md"),
+      "utf8",
+    );
+    expect(instructions).toContain(groupId.replace("-", " ").toUpperCase());
+    expect(instructions).toContain("`index.html`");
+    expect(instructions).toContain("`style.css`");
+    expect(instructions).toContain("それ以外のファイルは編集しないでください");
+  });
+});
