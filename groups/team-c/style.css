@@ -2,6 +2,34 @@
  * このファイルは見た目専用です。
  * まずは下の色や角丸の数字を変えて、デザインの変化を楽しんでください。
  */
+/* チームフォルダだけでindex.htmlを開いた場合にも台紙が崩れない基本設定 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button {
+  min-height: 44px;
+  font: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
 :root {
   --main-color: #173b6c;
   --deep-color: #102a4d;

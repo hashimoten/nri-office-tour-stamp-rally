@@ -40,5 +40,13 @@ describe.each(groups)("%s の開発ルール", (groupId) => {
     expect(instructions).toContain("`index.html`");
     expect(instructions).toContain("`style.css`");
     expect(instructions).toContain("それ以外のファイルは編集しないでください");
+    expect(instructions).toContain("開発サーバーやターミナル操作は不要です");
+  });
+
+  it("チームフォルダ単体でも台紙を表示する基本CSSを持つ", () => {
+    const css = fs.readFileSync(path.join("groups", groupId, "style.css"), "utf8");
+    expect(css).toContain("box-sizing: border-box");
+    expect(css).toMatch(/body\s*{[^}]*margin:\s*0;/s);
+    expect(css).toContain("[hidden]");
   });
 });
