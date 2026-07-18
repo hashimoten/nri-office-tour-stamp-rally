@@ -59,6 +59,8 @@ https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=training-room
 
 スタンプは `nri-office-tour-stamps-v1:${groupId}` に保存するため、team-aとteam-bのデータは混ざりません。リセットも現在のグループだけが対象です。壊れた保存データは空として安全に扱います。
 
+グループを間違えた場合は、各グループ画面の下部にある「グループを変更する」を選びます。保存済みグループだけを解除して選択画面へ戻るため、それまで集めた各グループのスタンプは削除されません。直接URLを使う場合は、入口へ`?change-group=1`を付けても選択画面を表示できます。
+
 ## ビルド・テスト
 
 ```bash

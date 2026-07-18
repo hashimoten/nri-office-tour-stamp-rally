@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   buildGroupUrl,
+  clearActiveGroup,
   loadActiveGroup,
   saveActiveGroup,
   startGroupRouter,
@@ -11,6 +12,14 @@ describe("グループルーティング", () => {
   it("グループIDを保存して復元する", () => {
     expect(saveActiveGroup("team-a", localStorage)).toBe(true);
     expect(loadActiveGroup(localStorage)).toBe("team-a");
+  });
+
+  it("保存済みグループだけを解除する", () => {
+    saveActiveGroup("team-a", localStorage);
+    localStorage.setItem("nri-office-tour-stamps-v1:team-a", '[{"checkpointId":"entrance"}]');
+    expect(clearActiveGroup(localStorage)).toBe(true);
+    expect(loadActiveGroup(localStorage)).toBeNull();
+    expect(localStorage.getItem("nri-office-tour-stamps-v1:team-a")).not.toBeNull();
   });
 
   it("pointとGitHub Pagesのサブパスを維持する", () => {
@@ -49,6 +58,20 @@ describe("グループルーティング", () => {
     });
     expect(result.redirected).toBe(false);
     expect(localStorage.getItem(ACTIVE_GROUP_KEY)).toBeNull();
+  });
+
+  it("change-group=1で自動移動せず選択画面を表示する", () => {
+    saveActiveGroup("team-d", localStorage);
+    const navigate = vi.fn();
+    const result = startGroupRouter({
+      documentRef: document,
+      locationRef: { href: "https://example.com/app/?change-group=1" },
+      storage: localStorage,
+      navigate,
+    });
+    expect(result).toEqual({ redirected: false, groupId: null });
+    expect(loadActiveGroup(localStorage)).toBeNull();
+    expect(navigate).not.toHaveBeenCalled();
   });
 
   it("選択リンクからグループを保存して移動する", () => {

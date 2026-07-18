@@ -192,10 +192,19 @@
 
     <footer class="page-footer">
       <p>NRI COMPANY TOUR · TEAM C</p>
-      <details>
-        <summary>運営・動作確認</summary>
-        <button type="button" data-action="reset-stamps">このグループのスタンプをリセット</button>
-      </details>
+      <div class="footer-controls">
+        <a
+          class="change-group-link"
+          data-action="change-group"
+          href="../../index.html?change-group=1"
+        >
+          グループを変更する
+        </a>
+        <details>
+          <summary>運営・動作確認</summary>
+          <button type="button" data-action="reset-stamps">このグループのスタンプをリセット</button>
+        </details>
+      </div>
     </footer>
 
     <!-- スタンプの保存・QR読み取りは、この共通JavaScriptが担当します -->

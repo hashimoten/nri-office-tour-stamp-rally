@@ -282,6 +282,10 @@ body {
 }
 .page-footer summary { cursor: pointer; }
 .page-footer button { margin-top: 10px; padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: white; color: var(--muted-color); cursor: pointer; }
+.footer-controls { display: flex; align-items: center; gap: 20px; }
+.change-group-link { padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: white; color: var(--main-color); font-weight: 800; text-decoration: none; }
+.change-group-link:hover { border-color: var(--sub-color); background: #f5faff; }
+.change-group-link:focus-visible { outline: 3px solid color-mix(in srgb, var(--sub-color) 35%, transparent); outline-offset: 3px; }
 
 /* QR読み取り後のポップアップ */
 .result-modal { background: rgb(8 25 47 / 78%); backdrop-filter: blur(7px); }
@@ -309,7 +313,7 @@ body {
   .page-main { width: min(calc(100% - 28px), var(--page-max-width)); padding-top: 24px; }
   .header-inner { width: min(calc(100% - 28px), var(--page-max-width)); }
   .stamp-grid { grid-template-columns: 1fr; }
-  .page-footer { align-items: flex-start; flex-direction: column; }
+  .page-footer, .footer-controls { align-items: flex-start; flex-direction: column; }
 }
 
 @media (max-width: 520px) {
