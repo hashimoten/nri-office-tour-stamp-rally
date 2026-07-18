@@ -1,34 +1,26 @@
 import js from "@eslint/js";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
-import tseslint from "typescript-eslint";
 
-export default tseslint.config(
-  {
-    ignores: ["dist", "dev-dist", "coverage", "node_modules"],
-  },
+export default [
+  { ignores: ["dist/**", "dev-dist/**", "node_modules/**", "public/**"] },
   js.configs.recommended,
-  ...tseslint.configs.recommended,
   {
-    files: ["**/*.{ts,tsx,js,mjs}"],
+    files: ["**/*.{js,mjs}"],
     languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
-    plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: { ...globals.browser, ...globals.node, ...globals.nodeBuiltin },
     },
     rules: {
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "error",
-      "react-refresh/only-export-components": [
-        "warn",
-        { "allowConstantExport": true }
-      ]
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     },
   },
-);
+  {
+    files: ["service-worker.js"],
+    languageOptions: { globals: { ...globals.serviceworker } },
+  },
+  {
+    files: ["tests/**/*.js"],
+    languageOptions: { globals: { ...globals.browser, ...globals.node, ...globals.nodeBuiltin } },
+  },
+];
