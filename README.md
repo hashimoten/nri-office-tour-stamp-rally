@@ -1,113 +1,97 @@
 # NRIオフィス探検スタンプラリー
 
-社員のお子さま向け会社見学イベントで使用する、QRコード式スタンプラリーPWAです。ブラウザー内の `localStorage` だけを使用し、外部APIやバックエンドへデータを送信しません。
+NRIの会社見学イベントで使う、親子向けQRコード式スタンプラリーPWAです。HTML・CSS・Vanilla JavaScript・Viteで構成し、バックエンドやアクセス解析はありません。保存するのはグループID、チェックポイントID、取得日時だけで、個人情報や写真を収集・外部送信しません。
 
-## 公開ページ
+## 親子が編集するもの
 
-GitHub Pages版：<https://hashimoten.github.io/nri-office-tour-stamp-rally/>
+HTMLは画面の文章と骨組み、CSSは色・形・配置、JavaScriptはQR読み取り・スタンプ保存・進捗などの動きを担当します。親子が編集するのは、自分のグループの次の2ファイルだけです。
 
-QRコードのURLは、公開ページの末尾に `?point=entrance` などを付けて使用します。
+- `groups/team-a/index.html`：タイトル、説明文、見出し、装飾など
+- `groups/team-a/style.css`：背景、色、カード、ボタン、スタンプの見た目など
 
-## アプリ内のQRコード読取
+team-b〜team-dも同じ構成です。`shared/`、`service-worker.js`、`manifest.webmanifest`、`vite.config.js`、`tests/`は共通機能なので編集しません。詳しい制約は [CLAUDE.md](./CLAUDE.md) を参照してください。
 
-トップ画面の「QRコードを読み取る」ボタンからカメラを開けます。カメラの使用許可を求められた場合は許可し、枠の中にチェックポイントのQRコードを映してください。
-
-アプリ内読取はHTTPS環境で動作し、iPhoneのSafari／ホーム画面へ追加したPWAとAndroidのChromeに対応します。機種によるブラウザー標準機能の差を避けるため、ZXing-C++ベースの`zxing-wasm`を端末内で実行してQRコードを解析します。映像や読み取った内容を外部APIへ送信することはありません。
-
-読み取りにくい場合は、QRコード全体と周囲の白い余白を枠内に入れ、端末を少し前後に動かしてください。画面に表示したQRコードを読む場合は、表示側の画面を明るくすると認識しやすくなります。
-
-カメラを利用できない端末では、端末の標準カメラでQRコードを読み取る案内を表示します。従来どおり、標準カメラからQRのURLを開いてもスタンプを取得できます。
-
-## セットアップ
+## ローカル起動
 
 ```bash
 npm install
 npm run dev
 ```
 
-開発サーバーのURLへスマートフォンまたはPCのブラウザーでアクセスします。
+入口は `http://localhost:5173/`、各グループは次のURLです。
 
-## QRコード用URL
+- `http://localhost:5173/groups/team-a/`
+- `http://localhost:5173/groups/team-b/`
+- `http://localhost:5173/groups/team-c/`
+- `http://localhost:5173/groups/team-d/`
 
-初期チェックポイントは次の5つです。
+スタッフが開発サーバーを起動した後は、親子はHTML/CSSを保存してブラウザーで更新するだけです。
 
-- `/?point=entrance`：エントランス
-- `/?point=meeting-room`：会議室
-- `/?point=office`：執務エリア
-- `/?point=cafeteria`：カフェテリア
-- `/?point=training-room`：研修室
+## プレビューモード
 
-実際の配信先URLの末尾へ `?point=...` を付けたURLからQRコードを作成してください。チェックポイント名・説明・絵文字は `src/config/checkpoints.ts` で変更できますが、IDは変更しないでください。
+QRコードなしで台紙を確認できます。プレビュー中はlocalStorageを一切変更しません。
 
-## 主なコマンド
+- 空：`http://localhost:5173/groups/team-a/?preview=empty`
+- 2個取得：`http://localhost:5173/groups/team-a/?preview=partial`
+- 全取得：`http://localhost:5173/groups/team-a/?preview=complete`
+
+URLの`team-a`を変更すれば他グループも確認できます。`preview`を外すと、端末に実際に保存された状態へ戻ります。
+
+## 共通QRコードとグループ復元
+
+掲示するQRコードは全グループ共通です。
+
+```text
+https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=entrance
+https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=meeting-room
+https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=office
+https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=cafeteria
+https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=training-room
+```
+
+グループページを通常表示すると、`nri-office-tour-active-group-v1`へteam-a〜team-dを保存します。ルートでQRを開くと、現在のサブパスと`point`を保ったまま保存済みグループへ移動します。未選択または不正な値ならグループ選択画面を表示します。
+
+スタンプは `nri-office-tour-stamps-v1:${groupId}` に保存するため、team-aとteam-bのデータは混ざりません。リセットも現在のグループだけが対象です。壊れた保存データは空として安全に扱います。
+
+## ビルド・テスト
 
 ```bash
-npm run dev        # 開発サーバー
-npm run build      # 本番ビルド
-npm run preview    # 本番ビルドの確認
-npm run test       # テストを監視実行
-npm run test:run   # テストを1回実行
-npm run typecheck  # TypeScript型チェック
-npm run lint       # lint
-npm run check      # 型・lint・テスト・本番ビルドを一括確認
+npm run check
 ```
 
-## GitLab Pagesのサブパス設定
+lint、Vitest、本番ビルドを順に実行します。GitHub Pages相当のサブパスは次のように確認できます。
 
-ローカルでは `VITE_BASE_PATH=/` を使用します。GitLab Pagesへ `/project-name/` で公開する場合は、ビルド時の環境変数を次のように設定します。
-
-```text
-VITE_BASE_PATH=/project-name/
+```powershell
+$env:VITE_BASE_PATH='/nri-office-tour-stamp-rally/'
+npm run build
 ```
 
-Viteの `base`、Manifest、Service Worker、画像パスはこのサブパスに追従します。設定例は `.env.example` にもあります。
+GitLab Pagesへ移す場合も、`VITE_BASE_PATH`をプロジェクトの公開パス（例：`/project-name/`）へ設定します。ルート配信なら`/`です。
 
-## PWAとオフライン表示
+## GitHub Pagesへのデプロイ
 
-- Web App Manifest名：`NRIオフィス探検`
-- 短縮名：`NRI探検`
-- Service Workerでビルド済み画面と静的ファイルをキャッシュ
-- 192px / 512pxの仮アイコンをビルド前に生成
-- スマートフォンのホーム画面追加と基本的なオフライン再表示に対応
+`main`へpushすると `.github/workflows/deploy-pages.yml` が`VITE_BASE_PATH`をリポジトリ名から設定し、check後の`dist`を公開します。
 
-仮アイコンは一般的な「ルートとチェックポイント」の図形で、NRIの正式ロゴを模倣したものではありません。
+- 公開入口：`https://hashimoten.github.io/nri-office-tour-stamp-rally/`
+- team-a：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-a/`
+- team-b：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-b/`
 
-## 正式ロゴ画像
+## PWAのインストールと更新
 
-会社から正式な画像が提供された場合だけ、次の場所へ配置してください。
+iPhoneではSafariで公開URLを開き、共有ボタンから「ホーム画面に追加」を選びます。AndroidではChromeの「アプリをインストール」または「ホーム画面に追加」を使います。PWA起動時は入口ページが保存済みグループへ移動します。
 
-```text
-public/brand/nri-logo.svg
-```
+Service Workerは全グループのHTML/CSSと共通ファイルをキャッシュします。HTMLはネットワークを優先し、オフライン時だけキャッシュへフォールバックします。更新が見えない場合は、一度オンラインでページを再読み込みしてください。それでも残る場合は、ホーム画面のPWAを削除して再追加するか、ブラウザーのサイトデータを削除します。
 
-画像がなければ `NRI COMPANY TOUR` のテキストが表示され、404になってもアプリの機能には影響しません。独自に正式ロゴを作成、模倣、加工しないでください。
+## 新しいグループの追加
 
-## 保存データとプライバシー
+1. `groups/team-a/`を新しいグループ名で複製する。
+2. HTMLの`data-group`と表示用グループ名を変更する。
+3. `shared/group-router.js`の許可リストと入口ボタンを追加する。
+4. `vite.config.js`のビルド対象へ追加する。
+5. HTML構造・ルーティングテストへ追加し、`npm run check`を実行する。
 
-`localStorage` に保存するのは次の2項目だけです。
+追加作業は共通機能へ触れるため、イベント参加者ではなく運営・開発担当者が行ってください。
 
-- チェックポイントID
-- ISO形式の取得日時
+## 公開終了
 
-氏名、年齢、メールアドレス、写真などの個人情報は保存しません。保存データが壊れている場合は空の取得状態として安全に復旧します。
-
-## 構成
-
-```text
-src/
-├── content.ts         # 子どもが編集する画面内の文章
-├── design.css         # 子どもが編集する色・レイアウト・アニメーション
-├── components/        # 表示専用コンポーネント
-├── config/
-│   └── checkpoints.ts # 地点名・アイコン・説明（IDは固定）
-├── core/              # URL解析・保存・重複判定・完了判定
-├── theme/             # アプリ内部用の補助設定
-├── types/             # 共通の型
-└── tests/             # Vitest / React Testing Library
-```
-
-デザイン変更の詳しいルールは `CLAUDE.md` を参照してください。
-
-## 運営スタッフ向けリセット
-
-画面下部の「スタンプをすべてリセット」を押し、確認ダイアログで承認すると、この端末のスタンプ取得状況だけを削除します。
+イベント終了後は、チェックポイントQRを無効にするためGitHub Pagesの公開を停止してください。端末内データが必要なら、ブラウザーまたはPWAのサイトデータを削除します。

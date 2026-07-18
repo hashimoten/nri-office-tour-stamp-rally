@@ -1,20 +1,28 @@
 <!doctype html>
 <html lang="ja">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="NRIのオフィスを探検してスタンプを集める、社員のお子さま向けスタンプラリーです。"
-    />
-    <meta name="theme-color" content="#173B6C" />
-    <link rel="icon" type="image/png" href="%BASE_URL%icons/app-icon-192.png" />
-    <link rel="apple-touch-icon" href="%BASE_URL%icons/app-icon-192.png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#173b6c">
     <title>NRIオフィス探検スタンプラリー</title>
+    <link rel="stylesheet" href="./shared/base.css">
+    <link rel="stylesheet" href="./shared/entry.css">
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest">
+    <link rel="icon" href="%BASE_URL%icons/app-icon-192.png">
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <body class="entry-page">
+    <main class="entry-card">
+      <p class="entry-brand">NRI COMPANY TOUR</p>
+      <h1>NRIオフィス探検スタンプラリー</h1>
+      <p>参加するグループを選んでください。一度選ぶと、この端末にグループが保存されます。</p>
+      <div class="group-list" data-role="group-list" aria-label="グループ選択">
+        <button type="button" data-select-group="team-a">TEAM A</button>
+        <button type="button" data-select-group="team-b">TEAM B</button>
+        <button type="button" data-select-group="team-c">TEAM C</button>
+        <button type="button" data-select-group="team-d">TEAM D</button>
+      </div>
+      <p class="entry-note">保存する情報はグループとスタンプの取得日時だけです。個人情報は収集しません。</p>
+    </main>
+    <script type="module" src="./shared/group-router.js"></script>
   </body>
 </html>
-

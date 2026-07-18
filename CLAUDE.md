@@ -1,60 +1,92 @@
-# NRIオフィス探検スタンプラリー：デザイン変更ガイド
+# NRIオフィス探検スタンプラリー：親子開発ルール
 
-このプロジェクトでは、スタンプラリーの機能を壊さずに画面デザインを変更してください。迷ったときは機能を変更せず、見た目だけを変更します。
+## このプロジェクトの目的
 
-## デザイン変更時の編集対象（原則この2ファイルだけ）
+- NRI社員と子どもが参加する会社見学イベントで使う、QRコード式スタンプラリーPWAです。
+- 親子は自分のグループのスタンプ台紙のHTMLとCSSを変更します。
+- スタンプラリーのJavaScript、QRコード処理、保存処理、PWA機能は変更しません。
+- 氏名、年齢、メールアドレス、写真などの個人情報は収集しません。
 
-- `src/design.css`：色、背景、カード、ボタン、レイアウト、アニメーション
-- `src/content.ts`：画面に表示する文章やラベル
+## 親子が編集してよいファイル
 
-ReactではHTMLの代わりにTSXを使用しています。画面の文章は `src/content.ts` に集約してあるため、デザイン編集者がコンポーネントのTSXを編集する必要はありません。
+編集対象は、自分のグループの次の2ファイルだけです。
 
-**デザイン変更作業では、上記2ファイル以外を編集しないでください。利用者の年齢や属性による判定は行いません。**
+| グループ | HTML（文章と構造） | CSS（見た目） |
+|---|---|---|
+| team-a | `groups/team-a/index.html` | `groups/team-a/style.css` |
+| team-b | `groups/team-b/index.html` | `groups/team-b/style.css` |
+| team-c | `groups/team-c/index.html` | `groups/team-c/style.css` |
+| team-d | `groups/team-d/index.html` | `groups/team-d/style.css` |
 
-## 運営者から明示的な依頼がある場合だけ編集してよいもの
+自分のグループ以外のファイルは編集しないでください。
 
-- 色
-- 背景
-- 文章
-- アイコン
-- カードの見た目
-- ボタンの見た目
-- レイアウト
-- 完了画面の演出
-- 表示専用コンポーネント（`src/components/`）
-- 表示用画像やアイコン（`public/`。ただし正式ロゴの扱いは下記ルールを守る）
+## HTMLで編集してよい内容
 
-チェックポイントの表示名・説明・絵文字を会場に合わせる場合は `src/config/checkpoints.ts` を編集できます。ただし、各項目の `id` は絶対に変更しないでください。
+- アプリのタイトル、サブタイトル、説明文、見出し
+- コンプリート時の文章
+- 装飾用のHTML要素や画像
+- 画面のまとまりを表す要素
+- レイアウト用のラッパー要素
 
-## 編集してはいけないもの
+## HTMLで変更してはいけない内容
 
-- `src/core/`
-- チェックポイントID（`entrance`、`meeting-room`、`office`、`cafeteria`、`training-room`）
-- URLパラメータ名（`point`）
-- localStorageのキー名
-- スタンプ保存処理
-- 重複判定
-- 完了判定
-- PWA設定
-- ビルド設定
-- QR読取ライブラリ（`zxing-wasm`）の削除・変更
-- テストの削除
+- `<body>`の`data-group`
+- `data-role`、`data-action`
+- 固定されたクラス名
+- 共通JavaScript `../../shared/app.js` の読み込み
+- 共通CSS `../../shared/base.css` の読み込み
+- Manifest `../../manifest.webmanifest` の読み込み
+- チェックポイントID
+- JavaScriptが使用する固定属性
+
+## CSSで編集してよい内容
+
+- 色、背景、背景模様、文字サイズ
+- 枠線、角丸、影、余白
+- カード配置、ボタンの外観
+- スタンプ台紙、コンプリート画面の外観
+- 取得済み・未取得カードの外観
+
+次の固定クラス名は変更せず、中のCSSだけを変更できます。
+
+`stamp-grid`、`stamp-card`、`stamp-card--collected`、`stamp-card--uncollected`、`stamp-icon`、`stamp-name`、`stamp-date`、`complete-panel`
+
+## 編集してはいけないファイル
+
+- `shared/app.js`
+- `shared/storage.js`
+- `shared/point-parser.js`
+- `shared/group-router.js`
+- `shared/checkpoints.js`
+- `shared/qr-scanner.js`
+- `shared/pwa.js`
+- `shared/base.css`
+- `manifest.webmanifest`
+- `service-worker.js`
+- `vite.config.js`
+- `tests/`以下のテストファイル
+- 他グループのHTMLとCSS
 
 ## 作業ルール
 
-- 新しい外部ライブラリを追加しない
-- ファイルを削除または移動しない
-- デザイン変更に不要なリファクタリングをしない
-- 正式なNRIロゴを生成または加工しない
-- 正式なブランドカラーだと根拠なく断定しない
-- 作業後に `npm run check` を実行する
-- テストが失敗した状態で完了しない
-- 判断に迷った場合は機能を変更せず、見た目だけを変更する
+- 新しい外部ライブラリを追加しない。
+- JavaScript、PWA設定、QRコード処理、localStorage処理を変更しない。
+- チェックポイントID、固定クラス名、固定された`data-*`属性を変更しない。
+- ファイルを削除または移動しない。
+- 正式なNRIロゴを生成、模倣、加工しない。
+- 仮の色を正式なNRIブランドカラーだと断定しない。
+- 作業後に`npm run check`を実行する。
+- テストが失敗した状態で完了しない。
+- 判断に迷ったら、HTMLの文章とCSSの見た目だけを変更する。
 
-## 正式ロゴについて
+## 親子向けの変更説明
 
-会社から正式なロゴ画像が提供された場合だけ、`public/brand/nri-logo.svg` に配置できます。画像がない場合は `NRI COMPANY TOUR` というテキストが表示されます。ロゴを独自に作成、模倣、加工しないでください。
+デザイン変更後は、次を初心者にも分かる短い日本語で説明してください。
 
-## 色について
-
-初期状態の色はイベント向けの仮設定です。`src/design.css` にまとめてあります。正式なNRIブランドカラーだと断定しないでください。
+- HTMLのどの部分を変更したか。
+- CSSのどの部分を変更したか。
+- タイトルがどのHTMLに書かれているか。
+- 背景色がどのCSSで決まっているか。
+- カードの形がどのCSSで決まっているか。
+- HTMLは文章と骨組み、CSSは見た目、JavaScriptは動きと保存を担当すること。
+- JavaScriptは変更していないこと。

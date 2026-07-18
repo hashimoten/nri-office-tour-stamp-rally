@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#173b6c">
+    <title>NRIオフィス探検スタンプラリー</title>
+    <link rel="stylesheet" href="../../shared/base.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest">
+    <link rel="icon" href="%BASE_URL%icons/app-icon-192.png">
+  </head>
+  <body data-group="team-b">
+    <!-- data-group / data-role / data-action は共通機能が使うため変更しないでください -->
+    <header class="page-header">
+      <div class="header-inner">
+        <p class="brand-label">NRI COMPANY TOUR</p>
+        <p class="group-label">TEAM B</p>
+      </div>
+    </header>
+
+    <main class="page-main">
+      <section class="hero">
+        <p class="hero-label">OFFICE EXPLORATION</p>
+        <h1>NRIオフィス探検<br>スタンプラリー</h1>
+        <p class="subtitle">オフィスをまわってスタンプを集めよう！</p>
+        <button type="button" class="scan-button" data-action="scan-qr">
+          <span aria-hidden="true">▣</span> QRコードを読み取る
+        </button>
+      </section>
+
+      <p class="notice" data-role="notice" hidden></p>
+
+      <section class="introduction">
+        <p>NRIのオフィスを探検して、全部のスタンプを集めよう！</p>
+      </section>
+
+      <section class="progress-section">
+        <div class="section-heading">
+          <p>YOUR PROGRESS</p>
+          <h2>スタンプの進み具合</h2>
+        </div>
+        <div data-role="progress"></div>
+      </section>
+
+      <section class="stamp-sheet-section">
+        <div class="section-heading">
+          <p>STAMP SHEET</p>
+          <h2>スタンプ台紙</h2>
+        </div>
+        <div data-role="stamp-list" class="stamp-grid"></div>
+      </section>
+
+      <section data-role="complete-panel" class="complete-panel" hidden>
+        <p class="complete-label">MISSION COMPLETE</p>
+        <h2>スタンプラリークリア！</h2>
+        <p>NRIのオフィス探検、おつかれさまでした！</p>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>NRI COMPANY TOUR · TEAM B</p>
+      <details>
+        <summary>運営・動作確認</summary>
+        <button type="button" data-action="reset-stamps">このグループのスタンプをリセット</button>
+      </details>
+    </footer>
+
+    <!-- スタンプの保存・QR読み取りは、この共通JavaScriptが担当します -->
+    <script type="module" src="../../shared/app.js"></script>
+  </body>
+</html>
