@@ -28,6 +28,10 @@ const pwaFilesPlugin = (base) => ({
       path.join(projectRoot, "manifest.webmanifest"),
       path.join(outputDirectory, "manifest.webmanifest"),
     );
+    fs.copyFileSync(
+      path.join(projectRoot, "sw.js"),
+      path.join(outputDirectory, "sw.js"),
+    );
 
     for (const htmlPath of [
       path.join(outputDirectory, "index.html"),

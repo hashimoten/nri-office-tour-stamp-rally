@@ -19,7 +19,11 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((names) =>
       Promise.all(
         names
-          .filter((name) => name.startsWith("nri-office-tour-") && name !== CACHE_NAME)
+          .filter((name) =>
+            (name.startsWith("nri-office-tour-") && name !== CACHE_NAME) ||
+            (name.startsWith("workbox-") &&
+              (name.includes("nri-office-tour") || name.includes(self.registration.scope))),
+          )
           .map((name) => caches.delete(name)),
       ),
     ),
