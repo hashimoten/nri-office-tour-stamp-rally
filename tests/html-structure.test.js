@@ -22,5 +22,6 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
     expect(page.querySelectorAll(".stamp-card")).toHaveLength(5);
     expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(2);
     expect(page.querySelectorAll(".stamp-card--uncollected")).toHaveLength(3);
+    expect(page.querySelectorAll(".stamp-card .stamp-imprint")).toHaveLength(5);
   });
 });

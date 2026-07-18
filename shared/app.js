@@ -32,73 +32,6 @@ const formatDate = (timestamp) =>
     minute: "2-digit",
   }).format(new Date(timestamp));
 
-const createStampMount = (isCollected) => {
-  const sheet = document.createElement("div");
-  sheet.className = "stamp-mount";
-  sheet.setAttribute("aria-hidden", "true");
-  sheet.innerHTML = `
-    <span class="stamp-mount-label">STAMP CARD</span>
-    <div class="stamp-space">
-      <span class="stamp-space-label">STAMP SPACE</span>
-      ${
-        isCollected
-          ? `<div class="stamp-imprint">
-              <span>NRI OFFICE TOUR</span><strong>GET!</strong><span>STAMP ACQUIRED</span>
-            </div>`
-          : ""
-      }
-    </div>`;
-  return sheet;
-};
-
-const createStampCard = (checkpoint, stamp, index) => {
-  const isCollected = Boolean(stamp);
-  const card = document.createElement("article");
-  card.className = `stamp-card stamp-card--${isCollected ? "collected" : "uncollected"}`;
-  card.setAttribute(
-    "aria-label",
-    `${checkpoint.name} ${isCollected ? "取得済み" : "未取得"}`,
-  );
-
-  const sequence = document.createElement("span");
-  sequence.className = "stamp-sequence";
-  sequence.textContent = String(index + 1).padStart(2, "0");
-  sequence.setAttribute("aria-hidden", "true");
-
-  const icon = document.createElement("div");
-  icon.className = "stamp-icon";
-  icon.textContent = checkpoint.icon;
-  icon.setAttribute("aria-hidden", "true");
-
-  const content = document.createElement("div");
-  content.className = "stamp-card-content";
-  const heading = document.createElement("div");
-  heading.className = "stamp-card-heading";
-  const name = document.createElement("h3");
-  name.className = "stamp-name";
-  name.textContent = checkpoint.name;
-  const status = document.createElement("span");
-  status.className = "stamp-status";
-  status.textContent = isCollected ? "ゲット！" : "まだだよ";
-  heading.append(name, status);
-
-  const description = document.createElement("p");
-  description.className = "stamp-description";
-  description.textContent = checkpoint.description;
-
-  const date = document.createElement("p");
-  date.className = "stamp-date";
-  if (stamp) {
-    date.textContent = `取得日時 ${formatDate(stamp.acquiredAt)}`;
-  } else {
-    date.textContent = "QRコードを見つけて読み取ろう";
-  }
-
-  content.append(heading, description, date);
-  card.append(sequence, icon, content, createStampMount(isCollected));
-  return card;
-};
-
 export const renderStampRally = ({ documentRef = document, stamps }) => {
   const progress = documentRef.querySelector("[data-role='progress']");
   const list = documentRef.querySelector("[data-role='stamp-list']");
@@ -110,19 +43,57 @@ export const renderStampRally = ({ documentRef = document, stamps }) => {
   const collected = stamps.length;
   const total = checkpoints.length;
   const percentage = Math.round((collected / total) * 100);
-  progress.innerHTML = `
-    <div class="progress-copy"><strong>${collected} / ${total}個</strong><span>${percentage}%</span></div>
-    <div class="progress-bar" role="progressbar" aria-label="スタンプの取得進捗"
-      aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${collected}">
-      <div class="progress-fill" style="width: ${percentage}%"></div>
-    </div>`;
+  const progressCount = progress.querySelector(".progress-copy strong");
+  const progressPercent = progress.querySelector(".progress-copy span");
+  const progressBar = progress.querySelector(".progress-bar");
+  const progressFill = progress.querySelector(".progress-fill");
+  if (!progressCount || !progressPercent || !progressBar || !progressFill) {
+    throw new Error("進捗表示に必要な固定クラスがありません");
+  }
+  progressCount.textContent = `${collected} / ${total}個`;
+  progressPercent.textContent = `${percentage}%`;
+  progressBar.setAttribute("aria-valuemax", String(total));
+  progressBar.setAttribute("aria-valuenow", String(collected));
+  progressFill.style.width = `${percentage}%`;
 
   const stampsById = new Map(stamps.map((stamp) => [stamp.checkpointId, stamp]));
-  list.replaceChildren(
-    ...checkpoints.map((checkpoint, index) =>
-      createStampCard(checkpoint, stampsById.get(checkpoint.id), index),
-    ),
-  );
+  const cards = [...list.querySelectorAll(".stamp-card")];
+  if (cards.length !== checkpoints.length) {
+    throw new Error("スタンプカードの枚数がチェックポイント数と一致しません");
+  }
+  cards.forEach((card, index) => {
+    const checkpoint = checkpoints[index];
+    const stamp = stampsById.get(checkpoint.id);
+    const isCollected = Boolean(stamp);
+    card.classList.toggle("stamp-card--collected", isCollected);
+    card.classList.toggle("stamp-card--uncollected", !isCollected);
+    card.setAttribute(
+      "aria-label",
+      `${checkpoint.name} ${isCollected ? "取得済み" : "未取得"}`,
+    );
+
+    const fields = {
+      sequence: card.querySelector(".stamp-sequence"),
+      icon: card.querySelector(".stamp-icon"),
+      name: card.querySelector(".stamp-name"),
+      status: card.querySelector(".stamp-status"),
+      description: card.querySelector(".stamp-description"),
+      date: card.querySelector(".stamp-date"),
+      imprint: card.querySelector(".stamp-imprint"),
+    };
+    if (Object.values(fields).some((field) => !field)) {
+      throw new Error("スタンプカードに必要な固定クラスがありません");
+    }
+    fields.sequence.textContent = String(index + 1).padStart(2, "0");
+    fields.icon.textContent = checkpoint.icon;
+    fields.name.textContent = checkpoint.name;
+    fields.status.textContent = isCollected ? "ゲット！" : "まだだよ";
+    fields.description.textContent = checkpoint.description;
+    fields.date.textContent = stamp
+      ? `取得日時 ${formatDate(stamp.acquiredAt)}`
+      : "QRコードを見つけて読み取ろう";
+    fields.imprint.hidden = !isCollected;
+  });
   completePanel.hidden = collected !== total;
 };
 

@@ -4,24 +4,24 @@ import { checkpoints } from "../shared/checkpoints.js";
 import { createPreviewStamps, initStampRally, renderStampRally } from "../shared/app.js";
 
 const preparePage = () => {
+  const page = new DOMParser().parseFromString(
+    fs.readFileSync("groups/team-a/index.html", "utf8"),
+    "text/html",
+  );
   document.body.dataset.group = "team-a";
-  document.body.innerHTML = `
-    <button data-action="reset-stamps"></button>
-    <button data-action="scan-qr"></button>
-    <p data-role="notice" hidden></p>
-    <div data-role="progress"></div>
-    <div data-role="stamp-list"></div>
-    <section data-role="complete-panel" hidden><h2>スタンプラリークリア！</h2></section>`;
+  document.body.innerHTML = page.body.innerHTML;
 };
 
 describe("プレビューモードと表示", () => {
-  it("HTMLのデザイン見本を実際の保存状態で置き換える", () => {
+  it("HTMLの同じカードを保ったまま実際の保存状態へ更新する", () => {
     const page = new DOMParser().parseFromString(
       fs.readFileSync("groups/team-a/index.html", "utf8"),
       "text/html",
     );
     expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(2);
+    const firstCard = page.querySelector(".stamp-card");
     renderStampRally({ documentRef: page, stamps: [] });
+    expect(page.querySelector(".stamp-card")).toBe(firstCard);
     expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(0);
     expect(page.querySelectorAll(".stamp-card--uncollected")).toHaveLength(5);
     expect(page.querySelector("[data-role='progress']").textContent).toContain("0 / 5個");
