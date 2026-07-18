@@ -13,18 +13,18 @@ const preparePage = () => {
 };
 
 describe("プレビューモードと表示", () => {
-  it("HTMLの同じカードを保ったまま実際の保存状態へ更新する", () => {
+  it("空の初期HTMLを保ったまま実際の保存状態へ更新する", () => {
     const page = new DOMParser().parseFromString(
       fs.readFileSync("groups/team-a/index.html", "utf8"),
       "text/html",
     );
-    expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(2);
-    const firstCard = page.querySelector(".stamp-card");
-    renderStampRally({ documentRef: page, stamps: [] });
-    expect(page.querySelector(".stamp-card")).toBe(firstCard);
     expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(0);
-    expect(page.querySelectorAll(".stamp-card--uncollected")).toHaveLength(5);
-    expect(page.querySelector("[data-role='progress']").textContent).toContain("0 / 5個");
+    const firstCard = page.querySelector(".stamp-card");
+    renderStampRally({ documentRef: page, stamps: createPreviewStamps("partial") });
+    expect(page.querySelector(".stamp-card")).toBe(firstCard);
+    expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(2);
+    expect(page.querySelectorAll(".stamp-card--uncollected")).toHaveLength(3);
+    expect(page.querySelector("[data-role='progress']").textContent).toContain("2 / 5個");
   });
 
   it("empty・partial・completeの件数が正しい", () => {
