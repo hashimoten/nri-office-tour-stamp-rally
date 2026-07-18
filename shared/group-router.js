@@ -52,10 +52,11 @@ export const startGroupRouter = ({
     return { redirected: true, groupId: savedGroup };
   }
 
-  for (const button of documentRef.querySelectorAll("[data-select-group]")) {
-    button.addEventListener("click", () => {
-      const groupId = button.dataset.selectGroup;
+  for (const choice of documentRef.querySelectorAll("[data-select-group]")) {
+    choice.addEventListener("click", (event) => {
+      const groupId = choice.dataset.selectGroup;
       if (!isGroupId(groupId)) return;
+      event.preventDefault();
       saveActiveGroup(groupId, storage);
       const target = buildGroupUrl(groupId, locationRef.href);
       if (target) navigate(target);
