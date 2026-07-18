@@ -18,5 +18,9 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
     expect(page.querySelector('link[href="../../shared/base.css"]')).not.toBeNull();
     expect(page.querySelector('link[href="./style.css"]')).not.toBeNull();
     expect(page.querySelector('link[rel="manifest"]')).not.toBeNull();
+    expect(page.querySelector("[data-role='progress']").textContent).toContain("2 / 5個");
+    expect(page.querySelectorAll(".stamp-card")).toHaveLength(5);
+    expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(2);
+    expect(page.querySelectorAll(".stamp-card--uncollected")).toHaveLength(3);
   });
 });

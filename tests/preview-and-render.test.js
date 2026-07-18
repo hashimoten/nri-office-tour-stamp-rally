@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import fs from "node:fs";
 import { checkpoints } from "../shared/checkpoints.js";
 import { createPreviewStamps, initStampRally, renderStampRally } from "../shared/app.js";
 
@@ -14,6 +15,18 @@ const preparePage = () => {
 };
 
 describe("プレビューモードと表示", () => {
+  it("HTMLのデザイン見本を実際の保存状態で置き換える", () => {
+    const page = new DOMParser().parseFromString(
+      fs.readFileSync("groups/team-a/index.html", "utf8"),
+      "text/html",
+    );
+    expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(2);
+    renderStampRally({ documentRef: page, stamps: [] });
+    expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(0);
+    expect(page.querySelectorAll(".stamp-card--uncollected")).toHaveLength(5);
+    expect(page.querySelector("[data-role='progress']").textContent).toContain("0 / 5個");
+  });
+
   it("empty・partial・completeの件数が正しい", () => {
     expect(createPreviewStamps("empty")).toHaveLength(0);
     expect(createPreviewStamps("partial")).toHaveLength(2);
