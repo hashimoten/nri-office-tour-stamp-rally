@@ -14,6 +14,9 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
     }
     expect(page.querySelector("[data-action='reset-stamps']")).not.toBeNull();
     expect(page.querySelector("[data-action='scan-qr']")).not.toBeNull();
+    expect(
+      page.querySelector("a[data-action='change-group']")?.getAttribute("href"),
+    ).toBe("../../index.html?change-group=1");
     expect(page.querySelector('script[src="../../shared/app.js"]')).not.toBeNull();
     expect(page.querySelector('link[href="../../shared/base.css"]')).not.toBeNull();
     expect(page.querySelector('link[href="./style.css"]')).not.toBeNull();

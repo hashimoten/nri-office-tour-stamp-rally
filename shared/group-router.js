@@ -27,6 +27,15 @@ export const saveActiveGroup = (groupId, storage = window.localStorage) => {
   }
 };
 
+export const clearActiveGroup = (storage = window.localStorage) => {
+  try {
+    storage.removeItem(ACTIVE_GROUP_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 export const buildGroupUrl = (groupId, currentUrl = window.location.href) => {
   if (!isGroupId(groupId)) return null;
 
@@ -45,7 +54,11 @@ export const startGroupRouter = ({
   navigate = (url) => locationRef.replace(url.href),
 } = {}) => {
   void registerPwa();
-  const savedGroup = loadActiveGroup(storage);
+  const current = new URL(locationRef.href);
+  const isChangingGroup = current.searchParams.get("change-group") === "1";
+  if (isChangingGroup) clearActiveGroup(storage);
+
+  const savedGroup = isChangingGroup ? null : loadActiveGroup(storage);
   if (savedGroup) {
     const target = buildGroupUrl(savedGroup, locationRef.href);
     if (target) navigate(target);
