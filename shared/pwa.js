@@ -9,6 +9,7 @@ export const registerPwa = async () => {
   try {
     return await navigator.serviceWorker.register(serviceWorkerUrl, {
       scope: import.meta.env.BASE_URL,
+      updateViaCache: "none",
     });
   } catch {
     return null;

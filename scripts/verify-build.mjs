@@ -8,6 +8,7 @@ const required = [
   "index.html",
   "manifest.webmanifest",
   "service-worker.js",
+  "sw.js",
   "icons/app-icon-192.png",
   "icons/app-icon-512.png",
   ...["team-a", "team-b", "team-c", "team-d"].map(
