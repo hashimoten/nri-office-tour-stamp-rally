@@ -50,4 +50,23 @@ describe("グループルーティング", () => {
     expect(result.redirected).toBe(false);
     expect(localStorage.getItem(ACTIVE_GROUP_KEY)).toBeNull();
   });
+
+  it("選択リンクからグループを保存して移動する", () => {
+    document.body.innerHTML = `
+      <div data-role="group-list">
+        <a href="./groups/team-b/" data-select-group="team-b">TEAM B</a>
+      </div>`;
+    const navigate = vi.fn();
+    startGroupRouter({
+      documentRef: document,
+      locationRef: { href: "https://example.com/app/" },
+      storage: localStorage,
+      navigate,
+    });
+    document.querySelector("[data-select-group='team-b']").click();
+    expect(loadActiveGroup(localStorage)).toBe("team-b");
+    expect(navigate.mock.calls[0][0].href).toBe(
+      "https://example.com/app/groups/team-b/",
+    );
+  });
 });

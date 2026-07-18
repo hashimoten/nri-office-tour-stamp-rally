@@ -32,9 +32,9 @@
 .entry-card h1 { margin: 0; color: #173b6c; font-size: clamp(1.7rem, 6vw, 2.8rem); line-height: 1.35; }
 .entry-card > p:not(.entry-brand) { line-height: 1.8; }
 .group-list { display: grid; margin: 30px 0; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.group-list button { min-height: 58px; border: 0; border-radius: 14px; background: #173b6c; color: #fff; cursor: pointer; font-weight: 800; letter-spacing: .08em; }
-.group-list button:hover { background: #2878b5; }
-.group-list button:focus-visible { outline: 3px solid #c43d4b; outline-offset: 3px; }
+.group-list [data-select-group] { display: grid; min-height: 58px; border: 0; border-radius: 14px; background: #173b6c; color: #fff; cursor: pointer; font-weight: 800; letter-spacing: .08em; place-items: center; text-decoration: none; }
+.group-list [data-select-group]:hover { background: #2878b5; }
+.group-list [data-select-group]:focus-visible { outline: 3px solid #c43d4b; outline-offset: 3px; }
 .entry-note { color: #536273; font-size: .8rem; }
 
 @media (max-width: 480px) { .group-list { grid-template-columns: 1fr; } }
