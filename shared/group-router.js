@@ -1,7 +1,28 @@
 import { ACTIVE_GROUP_KEY } from "./storage.js";
 import { registerPwa } from "./pwa.js";
 
-export const groupIds = Object.freeze(["team-a", "team-b", "team-c", "team-d"]);
+export const groupIds = Object.freeze([
+  "team-a",
+  "team-b",
+  "team-c",
+  "team-d",
+  "team-e",
+  "team-f",
+  "team-g",
+  "team-h",
+  "team-i",
+  "team-j",
+  "team-k",
+  "team-l",
+  "team-m",
+  "team-n",
+  "team-o",
+  "team-p",
+  "team-q",
+  "team-r",
+  "team-s",
+  "team-t",
+]);
 const groupIdSet = new Set(groupIds);
 
 export const isGroupId = (value) => groupIdSet.has(value);
