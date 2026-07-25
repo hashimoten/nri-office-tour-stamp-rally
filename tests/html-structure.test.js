@@ -2,7 +2,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-const groups = ["team-a", "team-b", "team-c", "team-d"];
+const groups = [
+  "team-a", "team-b", "team-c", "team-d", "team-e",
+  "team-f", "team-g", "team-h", "team-i", "team-j",
+  "team-k", "team-l", "team-m", "team-n", "team-o",
+  "team-p", "team-q", "team-r", "team-s", "team-t",
+];
 
 describe.each(groups)("%s のHTML構造", (groupId) => {
   it("共通機能に必要な固定属性と読込を持つ", () => {

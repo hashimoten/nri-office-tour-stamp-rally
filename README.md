@@ -9,7 +9,7 @@ HTMLは画面の文章と骨組み、CSSは色・形・配置、JavaScriptはQR�
 - `groups/team-a/index.html`：タイトル、説明文、見出し、装飾など
 - `groups/team-a/style.css`：背景、色、カード、ボタン、スタンプの見た目など
 
-team-b〜team-dも同じ構成です。`shared/`、`service-worker.js`、`manifest.webmanifest`、`vite.config.js`、`tests/`は共通機能なので編集しません。詳しい制約は [CLAUDE.md](./CLAUDE.md) を参照してください。
+team-b〜team-tも同じ構成です。`shared/`、`service-worker.js`、`manifest.webmanifest`、`vite.config.js`、`tests/`は共通機能なので編集しません。詳しい制約は [CLAUDE.md](./CLAUDE.md) を参照してください。
 
 各チームのフォルダ内にも、そのチーム専用の`CLAUDE.md`があります。Claude Codeでは担当する`groups/team-x/`フォルダを作業フォルダとして開くと、担当チームと編集可能な2ファイルが明確になります。
 
@@ -32,6 +32,8 @@ npm run dev
 - `http://localhost:5173/groups/team-b/`
 - `http://localhost:5173/groups/team-c/`
 - `http://localhost:5173/groups/team-d/`
+
+`team-e`〜`team-t`も、URL末尾のグループIDを変更して確認できます。例：`http://localhost:5173/groups/team-t/`
 
 この開発サーバーは共通機能を含めた動作確認用です。台紙デザインだけを編集するときは起動不要です。
 
@@ -63,7 +65,7 @@ https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=cafeteria
 https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=training-room
 ```
 
-グループページを通常表示すると、`nri-office-tour-active-group-v1`へteam-a〜team-dを保存します。ルートでQRを開くと、現在のサブパスと`point`を保ったまま保存済みグループへ移動します。未選択または不正な値ならグループ選択画面を表示します。
+グループページを通常表示すると、`nri-office-tour-active-group-v1`へteam-a〜team-tのいずれかを保存します。ルートでQRを開くと、現在のサブパスと`point`を保ったまま保存済みグループへ移動します。未選択または不正な値ならグループ選択画面を表示します。
 
 スタンプは `nri-office-tour-stamps-v1:${groupId}` に保存するため、team-aとteam-bのデータは混ざりません。リセットも現在のグループだけが対象です。壊れた保存データは空として安全に扱います。
 
@@ -91,6 +93,9 @@ GitLab Pagesへ移す場合も、`VITE_BASE_PATH`をプロジェクトの公開�
 - 公開入口：`https://hashimoten.github.io/nri-office-tour-stamp-rally/`
 - team-a：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-a/`
 - team-b：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-b/`
+- team-t：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-t/`
+
+team-c〜team-sも同じURL形式です。
 
 ## PWAのインストールと更新
 
@@ -100,7 +105,7 @@ Service Workerは全グループのHTML/CSSと共通ファイルをキャッシ�
 
 React版で使用していた旧`sw.js`が端末に残っている場合は、公開中の移行用`sw.js`が旧キャッシュと登録を解除し、現行の`service-worker.js`へ自動的に切り替えます。移行後の通常画面は、各グループの`index.html`を直接開いたときと同じカードデザインを使用します。
 
-## 新しいグループの追加
+## 21グループ目以降の追加
 
 1. `groups/team-a/`を新しいグループ名で複製する。
 2. HTMLの`data-group`と表示用グループ名を変更する。

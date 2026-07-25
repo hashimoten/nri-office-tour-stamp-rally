@@ -5,7 +5,28 @@ import { fileURLToPath } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
-const groupIds = ["team-a", "team-b", "team-c", "team-d"];
+const groupIds = [
+  "team-a",
+  "team-b",
+  "team-c",
+  "team-d",
+  "team-e",
+  "team-f",
+  "team-g",
+  "team-h",
+  "team-i",
+  "team-j",
+  "team-k",
+  "team-l",
+  "team-m",
+  "team-n",
+  "team-o",
+  "team-p",
+  "team-q",
+  "team-r",
+  "team-s",
+  "team-t",
+];
 
 export const normalizeBasePath = (value = "/") => {
   const leading = value.startsWith("/") ? value : `/${value}`;
