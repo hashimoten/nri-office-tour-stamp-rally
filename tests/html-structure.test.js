@@ -35,14 +35,15 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
     expect(page.querySelectorAll(".stamp-card .stamp-imprint[hidden]")).toHaveLength(5);
     expect(page.querySelectorAll("[data-image-slot]")).toHaveLength(3);
     for (const slotNumber of ["1", "2", "3"]) {
-      const image = page.querySelector(`[data-image-slot='${slotNumber}'] img`);
+      const slot = page.querySelector(`[data-image-slot='${slotNumber}']`);
+      const image = slot.querySelector("img");
       expect(image).not.toBeNull();
-      expect(image.getAttribute("src")).toBe(`./images/ai-image-${slotNumber}.svg`);
+      expect(image.getAttribute("src")).toBe("");
       expect(image.getAttribute("alt")).not.toBe("");
-      expect(
-        fs.existsSync(path.join("groups", groupId, "images", `ai-image-${slotNumber}.svg`)),
-      ).toBe(true);
+      expect(slot.textContent).toContain("ここに画像を入れてね！");
+      expect(slot.textContent).toContain('src="./ファイル名.png"');
     }
+    expect(fs.existsSync(path.join("groups", groupId, "images"))).toBe(false);
   });
 });
 
