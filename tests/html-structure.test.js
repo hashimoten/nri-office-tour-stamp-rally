@@ -7,6 +7,7 @@ const groups = [
   "team-f", "team-g", "team-h", "team-i", "team-j",
   "team-k", "team-l", "team-m", "team-n", "team-o",
   "team-p", "team-q", "team-r", "team-s", "team-t",
+  "team-u", "team-v", "team-w",
 ];
 
 describe.each(groups)("%s のHTML構造", (groupId) => {
@@ -32,21 +33,20 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
     expect(page.querySelectorAll(".stamp-card--uncollected")).toHaveLength(5);
     expect(page.querySelectorAll(".stamp-card .stamp-imprint")).toHaveLength(5);
     expect(page.querySelectorAll(".stamp-card .stamp-imprint[hidden]")).toHaveLength(5);
+    expect(page.querySelectorAll("[data-image-slot]")).toHaveLength(3);
+    for (const slotNumber of ["1", "2", "3"]) {
+      const image = page.querySelector(`[data-image-slot='${slotNumber}'] img`);
+      expect(image).not.toBeNull();
+      expect(image.getAttribute("src")).toBe(`./images/ai-image-${slotNumber}.svg`);
+      expect(image.getAttribute("alt")).not.toBe("");
+      expect(
+        fs.existsSync(path.join("groups", groupId, "images", `ai-image-${slotNumber}.svg`)),
+      ).toBe(true);
+    }
   });
 });
 
 describe.each(groups)("%s の開発ルール", (groupId) => {
-  it("チーム専用のCLAUDE.mdで編集対象を2ファイルに限定する", () => {
-    const instructions = fs.readFileSync(
-      path.join("groups", groupId, "CLAUDE.md"),
-      "utf8",
-    );
-    expect(instructions).toContain(groupId.replace("-", " ").toUpperCase());
-    expect(instructions).toContain("`index.html`");
-    expect(instructions).toContain("`style.css`");
-    expect(instructions).toContain("それ以外のファイルは編集しないでください");
-    expect(instructions).toContain("開発サーバーやターミナル操作は不要です");
-  });
 
   it("チームフォルダ単体でも台紙を表示する基本CSSを持つ", () => {
     const css = fs.readFileSync(path.join("groups", groupId, "style.css"), "utf8");

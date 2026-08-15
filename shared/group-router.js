@@ -22,6 +22,9 @@ export const groupIds = Object.freeze([
   "team-r",
   "team-s",
   "team-t",
+  "team-u",
+  "team-v",
+  "team-w",
 ]);
 const groupIdSet = new Set(groupIds);
 

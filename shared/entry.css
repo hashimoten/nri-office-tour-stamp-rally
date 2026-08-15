@@ -1,41 +1,98 @@
 :root {
-  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
-  color: #17202a;
-  background: #f4f7fa;
+  color: #17324d;
+  background: #eef9ff;
+  font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", Meiryo, system-ui, sans-serif;
 }
 
 .entry-page {
   display: grid;
   min-height: 100vh;
   padding: 24px;
-  background: radial-gradient(circle at top right, #d9ecf8, transparent 45%), #f4f7fa;
+  background:
+    radial-gradient(circle at 8% 8%, rgb(255 214 92 / 55%) 0 90px, transparent 92px),
+    radial-gradient(circle at 92% 14%, rgb(114 217 189 / 38%) 0 130px, transparent 132px),
+    radial-gradient(circle at 14% 80%, rgb(141 114 216 / 18%) 0 110px, transparent 112px),
+    linear-gradient(180deg, #f9fdff, #eaf8ff);
   place-items: center;
 }
 
 .entry-card {
-  width: min(100%, 680px);
+  position: relative;
+  width: min(100%, 880px);
   padding: clamp(28px, 6vw, 56px);
-  border-top: 5px solid #c43d4b;
-  border-radius: 24px;
-  background: #fff;
-  box-shadow: 0 22px 60px rgb(16 42 77 / 14%);
+  overflow: hidden;
+  border: 4px solid #fff;
+  border-radius: 40px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 13px 0 #c6e9f7, 0 28px 60px rgb(18 58 105 / 14%);
+}
+
+.entry-card::after {
+  position: absolute;
+  top: -45px;
+  right: -45px;
+  width: 150px;
+  height: 150px;
+  border: 22px solid rgb(232 79 104 / 13%);
+  border-radius: 50%;
+  content: "";
 }
 
 .entry-brand {
+  display: inline-block;
   margin: 0 0 16px;
-  color: #2878b5;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: #e6f6ff;
+  color: #17558e;
   font-size: .75rem;
-  font-weight: 800;
-  letter-spacing: .18em;
+  font-weight: 900;
+  letter-spacing: .16em;
 }
 
-.entry-card h1 { margin: 0; color: #173b6c; font-size: clamp(1.7rem, 6vw, 2.8rem); line-height: 1.35; }
-.entry-card > p:not(.entry-brand) { line-height: 1.8; }
-.group-list { display: grid; margin: 30px 0; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.group-list [data-select-group] { display: grid; min-height: 58px; border: 0; border-radius: 14px; background: #173b6c; color: #fff; cursor: pointer; font-weight: 800; letter-spacing: .08em; place-items: center; text-decoration: none; }
-.group-list [data-select-group]:hover { background: #2878b5; }
-.group-list [data-select-group]:focus-visible { outline: 3px solid #c43d4b; outline-offset: 3px; }
-.entry-note { color: #536273; font-size: .8rem; }
+.entry-card h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #123a69;
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  line-height: 1.35;
+}
 
-@media (max-width: 640px) { .group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 380px) { .group-list { grid-template-columns: 1fr; } }
+.entry-card h1::before { margin-right: 10px; content: "★"; color: #ffd65c; -webkit-text-stroke: 1px #c99620; }
+.entry-lead { margin: 16px 0 0; color: #536d82; font-size: clamp(.95rem, 2.3vw, 1.15rem); font-weight: 900; line-height: 1.8; }
+.group-list { display: grid; margin: 30px 0; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 13px; }
+
+.group-list [data-select-group] {
+  display: grid;
+  min-height: 62px;
+  border: 3px solid white;
+  border-radius: 20px;
+  background: #17558e;
+  box-shadow: 0 5px 0 #0e3764;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: .08em;
+  place-items: center;
+  text-decoration: none;
+  transition: transform 150ms ease, background 150ms ease;
+}
+
+.group-list [data-select-group]:nth-child(4n + 2) { background: #2b91cf; box-shadow-color: #176a9d; }
+.group-list [data-select-group]:nth-child(4n + 3) { background: #287e70; box-shadow-color: #175b50; }
+.group-list [data-select-group]:nth-child(4n) { background: #7b63bd; box-shadow-color: #574397; }
+.group-list [data-select-group]:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.group-list [data-select-group]:active { transform: translateY(4px); box-shadow: 0 1px 0 #0e3764; }
+.group-list [data-select-group]:focus-visible { outline: 4px solid #ffd65c; outline-offset: 3px; }
+.entry-note { margin: 0; padding: 13px 16px; border-radius: 18px; background: #f0faf6; color: #386b60; font-size: .82rem; font-weight: 800; text-align: center; }
+
+@media (max-width: 760px) {
+  .group-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 480px) {
+  .entry-page { padding: 14px; }
+  .entry-card { padding: 28px 20px; border-radius: 30px; }
+  .group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+}

@@ -1,23 +1,33 @@
 # NRIオフィス探検スタンプラリー
 
-NRIの会社見学イベントで使う、親子向けQRコード式スタンプラリーPWAです。HTML・CSS・Vanilla JavaScript・Viteで構成し、バックエンドやアクセス解析はありません。保存するのはグループID、チェックポイントID、取得日時だけで、個人情報や写真を収集・外部送信しません。
+NRIの会社見学イベントで3〜10歳程度の子どもと保護者が使う、23グループ対応のQRコード式スタンプラリーPWAです。HTML・CSS・Vanilla JavaScript・Viteで構成し、バックエンドやアクセス解析はありません。保存するのはグループID、チェックポイントID、取得日時だけで、個人情報や写真を収集・外部送信しません。
 
-## 親子が編集するもの
+## 親子が体験すること
 
-HTMLは画面の文章と骨組み、CSSは色・形・配置、JavaScriptはQR読み取り・スタンプ保存・進捗などの動きを担当します。親子が編集するのは、自分のグループの次の2ファイルだけです。
+親子はAIを使って3枚の画像を作り、ダウンロードした画像を自分のグループ画面へ埋め込みます。HTMLの文章、CSS、JavaScript、QRコード処理は変更しません。
 
-- `groups/team-a/index.html`：タイトル、説明文、見出し、装飾など
-- `groups/team-a/style.css`：背景、色、カード、ボタン、スタンプの見た目など
+team-aの場合、変更対象は次だけです。
 
-team-b〜team-tも同じ構成です。`shared/`、`service-worker.js`、`manifest.webmanifest`、`vite.config.js`、`tests/`は共通機能なので編集しません。詳しい制約は [CLAUDE.md](./CLAUDE.md) を参照してください。
+- `groups/team-a/images/`：生成画像を保存する
+- `groups/team-a/index.html`：3つの画像枠にある`<img>`の`src`と`alt`だけを変更する
 
-各チームのフォルダ内にも、そのチーム専用の`CLAUDE.md`があります。Claude Codeでは担当する`groups/team-x/`フォルダを作業フォルダとして開くと、担当チームと編集可能な2ファイルが明確になります。
+team-b〜team-wも同じ構成です。親子が変更するのは、担当チームの`images/`と`index.html`内の3つの画像指定だけです。
+
+### 画像を埋め込む手順
+
+1. AIで画像を生成する。
+2. `.png`、`.jpg`、`.jpeg`、`.webp`のいずれかでダウンロードする。
+3. 担当グループの`images/`へ保存する。
+4. `index.html`の`data-image-slot="1"`〜`"3"`にある`<img>`の`src`と`alt`を変更する。
+5. `index.html`をブラウザーで直接開くか更新して確認する。
+
+3つの画像枠は、トップの探検キャラクター、探検を助ける相棒、ゴールしたときのごほうびです。初期状態では軽量な見本SVGを表示します。
 
 ### チームへの配布方法
 
 Gitは通常、リポジトリ内の1フォルダだけを単独でcloneできません。担当チームのフォルダだけを配布する場合は、GitHubから取得したリポジトリから`groups/team-x/`をコピーするか、ZIPにして配布してください。
 
-台紙デザインの開発では、スタッフが開発サーバーを起動する必要はありません。親子は担当フォルダの`index.html`をブラウザーで直接開き、同じフォルダの`index.html`と`style.css`を編集します。QR読取、スタンプ保存、プレビューモード、PWAまで動作確認するときだけ、リポジトリ全体を用意して開発サーバーを起動してください。
+画像埋め込み体験では、スタッフが開発サーバーを起動する必要はありません。親子は担当フォルダの`index.html`をブラウザーで直接開きます。QR読取、スタンプ保存、プレビューモード、PWAまで動作確認するときだけ、リポジトリ全体を用意して開発サーバーを起動してください。
 
 ## ローカル起動
 
@@ -33,13 +43,13 @@ npm run dev
 - `http://localhost:5173/groups/team-c/`
 - `http://localhost:5173/groups/team-d/`
 
-`team-e`〜`team-t`も、URL末尾のグループIDを変更して確認できます。例：`http://localhost:5173/groups/team-t/`
+`team-e`〜`team-w`も、URL末尾のグループIDを変更して確認できます。例：`http://localhost:5173/groups/team-w/`
 
-この開発サーバーは共通機能を含めた動作確認用です。台紙デザインだけを編集するときは起動不要です。
+この開発サーバーは共通機能を含めた動作確認用です。画像を埋め込むだけなら起動不要です。
 
 ### index.htmlを直接開く場合
 
-各グループの`index.html`には、実際のアプリと同じ初期画面が書かれています。チームフォルダだけを配布した場合も、ファイルをダブルクリックして直接開くと、進捗は0 / 5、5枚のカードはすべて未取得、台紙はすべて空欄で表示されます。架空の取得日時や取得済みスタンプは表示しません。
+各グループの`index.html`には、実際のアプリと同じ初期画面と3つの画像枠が書かれています。チームフォルダだけを配布した場合も、ファイルをダブルクリックして直接開くと、見本画像、進捗0 / 5、未取得の5枚のカードが表示されます。生成画像を保存して`src`を変更すると、ページ更新だけで反映を確認できます。
 
 ViteやGitHub Pagesからアプリを起動した場合も、同じHTMLとCSSを使用します。共通JavaScriptはカードを作り直さず、この5枚のカードへlocalStorageの実際の取得状況だけを反映します。
 
@@ -65,7 +75,7 @@ https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=cafeteria
 https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=training-room
 ```
 
-グループページを通常表示すると、`nri-office-tour-active-group-v1`へteam-a〜team-tのいずれかを保存します。ルートでQRを開くと、現在のサブパスと`point`を保ったまま保存済みグループへ移動します。未選択または不正な値ならグループ選択画面を表示します。
+グループページを通常表示すると、`nri-office-tour-active-group-v1`へteam-a〜team-wのいずれかを保存します。ルートでQRを開くと、現在のサブパスと`point`を保ったまま保存済みグループへ移動します。未選択または不正な値ならグループ選択画面を表示します。
 
 スタンプは `nri-office-tour-stamps-v1:${groupId}` に保存するため、team-aとteam-bのデータは混ざりません。リセットも現在のグループだけが対象です。壊れた保存データは空として安全に扱います。
 
@@ -93,19 +103,19 @@ GitLab Pagesへ移す場合も、`VITE_BASE_PATH`をプロジェクトの公開�
 - 公開入口：`https://hashimoten.github.io/nri-office-tour-stamp-rally/`
 - team-a：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-a/`
 - team-b：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-b/`
-- team-t：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-t/`
+- team-w：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-w/`
 
-team-c〜team-sも同じURL形式です。
+team-c〜team-vも同じURL形式です。
 
 ## PWAのインストールと更新
 
 iPhoneではSafariで公開URLを開き、共有ボタンから「ホーム画面に追加」を選びます。AndroidではChromeの「アプリをインストール」または「ホーム画面に追加」を使います。PWA起動時は入口ページが保存済みグループへ移動します。
 
-Service Workerは全グループのHTML/CSSと共通ファイルをキャッシュします。HTMLはネットワークを優先し、オフライン時だけキャッシュへフォールバックします。更新が見えない場合は、一度オンラインでページを再読み込みしてください。それでも残る場合は、ホーム画面のPWAを削除して再追加するか、ブラウザーのサイトデータを削除します。
+Service Workerは全23グループのHTML、CSS、画像と共通ファイルをキャッシュします。HTMLはネットワークを優先し、オフライン時だけキャッシュへフォールバックします。更新が見えない場合は、一度オンラインでページを再読み込みしてください。それでも残る場合は、ホーム画面のPWAを削除して再追加するか、ブラウザーのサイトデータを削除します。
 
 React版で使用していた旧`sw.js`が端末に残っている場合は、公開中の移行用`sw.js`が旧キャッシュと登録を解除し、現行の`service-worker.js`へ自動的に切り替えます。移行後の通常画面は、各グループの`index.html`を直接開いたときと同じカードデザインを使用します。
 
-## 21グループ目以降の追加
+## 24グループ目以降の追加
 
 1. `groups/team-a/`を新しいグループ名で複製する。
 2. HTMLの`data-group`と表示用グループ名を変更する。

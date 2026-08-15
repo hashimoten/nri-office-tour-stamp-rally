@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">オフィス探検ロケット</title>
+  <desc id="desc">星空を進むカラフルなロケットの見本画像</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#bdefff"/>
+      <stop offset="1" stop-color="#d9d0ff"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" x2="1">
+      <stop stop-color="#ffd85a"/>
+      <stop offset="1" stop-color="#ff7b6b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" rx="48" fill="url(#sky)"/>
+  <g fill="#fff" opacity=".9">
+    <circle cx="95" cy="92" r="11"/><circle cx="205" cy="58" r="7"/><circle cx="675" cy="88" r="13"/>
+    <circle cx="714" cy="220" r="8"/><circle cx="120" cy="342" r="9"/><circle cx="610" cy="390" r="7"/>
+  </g>
+  <path d="M120 400c95-56 183-53 267 2 86 56 178 53 293-16v114H120z" fill="#73d9bd"/>
+  <g transform="translate(405 244) rotate(-18)">
+    <path d="M-132 18-220 70l88 18z" fill="#ff6f7d"/>
+    <path d="M-130 37-245 43l78-38z" fill="url(#flame)"/>
+    <path d="M-125-70C5-145 128-92 180 0 126 93 6 147-125 72z" fill="#fff" stroke="#245a91" stroke-width="12"/>
+    <path d="M88-77c49 12 79 36 92 77-13 41-43 66-92 78 24-51 24-104 0-155z" fill="#ffcf55"/>
+    <circle cx="-25" cy="0" r="53" fill="#5ac4ee" stroke="#245a91" stroke-width="10"/>
+    <circle cx="-38" cy="-12" r="17" fill="#fff" opacity=".75"/>
+    <path d="M-62 86-97 151l88-45zM36 95l73 52-28-84z" fill="#ff6f7d" stroke="#245a91" stroke-width="9" stroke-linejoin="round"/>
+  </g>
+  <g fill="#245a91">
+    <path d="m98 170 9 22 23 2-18 15 6 23-20-12-20 12 6-23-18-15 23-2z"/>
+    <path d="m667 292 7 17 18 2-14 12 5 18-16-9-16 9 5-18-14-12 18-2z"/>
+  </g>
+</svg>

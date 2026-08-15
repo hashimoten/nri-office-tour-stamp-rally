@@ -9,6 +9,7 @@ const groupIds = [
   "team-f", "team-g", "team-h", "team-i", "team-j",
   "team-k", "team-l", "team-m", "team-n", "team-o",
   "team-p", "team-q", "team-r", "team-s", "team-t",
+  "team-u", "team-v", "team-w",
 ];
 const required = [
   "index.html",
@@ -32,6 +33,11 @@ for (const groupId of groupIds) {
   if (!html.includes('rel="stylesheet"') || !html.includes("manifest.webmanifest")) {
     throw new Error(`${groupId} のCSSまたはManifestがビルドに含まれていません`);
   }
+
+  const imageSlotCount = (html.match(/data-image-slot=/g) ?? []).length;
+  if (imageSlotCount !== 3) {
+    throw new Error(`${groupId} の画像スペースが3か所ではありません`);
+  }
 }
 
 const worker = fs.readFileSync(path.join(dist, "service-worker.js"), "utf8");
@@ -39,4 +45,4 @@ if (worker.includes('["./", "BUILD_PRECACHE_PLACEHOLDER"]') || worker.includes("
   throw new Error("Service Workerのビルド用プレースホルダーが残っています");
 }
 
-console.log("ビルド成果物を確認しました（入口、20グループ、CSS、PWA）。");
+console.log("ビルド成果物を確認しました（入口、23グループ、画像、CSS、PWA）。");
