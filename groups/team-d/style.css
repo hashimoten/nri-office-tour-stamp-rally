@@ -733,7 +733,7 @@ body {
   bottom: max(14px, env(safe-area-inset-bottom));
   left: auto;
   width: auto;
-  max-width: min(230px, calc(100% - 28px));
+  max-width: calc(100% - 28px);
   margin: 0;
   justify-content: center;
   transform: none;
@@ -920,4 +920,18 @@ body {
 
 .ai-image-frame img[src="★ここにつくった画像をいれてみよう★"] + .image-placeholder {
   display: grid;
+}
+
+.scan-button img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  object-fit: contain;
+}
+
+.scan-button {
+  min-height: 60px;
+  padding: 7px 14px;
+  gap: 7px;
+  white-space: nowrap;
 }
