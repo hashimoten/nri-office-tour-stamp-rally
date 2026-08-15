@@ -750,3 +750,50 @@ body {
 .page-footer {
   padding-bottom: calc(104px + env(safe-area-inset-bottom));
 }
+
+/* QR読取画面を片手で扱いやすい大きさにします。 */
+.scanner-dialog {
+  width: min(calc(100% - 20px), 320px);
+  max-height: calc(100dvh - 28px);
+  padding: 18px;
+  border: 4px solid #3b291b;
+  border-radius: 5px;
+  background: #fff8df;
+  box-shadow: 0 7px 0 #17110c, 0 20px 52px rgb(3 16 8 / 45%);
+}
+
+.scanner-dialog h2 {
+  margin: 4px 40px 14px 0;
+  font-size: 1.15rem;
+}
+
+.scanner-label {
+  margin: 0;
+  color: #347044;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.scanner-view {
+  border: 4px solid #3b291b;
+  border-radius: 4px;
+  aspect-ratio: 1;
+}
+
+.scanner-frame {
+  border-radius: 4px;
+  inset: 17%;
+}
+
+.scanner-status {
+  margin: 12px 0 4px;
+  font-size: .84rem;
+  font-weight: 900;
+}
+
+.scanner-hint {
+  margin: 4px 0 0;
+  color: var(--muted-color);
+  font-size: .7rem;
+}
