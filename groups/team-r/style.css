@@ -724,3 +724,29 @@ body {
 .hero { border-radius: 5px; box-shadow: 0 7px 0 #2a1f17, 0 15px 28px rgb(20 37 25 / 26%); }
 .hero h1 { white-space: normal; }
 .ai-image-frame--hero { transform: none; }
+
+/* QR読取ボタンをスクロール位置に関係なく操作できるようにします。 */
+.scan-button {
+  position: fixed;
+  z-index: 60;
+  right: max(14px, calc((100vw - 390px) / 2 + 14px));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: auto;
+  width: auto;
+  max-width: min(230px, calc(100% - 28px));
+  margin: 0;
+  justify-content: center;
+  transform: none;
+}
+
+.scan-button:hover {
+  transform: translateY(-2px);
+}
+
+.scan-button:active {
+  transform: translateY(5px);
+}
+
+.page-footer {
+  padding-bottom: calc(104px + env(safe-area-inset-bottom));
+}
