@@ -890,3 +890,25 @@ body {
 .stamp-sheet-section .stamp-grid {
   gap: 18px;
 }
+
+/* 縦長・正方形・横長の画像を切り抜かず、枠内へ自動的に収めます。 */
+.ai-image-frame img:not([src=""]) {
+  width: 100%;
+  height: 220px;
+  padding: 7px;
+  border: 0;
+  background: repeating-conic-gradient(#efe1bd 0 25%, #e4d2a8 0 50%) 0 / 24px 24px;
+  object-fit: contain;
+  object-position: center;
+  aspect-ratio: auto;
+}
+
+.ai-image-frame--guide img:not([src=""]) {
+  height: 200px;
+}
+
+.ai-image-frame--sheet img:not([src=""]) {
+  height: 185px;
+  max-height: 185px;
+  aspect-ratio: auto;
+}
