@@ -38,6 +38,7 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
     ).toBe("../../index.html?change-group=1");
     expect(page.querySelector('script[src="../../shared/app.js"]')).not.toBeNull();
     expect(page.querySelector('script[src="../../team-names.js"]')).not.toBeNull();
+    expect(page.querySelector('script[src="../../checkpoints-config.js"]')).not.toBeNull();
     expect(page.querySelector('link[href="../../shared/base.css"]')).not.toBeNull();
     expect(page.querySelector('link[href="./style.css"]')).not.toBeNull();
     expect(page.querySelector('link[rel="manifest"]')).not.toBeNull();

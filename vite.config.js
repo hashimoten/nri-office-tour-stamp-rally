@@ -53,6 +53,10 @@ const pwaFilesPlugin = (base) => ({
       path.join(outputDirectory, "team-names.js"),
     );
     fs.copyFileSync(
+      path.join(projectRoot, "checkpoints-config.js"),
+      path.join(outputDirectory, "checkpoints-config.js"),
+    );
+    fs.copyFileSync(
       path.join(projectRoot, "manifest.webmanifest"),
       path.join(outputDirectory, "manifest.webmanifest"),
     );

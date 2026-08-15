@@ -66,6 +66,23 @@ describe("プレビューモードと表示", () => {
     expect(page.querySelector("[data-role='progress']").textContent).toContain("0 / 3個");
   });
 
+  it("HTML直接表示でも共通設定に合わせてカード枚数を更新する", () => {
+    const page = new DOMParser().parseFromString(
+      fs.readFileSync("groups/team-a/index.html", "utf8"),
+      "text/html",
+    );
+    const configured = [
+      ...checkpoints,
+      { id: "library", name: "図書室", icon: "📚", description: "本を読む場所" },
+    ];
+
+    globalThis.NriCheckpointConfig.applyDirectFilePreview(page, configured);
+
+    expect(page.querySelectorAll(".stamp-card")).toHaveLength(6);
+    expect(page.querySelector(".stamp-card:last-child .stamp-name").textContent).toBe("図書室");
+    expect(page.querySelector("[data-role='progress']").textContent).toContain("0 / 6個");
+  });
+
   it("プレビュー中はlocalStorageを変更しない", () => {
     preparePage();
     localStorage.setItem("untouched", "yes");
