@@ -10,11 +10,24 @@ const groups = [
   "team-u", "team-v", "team-w",
 ];
 
+const imageSlotLabels = [
+  "IMAGE 1 · 探検キャラクター",
+  "IMAGE 2 · 探検アイテム",
+  "IMAGE 3 · チームフラッグ",
+];
+
+const imagePromptKeywords = [
+  "探検キャラクター",
+  "探検バッグ",
+  "チームフラッグ",
+];
+
 describe.each(groups)("%s のHTML構造", (groupId) => {
   it("共通機能に必要な固定属性と読込を持つ", () => {
     const html = fs.readFileSync(path.join("groups", groupId, "index.html"), "utf8");
     const page = new DOMParser().parseFromString(html, "text/html");
     expect(page.body.dataset.group).toBe(groupId);
+    expect(page.querySelectorAll("[data-role='team-name']")).toHaveLength(2);
     for (const role of ["progress", "stamp-list", "complete-panel", "notice"]) {
       expect(page.querySelector(`[data-role='${role}']`)).not.toBeNull();
     }
@@ -24,6 +37,7 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
       page.querySelector("a[data-action='change-group']")?.getAttribute("href"),
     ).toBe("../../index.html?change-group=1");
     expect(page.querySelector('script[src="../../shared/app.js"]')).not.toBeNull();
+    expect(page.querySelector('script[src="../../team-names.js"]')).not.toBeNull();
     expect(page.querySelector('link[href="../../shared/base.css"]')).not.toBeNull();
     expect(page.querySelector('link[href="./style.css"]')).not.toBeNull();
     expect(page.querySelector('link[rel="manifest"]')).not.toBeNull();
@@ -40,19 +54,35 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
       expect(image).not.toBeNull();
       expect(image.getAttribute("src")).toBe("");
       expect(image.getAttribute("alt")).not.toBe("");
+      expect(slot.querySelector("figcaption").textContent).toBe(
+        imageSlotLabels[Number(slotNumber) - 1],
+      );
       expect(slot.textContent).toContain("ここに画像を入れてね！");
-      expect(slot.textContent).toContain('src="./ファイル名.png"');
+      expect(slot.textContent).toContain("AIにこんなふうにお願いしてみよう！");
+      expect(slot.textContent).toContain(
+        imagePromptKeywords[Number(slotNumber) - 1],
+      );
+      expect(slot.textContent).not.toContain("画像をこのフォルダに置いて");
     }
     expect(fs.existsSync(path.join("groups", groupId, "images"))).toBe(false);
   });
 });
 
-describe.each(groups)("%s の開発ルール", (groupId) => {
+describe.each(groups)("%s のCSS", (groupId) => {
 
   it("チームフォルダ単体でも台紙を表示する基本CSSを持つ", () => {
     const css = fs.readFileSync(path.join("groups", groupId, "style.css"), "utf8");
     expect(css).toContain("box-sizing: border-box");
     expect(css).toMatch(/body\s*{[^}]*margin:\s*0;/s);
     expect(css).toContain("[hidden]");
+    expect(css).toContain("width: min(100%, 390px)");
+    expect(css).toContain("PCでもスマートフォンと同じ1カラム表示");
+    expect(css).toMatch(/\.stamp-grid\s*{ grid-template-columns: 1fr; }/);
+    expect(css).toMatch(
+      /\.ai-image-frame--sheet[\s\S]*grid-template-columns:\s*minmax\(0, 1fr\)/,
+    );
+    expect(css).toMatch(
+      /\.ai-image-frame--sheet \.image-placeholder[\s\S]*aspect-ratio:\s*16 \/ 9/,
+    );
   });
 });

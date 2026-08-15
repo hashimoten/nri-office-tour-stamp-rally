@@ -49,6 +49,10 @@ const pwaFilesPlugin = (base) => ({
   closeBundle() {
     const outputDirectory = path.join(projectRoot, "dist");
     fs.copyFileSync(
+      path.join(projectRoot, "team-names.js"),
+      path.join(outputDirectory, "team-names.js"),
+    );
+    fs.copyFileSync(
       path.join(projectRoot, "manifest.webmanifest"),
       path.join(outputDirectory, "manifest.webmanifest"),
     );

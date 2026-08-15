@@ -96,3 +96,15 @@
   .entry-card { padding: 28px 20px; border-radius: 30px; }
   .group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
 }
+
+/* グループ選択画面もPC・スマートフォンで同じ幅と配置にします。 */
+.entry-page {
+  width: min(100%, 390px);
+  margin: 0 auto;
+  padding: 14px;
+  box-shadow: 0 0 42px rgb(18 58 105 / 16%);
+}
+
+.entry-card { padding: 28px 20px; border-radius: 30px; }
+.entry-card h1 { font-size: 1.8rem; }
+.group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }

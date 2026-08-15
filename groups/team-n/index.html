@@ -15,7 +15,7 @@
     <header class="page-header">
       <div class="header-inner">
         <p class="brand-label">NRI COMPANY TOUR</p>
-        <p class="group-label">TEAM N</p>
+        <p class="group-label" data-role="team-name">TEAM N</p>
       </div>
     </header>
 
@@ -30,9 +30,9 @@
           <div class="image-placeholder">
             <span aria-hidden="true">🖼️</span>
             <strong>ここに画像を入れてね！</strong>
-            <small>画像をこのフォルダに置いて<br>src="./ファイル名.png" と書こう</small>
+            <small>AIにこんなふうにお願いしてみよう！<br>「青いマントを着た、にこにこ笑う探検キャラクター。カラフルでワクワクするイラスト」</small>
           </div>
-          <figcaption>IMAGE 1 · ぼくらの探検キャラクター</figcaption>
+          <figcaption>IMAGE 1 · 探検キャラクター</figcaption>
         </figure>
         <button type="button" class="scan-button" data-action="scan-qr">
           <span aria-hidden="true">📷</span> QRコードをよみとる
@@ -48,13 +48,13 @@
         </div>
         <!-- 画像体験②：srcのファイル名だけを自分たちの画像に変更します -->
         <figure class="ai-image-frame ai-image-frame--guide" data-image-slot="2">
-          <img src="" alt="みんなが作った探検を助ける相棒の画像">
+          <img src="" alt="みんなが作った探検アイテムの画像">
           <div class="image-placeholder">
             <span aria-hidden="true">🖼️</span>
             <strong>ここに画像を入れてね！</strong>
-            <small>画像をこのフォルダに置いて<br>src="./ファイル名.png" と書こう</small>
+            <small>AIにこんなふうにお願いしてみよう！<br>「ふしぎなコンパスと探検バッグ。宝探しに行きたくなる、カラフルなイラスト」</small>
           </div>
-          <figcaption>IMAGE 2 · 探検をたすける相棒</figcaption>
+          <figcaption>IMAGE 2 · 探検アイテム</figcaption>
         </figure>
       </section>
 
@@ -89,13 +89,13 @@
         </div>
         <!-- 画像体験③：srcのファイル名だけを自分たちの画像に変更します -->
         <figure class="ai-image-frame ai-image-frame--sheet" data-image-slot="3">
-          <img src="" alt="みんなが作ったゴールのお祝い画像">
+          <img src="" alt="みんなが作ったチームフラッグの画像">
           <div class="image-placeholder">
             <span aria-hidden="true">🖼️</span>
             <strong>ここに画像を入れてね！</strong>
-            <small>画像をこのフォルダに置いて<br>src="./ファイル名.png" と書こう</small>
+            <small>AIにこんなふうにお願いしてみよう！<br>「チームの好きな色とマークを使った、元気でかっこいいチームフラッグ」</small>
           </div>
-          <figcaption>IMAGE 3 · ゴールしたときのごほうび</figcaption>
+          <figcaption>IMAGE 3 · チームフラッグ</figcaption>
         </figure>
         <div data-role="stamp-list" class="stamp-grid">
         <article class="stamp-card stamp-card--uncollected" aria-label="エントランス 未取得">
@@ -224,7 +224,7 @@
     </main>
 
     <footer class="page-footer">
-      <p>NRI COMPANY TOUR · TEAM N</p>
+      <p>NRI COMPANY TOUR · <span data-role="team-name">TEAM N</span></p>
       <div class="footer-controls">
         <a
           class="change-group-link"
@@ -241,6 +241,8 @@
     </footer>
 
     <!-- スタンプの保存・QR読み取りは、この共通JavaScriptが担当します -->
+    <!-- vite-ignore -->
+    <script src="../../team-names.js"></script>
     <script type="module" src="../../shared/app.js"></script>
   </body>
 </html>
