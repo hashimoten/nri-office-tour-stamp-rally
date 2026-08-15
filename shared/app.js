@@ -95,7 +95,6 @@ export const renderStampRally = ({
     );
 
     const fields = {
-      sequence: card.querySelector(".stamp-sequence"),
       icon: card.querySelector(".stamp-icon"),
       name: card.querySelector(".stamp-name"),
       status: card.querySelector(".stamp-status"),
@@ -106,10 +105,9 @@ export const renderStampRally = ({
     if (Object.values(fields).some((field) => !field)) {
       throw new Error("スタンプカードに必要な固定クラスがありません");
     }
-    fields.sequence.textContent = String(index + 1).padStart(2, "0");
     fields.icon.textContent = checkpoint.icon;
     fields.name.textContent = checkpoint.name;
-    fields.status.textContent = isCollected ? "ゲット！" : "まだだよ";
+    fields.status.textContent = isCollected ? "ゲット！" : "まだゲット\nしてないよ";
     fields.description.textContent = checkpoint.description;
     fields.date.textContent = stamp
       ? `取得日時 ${formatDate(stamp.acquiredAt)}`

@@ -54,10 +54,9 @@
       card.classList.remove("stamp-card--collected");
       card.classList.add("stamp-card--uncollected");
       card.setAttribute("aria-label", `${checkpoint.name} 未取得`);
-      card.querySelector(".stamp-sequence").textContent = String(index + 1).padStart(2, "0");
       card.querySelector(".stamp-icon").textContent = checkpoint.icon;
       card.querySelector(".stamp-name").textContent = checkpoint.name;
-      card.querySelector(".stamp-status").textContent = "まだだよ";
+      card.querySelector(".stamp-status").textContent = "まだゲット\nしてないよ";
       card.querySelector(".stamp-description").textContent = checkpoint.description;
       card.querySelector(".stamp-date").textContent = "QRコードを見つけて読み取ろう";
       card.querySelector(".stamp-imprint").hidden = true;

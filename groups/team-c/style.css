@@ -935,3 +935,214 @@ body {
   gap: 7px;
   white-space: nowrap;
 }
+
+
+/* 背景の上でも読める、テロップ風の文字表現です。 */
+.hero h1,
+.complete-dialog h2 {
+  font-weight: 950;
+  -webkit-text-stroke: 1.5px #173e54;
+  paint-order: stroke fill;
+  text-shadow:
+    2px 2px 0 #173e54,
+    -1px -1px 0 #173e54,
+    0 4px 8px rgb(10 28 19 / 32%);
+}
+
+.hero h1 {
+  font-size: clamp(1.55rem, 7vw, 1.85rem);
+  white-space: nowrap;
+}
+
+.section-title h2,
+.stamp-name {
+  font-weight: 950;
+  -webkit-text-stroke: 1px #fff8df;
+  paint-order: stroke fill;
+  text-shadow:
+    1px 1px 0 #fff8df,
+    -1px -1px 0 #fff8df,
+    0 3px 5px rgb(45 33 24 / 20%);
+}
+
+.scan-button,
+.result-action,
+.stamp-status,
+.progress-copy {
+  font-weight: 950;
+  text-shadow:
+    1px 1px 0 rgb(255 255 255 / 82%),
+    0 2px 3px rgb(45 33 24 / 18%);
+}
+
+.introduction-copy p,
+.stamp-description,
+.stamp-date,
+.complete-dialog > p {
+  font-weight: 750;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 82%);
+}
+
+
+/* エリア説明を中央寄りにせず、カード左端から読み進められる配置にします。 */
+.stamp-card {
+  align-items: start;
+  grid-template-rows: auto auto auto;
+}
+
+.stamp-icon {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.stamp-card-content {
+  display: contents;
+}
+
+.stamp-card-heading {
+  align-self: center;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.stamp-name {
+  font-size: 1rem;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.stamp-description {
+  margin: 17px 0 0;
+  grid-column: 1 / 3;
+  grid-row: 2;
+  text-align: left;
+}
+
+.stamp-date {
+  margin-top: 10px;
+  grid-column: 1 / 3;
+  grid-row: 3;
+  text-align: left;
+}
+
+.stamp-mount {
+  align-self: center;
+  grid-column: 3;
+  grid-row: 1 / 4;
+}
+
+
+/* 取得状況をカード右上へ集約し、エリア番号は表示しません。 */
+.stamp-sequence {
+  display: none;
+}
+
+.stamp-card-heading {
+  position: static;
+}
+
+.stamp-status {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  margin: 0;
+}
+
+
+.stamp-card--uncollected .stamp-status {
+  width: 124px;
+  padding: 5px 8px;
+  font-size: .62rem;
+  line-height: 1.3;
+  text-align: center;
+  white-space: normal;
+}
+
+.stamp-card--uncollected .stamp-icon,
+.stamp-card--uncollected .stamp-card-heading {
+  margin-top: 32px;
+}
+
+
+/* 未取得ラベルのために空けていた余白をなくし、スタンプ枠を見やすく拡大します。 */
+.stamp-card {
+  grid-template-columns: 52px minmax(0, 1fr) 98px;
+}
+
+.stamp-card--uncollected .stamp-icon,
+.stamp-card--uncollected .stamp-card-heading {
+  margin-top: 0;
+}
+
+.stamp-space {
+  width: 80px;
+  height: 80px;
+}
+
+
+/* カードを上段の概要と下段の詳細に分け、情報の基準線を揃えます。 */
+.stamp-card {
+  min-height: 232px;
+  align-content: start;
+  grid-template-columns: 52px minmax(0, 1fr) 98px;
+  grid-template-rows: 52px auto auto;
+  column-gap: 11px;
+  row-gap: 10px;
+}
+
+.stamp-card-heading {
+  align-self: center;
+}
+
+.stamp-card--uncollected .stamp-status {
+  width: 98px;
+  padding: 4px 5px;
+  font-size: .62rem;
+  line-height: 1.25;
+  white-space: pre-line;
+}
+
+.stamp-status {
+  top: 19px;
+  right: 19px;
+}
+
+.stamp-description {
+  margin: 0;
+  grid-column: 1 / 3;
+  grid-row: 2;
+}
+
+.stamp-date {
+  margin: 0;
+  grid-column: 1 / 3;
+  grid-row: 3;
+}
+
+.stamp-mount {
+  align-self: start;
+  margin: 0;
+  grid-column: 3;
+  grid-row: 2 / 4;
+}
+
+
+/* 説明文に間を取り、QR案内をカード最下部の1行表示にします。 */
+.stamp-card {
+  grid-template-rows: 52px 1fr auto;
+}
+
+.stamp-description {
+  align-self: start;
+  margin-top: 16px;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+.stamp-date {
+  align-self: end;
+  font-size: .62rem;
+  line-height: 1.3;
+  white-space: nowrap;
+}
