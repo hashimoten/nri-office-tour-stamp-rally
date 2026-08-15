@@ -53,7 +53,7 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
       const slot = page.querySelector(`[data-image-slot='${slotNumber}']`);
       const image = slot.querySelector("img");
       expect(image).not.toBeNull();
-      expect(image.getAttribute("src")).toBe("");
+      expect(image.getAttribute("src")).toBe("★ここにつくった画像をいれてみよう★");
       expect(image.getAttribute("alt")).not.toBe("");
       expect(slot.querySelector("figcaption").textContent).toBe(
         imageSlotLabels[Number(slotNumber) - 1],

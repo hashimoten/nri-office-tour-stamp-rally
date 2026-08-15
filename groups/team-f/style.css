@@ -912,3 +912,12 @@ body {
   max-height: 185px;
   aspect-ratio: auto;
 }
+
+/* src内の案内文は未設定として扱い、編集後だけ画像を表示します。 */
+.ai-image-frame img[src="★ここにつくった画像をいれてみよう★"] {
+  display: none;
+}
+
+.ai-image-frame img[src="★ここにつくった画像をいれてみよう★"] + .image-placeholder {
+  display: grid;
+}
