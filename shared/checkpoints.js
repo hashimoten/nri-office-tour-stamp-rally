@@ -37,6 +37,12 @@ export const checkpoints = Object.freeze([
     icon: "✏️",
     description: "新しいことを学ぶ場所",
   }),
+    Object.freeze({
+    id: "roundge",
+    name: "ステアラウンジ",
+    icon: "✏️",
+    description: "みんなの憩いの場所",
+  }),
 ]);
 
 export const checkpointIds = Object.freeze(
