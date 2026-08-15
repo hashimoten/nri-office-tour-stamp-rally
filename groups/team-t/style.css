@@ -797,3 +797,96 @@ body {
   color: var(--muted-color);
   font-size: .7rem;
 }
+
+/* 進捗見出しを背景から分離し、小さい画面でも読みやすくします。 */
+.progress-section .section-heading {
+  position: relative;
+  margin-bottom: 16px;
+  padding: 15px 16px 16px;
+  border: 4px solid #4b321f;
+  border-radius: 5px;
+  background: #fff8df;
+  box-shadow: 0 5px 0 #3b291b, 0 10px 18px rgb(31 42 32 / 16%);
+}
+
+.progress-section .section-heading::after {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, transparent 50%, rgb(111 74 42 / 12%) 50%);
+  content: "";
+}
+
+.progress-section .section-heading > p {
+  margin-bottom: 7px;
+  color: #347044;
+}
+
+.progress-section .section-heading h2 {
+  margin: 0;
+  color: #183d25;
+  font-size: clamp(1.42rem, 6.4vw, 1.75rem);
+  line-height: 1.35;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+/* 見出しとゲージを一枚のパネルとして見せます。 */
+.progress-section {
+  padding: 18px;
+  border: 4px solid #4b321f;
+  border-radius: 5px;
+  background: #fff8df;
+  box-shadow: 0 6px 0 #3b291b, 0 12px 22px rgb(31 42 32 / 18%);
+}
+
+.progress-section .section-heading {
+  margin-bottom: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.progress-section .section-heading::after {
+  content: none;
+}
+
+.progress-section [data-role="progress"] {
+  padding: 15px;
+  border: 3px solid #4b321f;
+  border-radius: 3px;
+  background: #ead7aa;
+  box-shadow: inset 0 0 0 3px #f7eaca;
+}
+
+/* スタンプ台紙も進捗と同じ大きな木枠へまとめます。 */
+.stamp-sheet-section {
+  padding: 18px;
+  border: 4px solid #4b321f;
+  border-radius: 5px;
+  background: #fff8df;
+  box-shadow: 0 6px 0 #3b291b, 0 12px 22px rgb(31 42 32 / 18%);
+}
+
+.stamp-sheet-section .section-heading > p {
+  margin-bottom: 7px;
+  color: #347044;
+}
+
+.stamp-sheet-section .section-heading h2 {
+  margin-bottom: 16px;
+  color: #183d25;
+  font-size: clamp(1.42rem, 6.4vw, 1.75rem);
+  line-height: 1.35;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+.stamp-sheet-section .ai-image-frame--sheet {
+  margin-bottom: 18px;
+}
+
+.stamp-sheet-section .stamp-grid {
+  gap: 18px;
+}
