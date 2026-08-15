@@ -1,3 +1,11 @@
+/*
+ * チェックポイントはこのファイルだけで管理します。
+ * 項目を追加・削除すると、全チームのカード枚数、進捗、QR判定へ反映されます。
+ * id: QRコードの ?point= に使う、重複しない半角英数字とハイフンの値
+ * name: 画面に表示する場所の名前
+ * icon: カードに表示する絵文字
+ * description: 場所の短い説明
+ */
 export const checkpoints = Object.freeze([
   Object.freeze({
     id: "entrance",

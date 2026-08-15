@@ -32,7 +32,32 @@ const formatDate = (timestamp) =>
     minute: "2-digit",
   }).format(new Date(timestamp));
 
-export const renderStampRally = ({ documentRef = document, stamps }) => {
+const syncStampCards = (list, checkpointList) => {
+  const cards = [...list.querySelectorAll(".stamp-card")];
+  const template = cards[0];
+
+  if (!template && checkpointList.length > 0) {
+    throw new Error("スタンプカードのひな形がありません");
+  }
+
+  while (cards.length > checkpointList.length) {
+    cards.pop()?.remove();
+  }
+
+  while (cards.length < checkpointList.length) {
+    const card = template.cloneNode(true);
+    list.append(card);
+    cards.push(card);
+  }
+
+  return cards;
+};
+
+export const renderStampRally = ({
+  documentRef = document,
+  stamps,
+  checkpointList = checkpoints,
+}) => {
   const progress = documentRef.querySelector("[data-role='progress']");
   const list = documentRef.querySelector("[data-role='stamp-list']");
   const completePanel = documentRef.querySelector("[data-role='complete-panel']");
@@ -41,8 +66,8 @@ export const renderStampRally = ({ documentRef = document, stamps }) => {
   }
 
   const collected = stamps.length;
-  const total = checkpoints.length;
-  const percentage = Math.round((collected / total) * 100);
+  const total = checkpointList.length;
+  const percentage = total > 0 ? Math.round((collected / total) * 100) : 0;
   const progressCount = progress.querySelector(".progress-copy strong");
   const progressPercent = progress.querySelector(".progress-copy span");
   const progressBar = progress.querySelector(".progress-bar");
@@ -57,12 +82,9 @@ export const renderStampRally = ({ documentRef = document, stamps }) => {
   progressFill.style.width = `${percentage}%`;
 
   const stampsById = new Map(stamps.map((stamp) => [stamp.checkpointId, stamp]));
-  const cards = [...list.querySelectorAll(".stamp-card")];
-  if (cards.length !== checkpoints.length) {
-    throw new Error("スタンプカードの枚数がチェックポイント数と一致しません");
-  }
+  const cards = syncStampCards(list, checkpointList);
   cards.forEach((card, index) => {
-    const checkpoint = checkpoints[index];
+    const checkpoint = checkpointList[index];
     const stamp = stampsById.get(checkpoint.id);
     const isCollected = Boolean(stamp);
     card.classList.toggle("stamp-card--collected", isCollected);
@@ -94,7 +116,7 @@ export const renderStampRally = ({ documentRef = document, stamps }) => {
       : "QRコードを見つけて読み取ろう";
     fields.imprint.hidden = !isCollected;
   });
-  completePanel.hidden = collected !== total;
+  completePanel.hidden = total === 0 || collected !== total;
 };
 
 const showNotice = (message, tone = "info", documentRef = document) => {

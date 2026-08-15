@@ -41,6 +41,31 @@ describe("プレビューモードと表示", () => {
     expect(document.querySelector("[data-role='progress']").textContent).toContain("5 / 5個");
   });
 
+  it("チェックポイント設定の増減に合わせてカード枚数を自動調整する", () => {
+    const page = new DOMParser().parseFromString(
+      fs.readFileSync("groups/team-a/index.html", "utf8"),
+      "text/html",
+    );
+    const expanded = [
+      ...checkpoints,
+      {
+        id: "studio",
+        name: "スタジオ",
+        icon: "🎥",
+        description: "映像をつくる場所",
+      },
+    ];
+
+    renderStampRally({ documentRef: page, stamps: [], checkpointList: expanded });
+    expect(page.querySelectorAll(".stamp-card")).toHaveLength(6);
+    expect(page.querySelector("[data-role='progress']").textContent).toContain("0 / 6個");
+    expect(page.querySelector(".stamp-card:last-child .stamp-name").textContent).toBe("スタジオ");
+
+    renderStampRally({ documentRef: page, stamps: [], checkpointList: checkpoints.slice(0, 3) });
+    expect(page.querySelectorAll(".stamp-card")).toHaveLength(3);
+    expect(page.querySelector("[data-role='progress']").textContent).toContain("0 / 3個");
+  });
+
   it("プレビュー中はlocalStorageを変更しない", () => {
     preparePage();
     localStorage.setItem("untouched", "yes");
