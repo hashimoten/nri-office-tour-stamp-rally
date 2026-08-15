@@ -469,6 +469,94 @@ body {
   .stamp-imprint strong { font-size: .68rem; }
 }
 
+/*
+ * 最終利用端末に合わせ、PCでもスマートフォンと同じ1カラム表示にします。
+ * body自体をiPhone相当の幅にするため、画面幅によって配置が変わりません。
+ */
+html { background: #dfeff7; }
+
+body {
+  width: min(100%, 390px);
+  margin: 0 auto;
+  box-shadow: 0 0 42px rgb(18 58 105 / 16%);
+}
+
+:root { --page-max-width: 390px; }
+
+.page-header { position: relative; }
+.header-inner { width: min(calc(100% - 28px), var(--page-max-width)); }
+.page-main { width: min(calc(100% - 24px), var(--page-max-width)); padding-top: 20px; }
+.brand-label { font-size: .66rem; }
+
+.hero {
+  min-height: 0;
+  padding: 30px 22px 36px;
+  border-radius: 30px;
+  box-shadow: 0 9px 0 #c6e9f7, 0 20px 38px rgb(18 58 105 / 17%);
+}
+
+.hero h1,
+.hero .subtitle,
+.scan-button { max-width: 100%; }
+
+.hero h1 { font-size: clamp(1.7rem, 7.4vw, 2rem); white-space: nowrap; }
+.scan-button { width: 100%; justify-content: center; }
+
+.ai-image-frame--hero {
+  position: relative;
+  top: auto;
+  right: auto;
+  width: 100%;
+  margin: 26px auto 0;
+  transform: rotate(1deg);
+}
+
+.introduction { padding: 18px; grid-template-columns: 1fr; }
+.ai-image-frame--guide { width: 100%; margin: auto; }
+.ai-image-frame--sheet { grid-template-columns: 1fr; }
+.ai-image-frame--sheet img,
+.ai-image-frame--sheet .image-placeholder { max-height: none; aspect-ratio: 25 / 9; }
+.stamp-grid { grid-template-columns: 1fr; }
+
+.stamp-card {
+  min-height: 252px;
+  padding: 19px;
+  grid-template-columns: 52px 1fr 78px;
+  gap: 11px;
+}
+
+.stamp-icon { width: 52px; height: 52px; border-radius: 17px; }
+.stamp-space { width: 64px; height: 64px; }
+.stamp-imprint { border-width: 4px; inset: 3px; }
+.stamp-imprint strong { font-size: .68rem; }
+
+.page-footer,
+.footer-controls { align-items: flex-start; flex-direction: column; }
+
+.scanner-dialog,
+.result-dialog { width: min(100%, 358px); }
+.result-dialog { grid-template-columns: 1fr; }
+
+/* IMAGE 3: チームフラッグをスマートフォン幅でも崩さず表示します。 */
+.ai-image-frame--sheet {
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.ai-image-frame--sheet img,
+.ai-image-frame--sheet .image-placeholder {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 16 / 9;
+}
+
+.ai-image-frame--sheet img { display: block; }
+.ai-image-frame--sheet figcaption { width: 100%; box-sizing: border-box; }
+.result-action { grid-column: auto; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
