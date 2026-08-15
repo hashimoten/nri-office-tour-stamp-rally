@@ -1146,3 +1146,10 @@ body {
   line-height: 1.3;
   white-space: nowrap;
 }
+
+
+/* エリア説明を右側のスタンプ枠に対して縦中央へ揃えます。 */
+.stamp-description {
+  align-self: center;
+  margin-top: 0;
+}
