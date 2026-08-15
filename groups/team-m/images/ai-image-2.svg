@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">探検案内ロボット</title>
+  <desc id="desc">地図を持って手を振るロボットの見本画像</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#fff2a8"/>
+      <stop offset="1" stop-color="#bff3df"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" rx="48" fill="url(#bg)"/>
+  <path d="M0 386c140-62 238-46 340 1 127 58 249 55 460-31v144H0z" fill="#86d7ee"/>
+  <g transform="translate(385 253)">
+    <path d="M-100 74-180 154M103 70l93 50" fill="none" stroke="#245a91" stroke-width="24" stroke-linecap="round"/>
+    <circle cx="-187" cy="160" r="26" fill="#ff7b76" stroke="#245a91" stroke-width="9"/>
+    <path d="M192 112c36-35 65-20 56 9 31-11 48 17 23 39-31 28-71 16-88-9z" fill="#ff7b76" stroke="#245a91" stroke-width="9"/>
+    <rect x="-130" y="-52" width="260" height="205" rx="70" fill="#fff" stroke="#245a91" stroke-width="12"/>
+    <rect x="-156" y="-158" width="312" height="150" rx="64" fill="#fff" stroke="#245a91" stroke-width="12"/>
+    <path d="M0-158v-45" stroke="#245a91" stroke-width="12" stroke-linecap="round"/>
+    <circle cy="-219" r="22" fill="#ffcf55" stroke="#245a91" stroke-width="9"/>
+    <circle cx="-70" cy="-83" r="24" fill="#57c8ec"/>
+    <circle cx="70" cy="-83" r="24" fill="#57c8ec"/>
+    <path d="M-57-43q57 53 114 0" fill="none" stroke="#ff6f7d" stroke-width="12" stroke-linecap="round"/>
+    <rect x="-66" y="18" width="132" height="75" rx="24" fill="#bff3df"/>
+    <path d="m-27 56 20 20 39-43" fill="none" stroke="#24836d" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-79 150-94 213M79 150l15 63" stroke="#245a91" stroke-width="25" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(104 246) rotate(-8)">
+    <rect width="170" height="128" rx="16" fill="#fff" stroke="#245a91" stroke-width="9"/>
+    <path d="M18 93c39-59 74-67 133-55M35 29l98 71" fill="none" stroke="#ffcf55" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="120" cy="42" r="13" fill="#ff6f7d"/>
+  </g>
+</svg>

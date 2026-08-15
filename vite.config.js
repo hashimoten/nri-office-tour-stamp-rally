@@ -26,6 +26,9 @@ const groupIds = [
   "team-r",
   "team-s",
   "team-t",
+  "team-u",
+  "team-v",
+  "team-w",
 ];
 
 export const normalizeBasePath = (value = "/") => {
