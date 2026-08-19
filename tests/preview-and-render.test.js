@@ -5,7 +5,7 @@ import { createPreviewStamps, initStampRally, renderStampRally } from "../shared
 
 const preparePage = () => {
   const page = new DOMParser().parseFromString(
-    fs.readFileSync("groups/team-a/index.html", "utf8"),
+    fs.readFileSync("groups/イチゴ/index.html", "utf8"),
     "text/html",
   );
   document.body.dataset.group = "team-a";
@@ -15,7 +15,7 @@ const preparePage = () => {
 describe("プレビューモードと表示", () => {
   it("空の初期HTMLを保ったまま実際の保存状態へ更新する", () => {
     const page = new DOMParser().parseFromString(
-      fs.readFileSync("groups/team-a/index.html", "utf8"),
+      fs.readFileSync("groups/イチゴ/index.html", "utf8"),
       "text/html",
     );
     expect(page.querySelectorAll(".stamp-card--collected")).toHaveLength(0);
@@ -43,7 +43,7 @@ describe("プレビューモードと表示", () => {
 
   it("チェックポイント設定の増減に合わせてカード枚数を自動調整する", () => {
     const page = new DOMParser().parseFromString(
-      fs.readFileSync("groups/team-a/index.html", "utf8"),
+      fs.readFileSync("groups/イチゴ/index.html", "utf8"),
       "text/html",
     );
     const expanded = [
@@ -68,7 +68,7 @@ describe("プレビューモードと表示", () => {
 
   it("HTML直接表示でも共通設定に合わせてカード枚数を更新する", () => {
     const page = new DOMParser().parseFromString(
-      fs.readFileSync("groups/team-a/index.html", "utf8"),
+      fs.readFileSync("groups/イチゴ/index.html", "utf8"),
       "text/html",
     );
     const configured = [
@@ -90,7 +90,7 @@ describe("プレビューモードと表示", () => {
     initStampRally({
       documentRef: document,
       storage: localStorage,
-      locationRef: { href: "https://example.com/groups/team-a/?preview=partial", search: "?preview=partial" },
+      locationRef: { href: "https://example.com/groups/イチゴ/?preview=partial", search: "?preview=partial" },
     });
     expect(JSON.stringify({ ...localStorage })).toBe(before);
     expect(document.querySelectorAll(".stamp-card--collected")).toHaveLength(2);
@@ -105,7 +105,7 @@ describe("プレビューモードと表示", () => {
     initStampRally({
       documentRef: document,
       storage: localStorage,
-      locationRef: { href: "https://example.com/groups/team-a/", search: "" },
+      locationRef: { href: "https://example.com/groups/イチゴ/", search: "" },
     });
     expect(document.querySelectorAll(".stamp-card--collected")).toHaveLength(1);
   });

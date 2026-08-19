@@ -28,7 +28,7 @@ describe("グループルーティング", () => {
       "https://hashimoten.github.io/nri-office-tour-stamp-rally/?point=entrance",
     );
     expect(target.href).toBe(
-      "https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-b/?point=entrance",
+      "https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/%E3%83%96%E3%83%89%E3%82%A6/?point=entrance",
     );
   });
 
@@ -43,7 +43,7 @@ describe("グループルーティング", () => {
     });
     expect(result).toEqual({ redirected: true, groupId: "team-c" });
     expect(navigate.mock.calls[0][0].href).toBe(
-      "https://example.com/app/groups/team-c/?point=office",
+      "https://example.com/app/groups/%E3%83%9F%E3%82%AB%E3%83%B3/?point=office",
     );
   });
 
@@ -77,7 +77,7 @@ describe("グループルーティング", () => {
   it("選択リンクからグループを保存して移動する", () => {
     document.body.innerHTML = `
       <div data-role="group-list">
-        <a href="./groups/team-b/" data-select-group="team-b">TEAM B</a>
+        <a href="./groups/ブドウ/" data-select-group="team-b">ブドウ</a>
       </div>`;
     const navigate = vi.fn();
     startGroupRouter({
@@ -89,7 +89,7 @@ describe("グループルーティング", () => {
     document.querySelector("[data-select-group='team-b']").click();
     expect(loadActiveGroup(localStorage)).toBe("team-b");
     expect(navigate.mock.calls[0][0].href).toBe(
-      "https://example.com/app/groups/team-b/",
+      "https://example.com/app/groups/%E3%83%96%E3%83%89%E3%82%A6/",
     );
   });
 });

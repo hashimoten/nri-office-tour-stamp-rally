@@ -3,11 +3,15 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 const groups = [
-  "team-a", "team-b", "team-c", "team-d", "team-e",
-  "team-f", "team-g", "team-h", "team-i", "team-j",
-  "team-k", "team-l", "team-m", "team-n", "team-o",
-  "team-p", "team-q", "team-r", "team-s", "team-t",
-  "team-u", "team-v", "team-w",
+  ["team-a", "イチゴ"], ["team-b", "ブドウ"], ["team-c", "ミカン"],
+  ["team-d", "レモン"], ["team-e", "リンゴ"], ["team-f", "バナナ"],
+  ["team-g", "メロン"], ["team-h", "キウイ"], ["team-i", "スイカ"],
+  ["team-j", "パイン"], ["team-k", "ライチ"], ["team-l", "ザクロ"],
+  ["team-m", "アンズ"], ["team-n", "ビワ"], ["team-o", "モモ"],
+  ["team-p", "カキ"], ["team-q", "ナシ"], ["team-r", "ユズ"],
+  ["team-s", "イチジク"], ["team-t", "マンゴー"],
+  ["team-u", "パパイヤ"], ["team-v", "サクランボ"],
+  ["team-w", "ラズベリー"],
 ];
 
 const imageSlotLabels = [
@@ -22,9 +26,9 @@ const imagePromptKeywords = [
   "チームフラッグ",
 ];
 
-describe.each(groups)("%s のHTML構造", (groupId) => {
+describe.each(groups)("%s（%s）のHTML構造", (groupId, groupDirectory) => {
   it("共通機能に必要な固定属性と読込を持つ", () => {
-    const html = fs.readFileSync(path.join("groups", groupId, "index.html"), "utf8");
+    const html = fs.readFileSync(path.join("groups", groupDirectory, "index.html"), "utf8");
     const page = new DOMParser().parseFromString(html, "text/html");
     expect(page.body.dataset.group).toBe(groupId);
     expect(page.querySelectorAll("[data-role='team-name']")).toHaveLength(2);
@@ -65,14 +69,14 @@ describe.each(groups)("%s のHTML構造", (groupId) => {
       );
       expect(slot.textContent).not.toContain("画像をこのフォルダに置いて");
     }
-    expect(fs.existsSync(path.join("groups", groupId, "images"))).toBe(false);
+    expect(fs.existsSync(path.join("groups", groupDirectory, "images"))).toBe(false);
   });
 });
 
-describe.each(groups)("%s のCSS", (groupId) => {
+describe.each(groups)("%s（%s）のCSS", (_groupId, groupDirectory) => {
 
   it("チームフォルダ単体でも台紙を表示する基本CSSを持つ", () => {
-    const css = fs.readFileSync(path.join("groups", groupId, "style.css"), "utf8");
+    const css = fs.readFileSync(path.join("groups", groupDirectory, "style.css"), "utf8");
     expect(css).toContain("box-sizing: border-box");
     expect(css).toMatch(/body\s*{[^}]*margin:\s*0;/s);
     expect(css).toContain("[hidden]");

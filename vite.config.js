@@ -30,6 +30,13 @@ const groupIds = [
   "team-v",
   "team-w",
 ];
+const groupDirectories = [
+  "イチゴ", "ブドウ", "ミカン", "レモン", "リンゴ",
+  "バナナ", "メロン", "キウイ", "スイカ", "パイン",
+  "ライチ", "ザクロ", "アンズ", "ビワ", "モモ",
+  "カキ", "ナシ", "ユズ", "イチジク", "マンゴー",
+  "パパイヤ", "サクランボ", "ラズベリー",
+];
 
 export const normalizeBasePath = (value = "/") => {
   const leading = value.startsWith("/") ? value : `/${value}`;
@@ -67,8 +74,8 @@ const pwaFilesPlugin = (base) => ({
 
     for (const htmlPath of [
       path.join(outputDirectory, "index.html"),
-      ...groupIds.map((groupId) =>
-        path.join(outputDirectory, "groups", groupId, "index.html"),
+      ...groupDirectories.map((groupDirectory) =>
+        path.join(outputDirectory, "groups", groupDirectory, "index.html"),
       ),
     ]) {
       const html = fs.readFileSync(htmlPath, "utf8");
@@ -111,9 +118,9 @@ export default defineConfig(({ mode }) => {
   const input = {
     index: path.join(projectRoot, "index.html"),
     ...Object.fromEntries(
-      groupIds.map((groupId) => [
+      groupIds.map((groupId, index) => [
         groupId,
-        path.join(projectRoot, "groups", groupId, "index.html"),
+        path.join(projectRoot, "groups", groupDirectories[index], "index.html"),
       ]),
     ),
   };

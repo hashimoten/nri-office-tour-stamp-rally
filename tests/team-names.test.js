@@ -12,8 +12,8 @@ describe("家族名の表示設定", () => {
     document.dispatchEvent(new Event("DOMContentLoaded"));
 
     expect(Object.keys(window.NriTeamNames.teamNames)).toHaveLength(23);
-    expect(window.NriTeamNames.getTeamName("team-a")).toBe("テスト A");
-    expect(document.querySelector("[data-select-group]").textContent).toBe("テスト A");
-    expect(document.querySelector("[data-role='team-name']").textContent).toBe("テスト A");
+    expect(window.NriTeamNames.getTeamName("team-a")).toBe("イチゴ");
+    expect(document.querySelector("[data-select-group]").textContent).toBe("イチゴ");
+    expect(document.querySelector("[data-role='team-name']").textContent).toBe("イチゴ");
   });
 });

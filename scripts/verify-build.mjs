@@ -4,12 +4,12 @@ import { fileURLToPath } from "node:url";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(projectRoot, "dist");
-const groupIds = [
-  "team-a", "team-b", "team-c", "team-d", "team-e",
-  "team-f", "team-g", "team-h", "team-i", "team-j",
-  "team-k", "team-l", "team-m", "team-n", "team-o",
-  "team-p", "team-q", "team-r", "team-s", "team-t",
-  "team-u", "team-v", "team-w",
+const groupDirectories = [
+  "イチゴ", "ブドウ", "ミカン", "レモン", "リンゴ",
+  "バナナ", "メロン", "キウイ", "スイカ", "パイン",
+  "ライチ", "ザクロ", "アンズ", "ビワ", "モモ",
+  "カキ", "ナシ", "ユズ", "イチジク", "マンゴー",
+  "パパイヤ", "サクランボ", "ラズベリー",
 ];
 const required = [
   "index.html",
@@ -18,8 +18,8 @@ const required = [
   "sw.js",
   "icons/app-icon-192.png",
   "icons/app-icon-512.png",
-  ...groupIds.map(
-    (groupId) => `groups/${groupId}/index.html`,
+  ...groupDirectories.map(
+    (groupDirectory) => `groups/${groupDirectory}/index.html`,
   ),
 ];
 
@@ -28,15 +28,15 @@ if (missing.length > 0) {
   throw new Error(`ビルド成果物が不足しています: ${missing.join(", ")}`);
 }
 
-for (const groupId of groupIds) {
-  const html = fs.readFileSync(path.join(dist, "groups", groupId, "index.html"), "utf8");
+for (const groupDirectory of groupDirectories) {
+  const html = fs.readFileSync(path.join(dist, "groups", groupDirectory, "index.html"), "utf8");
   if (!html.includes('rel="stylesheet"') || !html.includes("manifest.webmanifest")) {
-    throw new Error(`${groupId} のCSSまたはManifestがビルドに含まれていません`);
+    throw new Error(`${groupDirectory} のCSSまたはManifestがビルドに含まれていません`);
   }
 
   const imageSlotCount = (html.match(/data-image-slot=/g) ?? []).length;
   if (imageSlotCount !== 3) {
-    throw new Error(`${groupId} の画像スペースが3か所ではありません`);
+    throw new Error(`${groupDirectory} の画像スペースが3か所ではありません`);
   }
 }
 

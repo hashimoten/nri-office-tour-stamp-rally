@@ -26,6 +26,32 @@ export const groupIds = Object.freeze([
   "team-v",
   "team-w",
 ]);
+
+export const groupDirectories = Object.freeze({
+  "team-a": "イチゴ",
+  "team-b": "ブドウ",
+  "team-c": "ミカン",
+  "team-d": "レモン",
+  "team-e": "リンゴ",
+  "team-f": "バナナ",
+  "team-g": "メロン",
+  "team-h": "キウイ",
+  "team-i": "スイカ",
+  "team-j": "パイン",
+  "team-k": "ライチ",
+  "team-l": "ザクロ",
+  "team-m": "アンズ",
+  "team-n": "ビワ",
+  "team-o": "モモ",
+  "team-p": "カキ",
+  "team-q": "ナシ",
+  "team-r": "ユズ",
+  "team-s": "イチジク",
+  "team-t": "マンゴー",
+  "team-u": "パパイヤ",
+  "team-v": "サクランボ",
+  "team-w": "ラズベリー",
+});
 const groupIdSet = new Set(groupIds);
 
 export const isGroupId = (value) => groupIdSet.has(value);
@@ -65,7 +91,7 @@ export const buildGroupUrl = (groupId, currentUrl = window.location.href) => {
 
   const current = new URL(currentUrl);
   const base = new URL("./", current);
-  const target = new URL(`groups/${groupId}/`, base);
+  const target = new URL(`groups/${groupDirectories[groupId]}/`, base);
   const point = current.searchParams.get("point");
   if (point !== null) target.searchParams.set("point", point);
   return target;

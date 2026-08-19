@@ -2,9 +2,9 @@
 
 NRIの会社見学イベントで3〜10歳程度の子どもと保護者が使う、23グループ対応のQRコード式スタンプラリーPWAです。HTML・CSS・Vanilla JavaScript・Viteで構成し、バックエンドやアクセス解析はありません。保存するのはグループID、チェックポイントID、取得日時だけで、個人情報や写真を収集・外部送信しません。
 
-## 家族名を変更する方法
+## グループ名を変更する方法
 
-家族名が確定したら、ルート直下の`team-names.js`だけを編集します。たとえば、`"team-a": "TEAM A"`の右側を`"team-a": "山田ファミリー"`へ変更すると、グループ選択画面とteam-aページの上部・下部へ同じ名前が表示されます。保存後にページを再読み込みしてください。開発サーバーを使わず、HTMLをブラウザーで直接開いた場合にも反映されます。
+表示名はルート直下の`team-names.js`で管理します。たとえば内部ID`team-a`の表示名は「イチゴ」で、フォルダは`groups/イチゴ/`です。表示名を変更した場合は、入口とグループページの上部・下部へ反映されます。
 
 左側の`team-a`から`team-w`はスタンプ保存に使う固定IDなので変更しないでください。公開ページへ家族名を掲載する場合は、参加者の了承を得た表示名を使用してください。
 
@@ -12,7 +12,7 @@ NRIの会社見学イベントで3〜10歳程度の子どもと保護者が使�
 
 親子はAIを使って3枚の画像を作り、ダウンロードした画像を自分のグループ画面へ埋め込みます。HTMLの文章、CSS、JavaScript、QRコード処理は変更しません。
 
-team-aの場合、生成画像を`groups/team-a/`へ直接保存し、`groups/team-a/index.html`にある3つの`<img>`の`src`へファイル名を指定します。team-b〜team-wも同じ構成です。
+イチゴグループの場合、生成画像を`groups/イチゴ/`へ直接保存し、`groups/イチゴ/index.html`にある3つの`<img>`の`src`へファイル名を指定します。他のグループも同じ構成です。
 
 ### 画像を埋め込む手順
 
@@ -26,7 +26,7 @@ team-aの場合、生成画像を`groups/team-a/`へ直接保存し、`groups/te
 
 ### チームへの配布方法
 
-Gitは通常、リポジトリ内の1フォルダだけを単独でcloneできません。担当チームのフォルダだけを配布する場合は、GitHubから取得したリポジトリから`groups/team-x/`をコピーするか、ZIPにして配布してください。
+Gitは通常、リポジトリ内の1フォルダだけを単独でcloneできません。担当チームのフォルダだけを配布する場合は、GitHubから取得したリポジトリから`groups/グループ名/`をコピーするか、ZIPにして配布してください。
 
 画像埋め込み体験では、スタッフが開発サーバーを起動する必要はありません。親子は担当フォルダの`index.html`をブラウザーで直接開きます。QR読取、スタンプ保存、プレビューモード、PWAまで動作確認するときだけ、リポジトリ全体を用意して開発サーバーを起動してください。
 
@@ -39,12 +39,12 @@ npm run dev
 
 入口は `http://localhost:5173/`、各グループは次のURLです。
 
-- `http://localhost:5173/groups/team-a/`
-- `http://localhost:5173/groups/team-b/`
-- `http://localhost:5173/groups/team-c/`
-- `http://localhost:5173/groups/team-d/`
+- `http://localhost:5173/groups/イチゴ/`
+- `http://localhost:5173/groups/ブドウ/`
+- `http://localhost:5173/groups/ミカン/`
+- `http://localhost:5173/groups/レモン/`
 
-`team-e`〜`team-w`も、URL末尾のグループIDを変更して確認できます。例：`http://localhost:5173/groups/team-w/`
+他のグループも、URL末尾を日本語のフォルダ名へ変更して確認できます。例：`http://localhost:5173/groups/ラズベリー/`
 
 この開発サーバーは共通機能を含めた動作確認用です。画像を埋め込むだけなら起動不要です。
 
@@ -58,11 +58,11 @@ ViteやGitHub Pagesからアプリを起動した場合も、同じHTMLとCSSを
 
 QRコードなしで台紙を確認できます。プレビュー中はlocalStorageを一切変更しません。
 
-- 空：`http://localhost:5173/groups/team-a/?preview=empty`
-- 2個取得：`http://localhost:5173/groups/team-a/?preview=partial`
-- 全取得：`http://localhost:5173/groups/team-a/?preview=complete`
+- 空：`http://localhost:5173/groups/イチゴ/?preview=empty`
+- 2個取得：`http://localhost:5173/groups/イチゴ/?preview=partial`
+- 全取得：`http://localhost:5173/groups/イチゴ/?preview=complete`
 
-URLの`team-a`を変更すれば他グループも確認できます。`preview`を外すと、端末に実際に保存された状態へ戻ります。
+URLの`イチゴ`を別のグループフォルダ名へ変更すれば、他グループも確認できます。`preview`を外すと、端末に実際に保存された状態へ戻ります。
 
 ## 共通QRコードとグループ復元
 
@@ -115,11 +115,11 @@ GitLab Pagesへ移す場合も、`VITE_BASE_PATH`をプロジェクトの公開�
 `main`へpushすると `.github/workflows/deploy-pages.yml` が`VITE_BASE_PATH`をリポジトリ名から設定し、check後の`dist`を公開します。
 
 - 公開入口：`https://hashimoten.github.io/nri-office-tour-stamp-rally/`
-- team-a：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-a/`
-- team-b：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-b/`
-- team-w：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/team-w/`
+- イチゴ：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/イチゴ/`
+- ブドウ：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/ブドウ/`
+- ラズベリー：`https://hashimoten.github.io/nri-office-tour-stamp-rally/groups/ラズベリー/`
 
-team-c〜team-vも同じURL形式です。
+他のグループも同じURL形式です。
 
 ## PWAのインストールと更新
 
@@ -131,7 +131,7 @@ React版で使用していた旧`sw.js`が端末に残っている場合は、�
 
 ## 24グループ目以降の追加
 
-1. `groups/team-a/`を新しいグループ名で複製する。
+1. `groups/イチゴ/`を新しいグループ名で複製する。
 2. HTMLの`data-group`と表示用グループ名を変更する。
 3. `shared/group-router.js`の許可リストと入口ボタンを追加する。
 4. `vite.config.js`のビルド対象へ追加する。
